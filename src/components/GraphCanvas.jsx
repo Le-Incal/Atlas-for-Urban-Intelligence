@@ -416,17 +416,40 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         />
       </mesh>
 
-      {/* Pulse effect - sphere that travels along the edge */}
+      {/* Pulse effect - electrical pulse that travels along the edge */}
       {pulseProgress !== null && pulsePosition && (
-        <mesh position={pulsePosition}>
-          <sphereGeometry args={[0.5, 16, 16]} />
-          <meshBasicMaterial
-            color={sourceColor}
-            transparent
-            opacity={0.8}
-            depthWrite={false}
-          />
-        </mesh>
+        <group position={pulsePosition}>
+          {/* Outer glow */}
+          <mesh>
+            <sphereGeometry args={[0.8, 16, 16]} />
+            <meshBasicMaterial
+              color="#00e600"
+              transparent
+              opacity={0.3}
+              depthWrite={false}
+            />
+          </mesh>
+          {/* Inner bright core */}
+          <mesh>
+            <sphereGeometry args={[0.4, 16, 16]} />
+            <meshBasicMaterial
+              color="#00e600"
+              transparent
+              opacity={0.9}
+              depthWrite={false}
+            />
+          </mesh>
+          {/* Bright center */}
+          <mesh>
+            <sphereGeometry args={[0.2, 12, 12]} />
+            <meshBasicMaterial
+              color="#ffffff"
+              transparent
+              opacity={1}
+              depthWrite={false}
+            />
+          </mesh>
+        </group>
       )}
 
       {/* Invisible cylinder for hover detection */}
