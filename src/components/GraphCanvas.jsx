@@ -222,8 +222,8 @@ function calculatePositions(nodes, edges) {
     })
   })
 
-  // Force simulation
-  const iterations = 120
+  // Force simulation (reduced iterations for performance)
+  const iterations = 60
   for (let iter = 0; iter < iterations; iter++) {
     const cooling = 1 - (iter / iterations) * 0.6
 
