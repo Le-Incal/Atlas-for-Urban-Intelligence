@@ -230,7 +230,7 @@ function Node({ node, position, size, isVisible }) {
   // Create a darker version of the base color for the outline
   const outlineColor = useMemo(() => {
     const c = baseColor.clone()
-    c.offsetHSL(0, 0, -0.25) // Darken by 25%
+    c.offsetHSL(0, 0, -0.15) // Darken by 15%
     return c
   }, [baseColor])
 
@@ -239,12 +239,12 @@ function Node({ node, position, size, isVisible }) {
   return (
     <group position={[position.x, position.y, position.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
-      <mesh scale={1.08}>
+      <mesh scale={1.06}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           color={outlineColor}
           transparent
-          opacity={0.6}
+          opacity={0.4}
         />
       </mesh>
 
@@ -283,6 +283,19 @@ function Node({ node, position, size, isVisible }) {
           emissiveIntensity={0}
         />
       </mesh>
+
+      {/* Node initials - first letter of each word */}
+      <Html
+        center
+        style={{
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <div className="text-[4px] font-bold" style={{ color: '#00e600' }}>
+          {node.label.split(' ').map(word => word.charAt(0)).join('')}
+        </div>
+      </Html>
     </group>
   )
 }
