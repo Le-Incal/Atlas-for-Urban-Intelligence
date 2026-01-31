@@ -86,13 +86,13 @@ function LandingPage() {
           transition={{ delay: 1, duration: 0.8 }}
         >
           {[
-            { color: '#5D554C', label: 'L0' },
-            { color: '#4A5A63', label: 'L1' },
-            { color: '#4F7A74', label: 'L2' },
-            { color: '#5A658C', label: 'L3' },
-            { color: '#8B6A9E', label: 'L4' },
-            { color: '#9C615F', label: 'L5' },
-            { color: '#B89A5A', label: 'L6' },
+            { color: '#8B8682', label: 'L0' },
+            { color: '#9DACB3', label: 'L1' },
+            { color: '#C1ED93', label: 'L2' },
+            { color: '#68D3F0', label: 'L3' },
+            { color: '#BF7BE6', label: 'L4' },
+            { color: '#6ECBB1', label: 'L5' },
+            { color: '#D49174', label: 'L6' },
           ].map((layer, i) => (
             <motion.div
               key={layer.label}

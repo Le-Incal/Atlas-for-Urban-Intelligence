@@ -1,5 +1,6 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import useGraphStore from '../stores/graphStore'
 import nodesData from '../data/nodes.json'
@@ -7,13 +8,13 @@ import edgesData from '../data/edges.json'
 
 // Layer colors
 const LAYER_COLORS = {
-  0: '#5D554C',
-  1: '#4A5A63',
-  2: '#4F7A74',
-  3: '#5A658C',
-  4: '#8B6A9E',
-  5: '#9C615F',
-  6: '#B89A5A',
+  0: '#8B8682', // Grey Olive
+  1: '#9DACB3', // Cool Steel
+  2: '#C1ED93', // Lime Cream
+  3: '#68D3F0', // Sky Blue
+  4: '#BF7BE6', // Bright Lavender
+  5: '#6ECBB1', // Pearl Aqua
+  6: '#D49174', // Toasted Almond
 }
 
 // Calculate node positions using an organic spherical approach
@@ -265,6 +266,19 @@ function Node({ node, position, size, isVisible }) {
           emissiveIntensity={0}
         />
       </mesh>
+
+      {/* Node initial */}
+      <Html
+        center
+        style={{
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <div className="text-[8px] font-bold text-black/70">
+          {node.label.charAt(0)}
+        </div>
+      </Html>
     </group>
   )
 }

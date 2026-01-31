@@ -8,13 +8,13 @@ export default {
     extend: {
       colors: {
         // Layer colors
-        'layer-0': '#5D554C', // Bio-Physical - Warm Taupe
-        'layer-1': '#4A5A63', // Observable Reality - Blue-Gray
-        'layer-2': '#4F7A74', // Cyber-Physical - Desaturated Teal
-        'layer-3': '#5A658C', // Logic/Knowledge - Muted Indigo
-        'layer-4': '#8B6A9E', // Agentic Intelligence - Soft Amethyst
-        'layer-5': '#9C615F', // Socio-Economic - Burnt Umber
-        'layer-6': '#B89A5A', // Governance - Warm Brass
+        'layer-0': '#8B8682', // Bio-Physical - Grey Olive
+        'layer-1': '#9DACB3', // Observable Reality - Cool Steel
+        'layer-2': '#C1ED93', // Cyber-Physical - Lime Cream
+        'layer-3': '#68D3F0', // Logic/Knowledge - Sky Blue
+        'layer-4': '#BF7BE6', // Agentic Intelligence - Bright Lavender
+        'layer-5': '#6ECBB1', // Socio-Economic - Pearl Aqua
+        'layer-6': '#D49174', // Governance - Toasted Almond
         // Accent
         'accent-lime': '#C8E66E',
         'accent-lime-light': '#E8F5C8',

@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --layer-0: #5D554C;
-  --layer-1: #4A5A63;
-  --layer-2: #4F7A74;
-  --layer-3: #5A658C;
-  --layer-4: #8B6A9E;
-  --layer-5: #9C615F;
-  --layer-6: #B89A5A;
+  --layer-0: #8B8682;
+  --layer-1: #9DACB3;
+  --layer-2: #C1ED93;
+  --layer-3: #68D3F0;
+  --layer-4: #BF7BE6;
+  --layer-5: #6ECBB1;
+  --layer-6: #D49174;
   --accent-lime: #C8E66E;
   --accent-lime-light: #E8F5C8;
 }

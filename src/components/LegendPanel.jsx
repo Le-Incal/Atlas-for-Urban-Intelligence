@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 
 const LAYERS = [
-  { id: 0, name: 'Bio-Physical', color: '#5D554C', shortName: 'L0' },
-  { id: 1, name: 'Observable Reality', color: '#4A5A63', shortName: 'L1' },
-  { id: 2, name: 'Cyber-Physical', color: '#4F7A74', shortName: 'L2' },
-  { id: 3, name: 'Logic/Knowledge', color: '#5A658C', shortName: 'L3' },
-  { id: 4, name: 'Agentic Intelligence', color: '#8B6A9E', shortName: 'L4' },
-  { id: 5, name: 'Socio-Economic', color: '#9C615F', shortName: 'L5' },
-  { id: 6, name: 'Governance', color: '#B89A5A', shortName: 'L6' },
+  { id: 0, name: 'Bio-Physical', color: '#8B8682', shortName: 'L0' },
+  { id: 1, name: 'Observable Reality', color: '#9DACB3', shortName: 'L1' },
+  { id: 2, name: 'Cyber-Physical', color: '#C1ED93', shortName: 'L2' },
+  { id: 3, name: 'Logic/Knowledge', color: '#68D3F0', shortName: 'L3' },
+  { id: 4, name: 'Agentic Intelligence', color: '#BF7BE6', shortName: 'L4' },
+  { id: 5, name: 'Socio-Economic', color: '#6ECBB1', shortName: 'L5' },
+  { id: 6, name: 'Governance', color: '#D49174', shortName: 'L6' },
 ]
 
 const EDGE_TYPES = [
