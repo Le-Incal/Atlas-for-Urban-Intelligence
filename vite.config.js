@@ -7,6 +7,10 @@ export default defineConfig({
     host: true,
     port: 5173
   },
+  preview: {
+    host: true,
+    allowedHosts: ['atlas-for-urban-intelligence-production.up.railway.app']
+  },
   build: {
     outDir: 'dist',
     sourcemap: false
