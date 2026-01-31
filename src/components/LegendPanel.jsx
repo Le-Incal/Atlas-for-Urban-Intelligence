@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 
 const LAYERS = [
-  { id: 0, name: 'Bio-Physical', color: '#8B8682', shortName: 'L0' },
-  { id: 1, name: 'Observable Reality', color: '#9DACB3', shortName: 'L1' },
-  { id: 2, name: 'Cyber-Physical', color: '#C1ED93', shortName: 'L2' },
-  { id: 3, name: 'Logic/Knowledge', color: '#68D3F0', shortName: 'L3' },
-  { id: 4, name: 'Agentic Intelligence', color: '#BF7BE6', shortName: 'L4' },
-  { id: 5, name: 'Socio-Economic', color: '#6ECBB1', shortName: 'L5' },
   { id: 6, name: 'Governance', color: '#D49174', shortName: 'L6' },
+  { id: 5, name: 'Socio-Economic', color: '#6ECBB1', shortName: 'L5' },
+  { id: 4, name: 'Agentic Intelligence', color: '#BF7BE6', shortName: 'L4' },
+  { id: 3, name: 'Logic/Knowledge', color: '#68D3F0', shortName: 'L3' },
+  { id: 2, name: 'Cyber-Physical', color: '#C1ED93', shortName: 'L2' },
+  { id: 1, name: 'Observable Reality', color: '#9DACB3', shortName: 'L1' },
+  { id: 0, name: 'Bio-Physical', color: '#8B8682', shortName: 'L0' },
 ]
 
 const EDGE_TYPES = [

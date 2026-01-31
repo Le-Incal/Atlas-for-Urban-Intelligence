@@ -283,10 +283,8 @@ function Node({ node, position, size, isVisible }) {
   )
 }
 
-// Edge component with wave pulse animation
+// Edge component using cylinder geometry for reliable rendering
 function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
-  const lineRef = useRef()
-  const pulseLineRef = useRef()
   const [pulseProgress, setPulseProgress] = useState(null)
 
   const hoveredEdge = useGraphStore((state) => state.hoveredEdge)
@@ -302,14 +300,14 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
   // Determine opacity and thickness
-  let opacity = 0.4 // Default
-  let tubeRadius = 0.08 // Base thickness (thinner)
+  let opacity = 0.4
+  let radius = 0.08
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
-    tubeRadius = 0.18 // Thicker when active
+    radius = 0.18
   } else if (activeEdgeType || selectedNode) {
-    opacity = 0.1 // Fade when something else is active
+    opacity = 0.1
   }
 
   // Start pulse on hover or when signaled from panel
@@ -321,12 +319,11 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     }
   }, [isHovered, isSignaled])
 
-  // Animate pulse - loop while signaled, single pulse on hover
+  // Animate pulse
   useFrame((state, delta) => {
     if (pulseProgress !== null) {
       const newProgress = pulseProgress + delta * 0.8
       if (newProgress >= 1) {
-        // If signaled from panel, loop the animation
         if (isSignaled) {
           setPulseProgress(0)
         } else {
@@ -338,56 +335,49 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     }
   })
 
-  if (!isVisible || !sourcePos || !targetPos) return null
+  // Calculate cylinder position and rotation
+  const cylinderProps = useMemo(() => {
+    if (!sourcePos || !targetPos) return null
 
-  const startPoint = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
-  const endPoint = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
-  const points = [startPoint, endPoint]
+    const start = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
+    const end = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
 
-  // Source node color for pulse
-  const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
+    // Midpoint for position
+    const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5)
 
-  // Create pulse wave segments
-  const pulseSegments = useMemo(() => {
-    if (pulseProgress === null) return null
+    // Length of the edge
+    const length = start.distanceTo(end)
 
-    const segments = []
-    const pulseWidth = 0.15 // Width of the pulse wave
-    const pulseCenter = pulseProgress
+    // Direction and rotation
+    const direction = new THREE.Vector3().subVectors(end, start).normalize()
 
-    // Create multiple segments for the wave effect
-    const numSegments = 8
-    for (let i = 0; i < numSegments; i++) {
-      const segStart = i / numSegments
-      const segEnd = (i + 1) / numSegments
+    // Create quaternion to rotate cylinder from Y-axis to edge direction
+    const quaternion = new THREE.Quaternion()
+    const yAxis = new THREE.Vector3(0, 1, 0)
+    quaternion.setFromUnitVectors(yAxis, direction)
 
-      // Calculate if this segment is within the pulse wave
-      const segMid = (segStart + segEnd) / 2
-      const distFromPulse = Math.abs(segMid - pulseCenter)
+    // Convert quaternion to euler
+    const euler = new THREE.Euler().setFromQuaternion(quaternion)
 
-      if (distFromPulse < pulseWidth) {
-        // Calculate intensity based on distance from pulse center
-        const intensity = 1 - (distFromPulse / pulseWidth)
-        const segOpacity = intensity * (1 - pulseProgress * 0.5)
-
-        const p1 = new THREE.Vector3().lerpVectors(startPoint, endPoint, segStart)
-        const p2 = new THREE.Vector3().lerpVectors(startPoint, endPoint, segEnd)
-
-        segments.push({ p1, p2, opacity: segOpacity })
-      }
+    return {
+      position: [midpoint.x, midpoint.y, midpoint.z],
+      rotation: [euler.x, euler.y, euler.z],
+      length
     }
+  }, [sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z])
 
-    return segments
-  }, [pulseProgress, sourcePos, targetPos])
+  if (!isVisible || !cylinderProps) return null
 
-  // Create curve for tube geometry - use LineCurve3 for straight lines
-  const curve = useMemo(() => new THREE.LineCurve3(startPoint, endPoint), [startPoint, endPoint])
+  const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
 
   return (
     <group>
-      {/* Main edge - tube geometry for visible thickness */}
-      <mesh ref={lineRef} renderOrder={-1}>
-        <tubeGeometry args={[curve, 16, tubeRadius, 8, false]} />
+      {/* Main edge cylinder */}
+      <mesh
+        position={cylinderProps.position}
+        rotation={cylinderProps.rotation}
+      >
+        <cylinderGeometry args={[radius, radius, cylinderProps.length, 8]} />
         <meshBasicMaterial
           color="#595959"
           transparent
@@ -396,31 +386,33 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         />
       </mesh>
 
-      {/* Pulse wave effect - thicker glowing tube segments */}
-      {pulseSegments && pulseSegments.map((seg, i) => {
-        const segCurve = new THREE.LineCurve3(seg.p1, seg.p2)
-        return (
-          <mesh key={i} renderOrder={0}>
-            <tubeGeometry args={[segCurve, 8, 0.4, 8, false]} />
-            <meshBasicMaterial
-              color={sourceColor}
-              transparent
-              opacity={seg.opacity}
-              depthWrite={false}
-            />
-          </mesh>
-        )
-      })}
+      {/* Pulse effect */}
+      {pulseProgress !== null && (
+        <mesh
+          position={cylinderProps.position}
+          rotation={cylinderProps.rotation}
+        >
+          <cylinderGeometry args={[0.3, 0.3, cylinderProps.length * 0.15, 8]} />
+          <meshBasicMaterial
+            color={sourceColor}
+            transparent
+            opacity={0.6 * (1 - pulseProgress)}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
 
-      {/* Invisible thicker tube for easier hover detection */}
+      {/* Invisible cylinder for hover detection */}
       <mesh
+        position={cylinderProps.position}
+        rotation={cylinderProps.rotation}
         onPointerOver={(e) => {
           e.stopPropagation()
           setHoveredEdge(edge)
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[curve, 16, 1.5, 8, false]} />
+        <cylinderGeometry args={[1.5, 1.5, cylinderProps.length, 8]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
     </group>
