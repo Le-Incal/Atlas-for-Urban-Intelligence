@@ -1,0 +1,903 @@
+{
+  "edges": [
+    {
+      "id": "e-001",
+      "source": "l0-energy-grid",
+      "target": "l2-iot-sensors",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Electrical power flows from the grid to distributed sensors, enabling continuous environmental monitoring across the urban fabric."
+    },
+    {
+      "id": "e-002",
+      "source": "l0-energy-grid",
+      "target": "l2-actuators",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Actuators draw power to translate digital commands into physical motion—opening valves, switching signals, adjusting facades."
+    },
+    {
+      "id": "e-003",
+      "source": "l0-energy-grid",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Mobile robots consume significant metabolic load for locomotion and computation. Fleet scaling directly stresses grid capacity."
+    },
+    {
+      "id": "e-004",
+      "source": "l0-energy-grid",
+      "target": "l2-embodied-ai-drones",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Aerial drones require charging infrastructure distributed across the city, creating new demands on the electrical distribution network."
+    },
+    {
+      "id": "e-005",
+      "source": "l0-energy-grid",
+      "target": "l2-edge-nodes",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Edge compute nodes draw continuous power for low-latency inference, concentrating thermal and electrical loads at network periphery."
+    },
+    {
+      "id": "e-006",
+      "source": "l0-energy-grid",
+      "target": "l2-autonomous-vehicles",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": true,
+      "direction": "L0 → L2",
+      "description": "Electric autonomous vehicles require charging infrastructure that reshapes grid demand curves and distribution topology."
+    },
+    {
+      "id": "e-007",
+      "source": "l0-solar-potential",
+      "target": "l2-iot-sensors",
+      "edgeType": "E",
+      "edgeTypeName": "Energy",
+      "isPrimary": false,
+      "direction": "L0 → L2",
+      "description": "Solar-powered sensors can operate off-grid, extending monitoring into areas without electrical infrastructure."
+    },
+
+    {
+      "id": "m-001",
+      "source": "l5-historical-shocks",
+      "target": "l4-market-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Market crashes, foreclosure waves, and speculative bubbles persist in institutional memory, forcing the Market Agent to discount aggressive growth scenarios."
+    },
+    {
+      "id": "m-002",
+      "source": "l5-historical-shocks",
+      "target": "l4-climate-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Past disasters—floods, fires, storms—shape the Climate Agent's risk calibration, ensuring hazard models reflect lived experience."
+    },
+    {
+      "id": "m-003",
+      "source": "l5-historical-shocks",
+      "target": "l4-community-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Displacement events, redlining legacies, and broken promises create community trauma that the Community Agent must weight in feasibility assessments."
+    },
+    {
+      "id": "m-004",
+      "source": "l5-social-friction-index",
+      "target": "l4-policy-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "High social friction signals that regulatory approval will face organized opposition, forcing the Policy Agent to recommend mitigation measures."
+    },
+    {
+      "id": "m-005",
+      "source": "l5-social-friction-index",
+      "target": "l4-community-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "The Community Agent directly consumes friction data to advocate for stakeholder interests in council deliberations."
+    },
+    {
+      "id": "m-006",
+      "source": "l5-economic-memory",
+      "target": "l4-market-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Past rent curves, absorption rates, and investment returns create the baseline expectations against which the Market Agent evaluates new opportunities."
+    },
+    {
+      "id": "m-007",
+      "source": "l5-fear-preparation-index",
+      "target": "l4-market-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "High fear dampens investor appetite and lengthens approval timelines; high preparation signals adaptive capacity that de-risks investment."
+    },
+    {
+      "id": "m-008",
+      "source": "l5-fear-preparation-index",
+      "target": "l4-climate-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Community preparedness levels inform the Climate Agent's assessment of resilience—whether populations can adapt to projected hazards."
+    },
+    {
+      "id": "m-009",
+      "source": "l5-displacement-risk",
+      "target": "l4-community-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Displacement risk is the Community Agent's primary concern, forcing trade-offs between growth and protection into explicit council debate."
+    },
+    {
+      "id": "m-010",
+      "source": "l3-void-markers",
+      "target": "l4-policy-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": false,
+      "direction": "L3 → L4",
+      "description": "Regulatory voids create uncertainty that the Policy Agent must flag—where law is silent, risk is unquantifiable."
+    },
+
+    {
+      "id": "d-001",
+      "source": "l2-iot-sensors",
+      "target": "l3-knowledge-graphs",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L3",
+      "description": "Raw sensor telemetry flows into knowledge graphs where it becomes structured 'City Facts'—semantic entities with typed relationships."
+    },
+    {
+      "id": "d-002",
+      "source": "l2-iot-sensors",
+      "target": "l3-constraint-objects",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L3",
+      "description": "Environmental readings trigger dynamic constraint updates—air quality data may activate temporary use restrictions."
+    },
+    {
+      "id": "d-003",
+      "source": "l2-embodied-ai-robots",
+      "target": "l3-knowledge-graphs",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L3",
+      "description": "Mobile robots continuously update spatial knowledge: obstacle locations, traversability conditions, and occupancy patterns."
+    },
+    {
+      "id": "d-004",
+      "source": "l2-embodied-ai-drones",
+      "target": "l3-knowledge-graphs",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L3",
+      "description": "Aerial surveillance generates high-resolution imagery that feeds building footprint extraction and change detection algorithms."
+    },
+    {
+      "id": "d-005",
+      "source": "l2-autonomous-vehicles",
+      "target": "l3-knowledge-graphs",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L3",
+      "description": "AV fleets generate massive traffic flow data, revealing actual mobility patterns that may diverge from planning assumptions."
+    },
+    {
+      "id": "d-006",
+      "source": "l1-parcels",
+      "target": "l5-stakeholders",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L1 → L5",
+      "description": "Parcel ownership records connect physical assets to human stakeholders, enabling equity impact analysis."
+    },
+    {
+      "id": "d-007",
+      "source": "l1-parcels",
+      "target": "l5-market-potential",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": false,
+      "direction": "L1 → L5",
+      "description": "Parcel characteristics—size, frontage, access—feed market potential calculations for development feasibility."
+    },
+    {
+      "id": "d-008",
+      "source": "l4-consensus-artifacts",
+      "target": "l6-jurisdictions",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": false,
+      "direction": "L4 → L6",
+      "description": "Agent deliberation outputs flow to governance structures as decision support, informing policy adjustments."
+    },
+
+    {
+      "id": "c-001",
+      "source": "l3-zoning-codes",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "Zoning codes bind to parcels, defining the envelope of permissible development—the primary shape-maker of urban form."
+    },
+    {
+      "id": "c-002",
+      "source": "l3-far-limits",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "FAR limits cap buildable area, directly determining economic yield and shaping the massing of every structure."
+    },
+    {
+      "id": "c-003",
+      "source": "l3-setbacks",
+      "target": "l1-building-footprints",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "Setback requirements carve the building footprint from the parcel boundary, creating the negative space of streets and yards."
+    },
+    {
+      "id": "c-004",
+      "source": "l3-height-limits",
+      "target": "l1-building-footprints",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "Height limits define the vertical envelope, capping the extrusion of footprints into habitable volume."
+    },
+    {
+      "id": "c-005",
+      "source": "l3-entitlements",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "Approved entitlements modify base zoning constraints, unlocking additional development capacity on specific parcels."
+    },
+    {
+      "id": "c-006",
+      "source": "l3-environmental-review",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L3 → L1",
+      "description": "Environmental review requirements constrain development timelines and may mandate mitigations that alter project feasibility."
+    },
+    {
+      "id": "c-007",
+      "source": "l0-bedrock",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L0 → L1",
+      "description": "Geological conditions constrain foundation design, limiting tower heights and deep basement feasibility on specific parcels."
+    },
+    {
+      "id": "c-008",
+      "source": "l0-water-tables",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L0 → L1",
+      "description": "High water tables preclude below-grade construction without expensive dewatering, constraining parking and basement space."
+    },
+    {
+      "id": "c-009",
+      "source": "l0-hydrography",
+      "target": "l1-parcels",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L0 → L1",
+      "description": "Flood zone designations trigger insurance requirements and elevation mandates that fundamentally alter development economics."
+    },
+    {
+      "id": "c-010",
+      "source": "l1-rights-of-way",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L1 → L2",
+      "description": "Rights-of-way define legal corridors for robot movement; sidewalk widths and curb conditions constrain fleet operations."
+    },
+    {
+      "id": "c-011",
+      "source": "l1-rights-of-way",
+      "target": "l2-autonomous-vehicles",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L1 → L2",
+      "description": "Street geometry, lane widths, and intersection configurations constrain AV operational envelopes and route planning."
+    },
+    {
+      "id": "c-012",
+      "source": "l3-void-markers",
+      "target": "l1-spatial-mode-contest",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": false,
+      "direction": "L3 → L1",
+      "description": "Regulatory voids around robot operations leave contested spaces ungoverned, creating friction without clear resolution mechanisms."
+    },
+
+    {
+      "id": "i-001",
+      "source": "l6-regime-contested",
+      "target": "l4-policy-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "Contested regimes instruct the Policy Agent to prioritize procedural legitimacy, stakeholder engagement, and litigation risk avoidance."
+    },
+    {
+      "id": "i-002",
+      "source": "l6-regime-directed",
+      "target": "l4-policy-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "Directed regimes instruct the Policy Agent to prioritize efficiency, rapid permitting, and strategic alignment with state objectives."
+    },
+    {
+      "id": "i-003",
+      "source": "l6-regime-contested",
+      "target": "l4-community-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "Under contested governance, the Community Agent's voice carries greater weight in council deliberations."
+    },
+    {
+      "id": "i-004",
+      "source": "l6-regime-directed",
+      "target": "l4-market-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "Directed regimes may privilege Market Agent recommendations when growth targets align with state development priorities."
+    },
+    {
+      "id": "i-005",
+      "source": "l6-policy-as-code",
+      "target": "l3-constraint-objects",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L3",
+      "description": "Policy-as-Code translates legislative intent into executable constraint objects, automating compliance verification."
+    },
+    {
+      "id": "i-006",
+      "source": "l6-policy-as-code",
+      "target": "l3-zoning-codes",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L3",
+      "description": "Digital zoning codes derive from policy-as-code implementations, making regulatory text machine-interpretable."
+    },
+    {
+      "id": "i-007",
+      "source": "l6-jurisdictions",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "Jurisdictional boundaries determine which infrastructure capacity constraints the Infrastructure Agent must consider."
+    },
+    {
+      "id": "i-008",
+      "source": "l6-international-organizations",
+      "target": "l4-climate-agent",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L6 → L4",
+      "description": "International climate commitments and sustainability frameworks shape the Climate Agent's optimization targets."
+    },
+    {
+      "id": "i-009",
+      "source": "l5-stakeholders",
+      "target": "l6-regime-contested",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": true,
+      "direction": "L5 → L6",
+      "description": "Stakeholder mobilization—voting, lobbying, litigation—shapes contested governance outcomes and policy priorities."
+    },
+    {
+      "id": "i-010",
+      "source": "l4-market-agent",
+      "target": "l3-entitlements",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": false,
+      "direction": "L4 → L3",
+      "description": "The Market Agent advocates for entitlement modifications that would improve project feasibility."
+    },
+    {
+      "id": "i-011",
+      "source": "l2-embodied-ai-robots",
+      "target": "l5-stakeholders",
+      "edgeType": "I",
+      "edgeTypeName": "Intent",
+      "isPrimary": false,
+      "direction": "L2 → L5",
+      "description": "Robot presence in neighborhoods creates lived experience that shapes stakeholder attitudes toward synthetic actors."
+    },
+
+    {
+      "id": "v-001",
+      "source": "l0-hydrography",
+      "target": "l4-climate-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L0 → L4",
+      "description": "Actual flood events validate or refute the Climate Agent's risk models, forcing recalibration of probability assessments."
+    },
+    {
+      "id": "v-002",
+      "source": "l0-climate-cycles",
+      "target": "l4-climate-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L0 → L4",
+      "description": "Observed temperature trends, precipitation patterns, and extreme events validate climate projections used in feasibility analysis."
+    },
+    {
+      "id": "v-003",
+      "source": "l1-parcels",
+      "target": "l4-market-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L1 → L4",
+      "description": "Transaction records and development outcomes validate the Market Agent's feasibility predictions."
+    },
+    {
+      "id": "v-004",
+      "source": "l1-parcels",
+      "target": "l4-policy-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L1 → L4",
+      "description": "Permit approvals and denials validate the Policy Agent's compliance assessments and timeline predictions."
+    },
+    {
+      "id": "v-005",
+      "source": "l1-infrastructure-networks",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L1 → L4",
+      "description": "Actual utility loads and service failures validate the Infrastructure Agent's capacity models."
+    },
+    {
+      "id": "v-006",
+      "source": "l2-iot-sensors",
+      "target": "l4-climate-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L2 → L4",
+      "description": "Real-time environmental readings provide ground truth that validates or contradicts model predictions."
+    },
+    {
+      "id": "v-007",
+      "source": "l2-iot-sensors",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L2 → L4",
+      "description": "Traffic counters, utility meters, and infrastructure monitors provide validation data for capacity models."
+    },
+    {
+      "id": "v-008",
+      "source": "l3-void-markers",
+      "target": "l6-jurisdictions",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L3 → L6",
+      "description": "Identified regulatory gaps signal to jurisdictions where law is failing to address emerging conditions."
+    },
+    {
+      "id": "v-009",
+      "source": "l4-consensus-artifacts",
+      "target": "l6-regime-contested",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": false,
+      "direction": "L4 → L6",
+      "description": "Agent deliberation outcomes provide feedback on whether contested governance processes achieve legitimate decisions."
+    },
+    {
+      "id": "v-010",
+      "source": "l1-transit-networks",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": false,
+      "direction": "L1 → L4",
+      "description": "Ridership data and service performance validate the Infrastructure Agent's transit accessibility assumptions."
+    },
+
+    {
+      "id": "r-001",
+      "source": "l4-infrastructure-agent",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "The Infrastructure Agent provides path planning intelligence to mobile robots, enabling navigation through complex urban environments."
+    },
+    {
+      "id": "r-002",
+      "source": "l4-community-agent",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "The Community Agent provides ethical constraints to robots: where to slow down, which areas to avoid, how to minimize disruption."
+    },
+    {
+      "id": "r-003",
+      "source": "l4-policy-agent",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "The Policy Agent translates regulatory requirements into operational constraints for robotic fleets."
+    },
+    {
+      "id": "r-004",
+      "source": "l4-infrastructure-agent",
+      "target": "l2-embodied-ai-drones",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "Drone flight paths are planned with infrastructure capacity awareness—avoiding restricted airspace, coordinating with traffic management."
+    },
+    {
+      "id": "r-005",
+      "source": "l4-policy-agent",
+      "target": "l2-embodied-ai-drones",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "FAA regulations, local ordinances, and privacy rules flow through the Policy Agent to constrain drone operations."
+    },
+    {
+      "id": "r-006",
+      "source": "l4-infrastructure-agent",
+      "target": "l2-autonomous-vehicles",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": true,
+      "direction": "L4 → L2",
+      "description": "AV routing optimizes for system-level traffic flow based on Infrastructure Agent's capacity models."
+    },
+    {
+      "id": "r-007",
+      "source": "l4-climate-agent",
+      "target": "l2-autonomous-vehicles",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": false,
+      "direction": "L4 → L2",
+      "description": "The Climate Agent influences AV behavior during extreme weather events—rerouting for flood avoidance, reducing speeds in heat waves."
+    },
+    {
+      "id": "r-008",
+      "source": "l4-market-agent",
+      "target": "l2-actuators",
+      "edgeType": "R",
+      "edgeTypeName": "Reasoning",
+      "isPrimary": false,
+      "direction": "L4 → L2",
+      "description": "Building actuators respond to energy market signals, adjusting HVAC and lighting based on price optimization logic."
+    },
+
+    {
+      "id": "cross-001",
+      "source": "l4-market-agent",
+      "target": "l4-community-agent",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L4 ↔ L4",
+      "description": "Agents exchange data during council deliberations—the Market Agent's feasibility numbers inform the Community Agent's displacement analysis."
+    },
+    {
+      "id": "cross-002",
+      "source": "l4-climate-agent",
+      "target": "l4-market-agent",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L4 ↔ L4",
+      "description": "Climate risk assessments directly impact financial feasibility—the Climate Agent's outputs feed Market Agent's risk adjustments."
+    },
+    {
+      "id": "cross-003",
+      "source": "l4-policy-agent",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L4 ↔ L4",
+      "description": "Regulatory timelines and approval probabilities inform infrastructure investment decisions across the agent council."
+    },
+    {
+      "id": "cross-004",
+      "source": "l4-community-agent",
+      "target": "l4-policy-agent",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L4 ↔ L4",
+      "description": "Stakeholder concerns identified by the Community Agent shape the Policy Agent's assessment of political feasibility."
+    },
+    {
+      "id": "cross-005",
+      "source": "l4-infrastructure-agent",
+      "target": "l4-climate-agent",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L4 ↔ L4",
+      "description": "Infrastructure capacity limits affect climate adaptation options—the two agents must coordinate on resilience strategies."
+    },
+
+    {
+      "id": "cluster-risk-001",
+      "source": "l0-hydrography",
+      "target": "l3-zoning-codes",
+      "edgeType": "C",
+      "edgeTypeName": "Constraint",
+      "isPrimary": true,
+      "direction": "L0 → L3",
+      "description": "Flood zone boundaries directly inform zoning overlays that restrict development in hazardous areas."
+    },
+    {
+      "id": "cluster-risk-002",
+      "source": "l5-social-friction-index",
+      "target": "l4-climate-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": false,
+      "direction": "L5 → L4",
+      "description": "Community resistance to adaptation measures (managed retreat, elevation requirements) shapes climate response feasibility."
+    },
+    {
+      "id": "cluster-capital-001",
+      "source": "l5-market-potential",
+      "target": "l4-market-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L4",
+      "description": "Market demand data directly informs the Market Agent's absorption assumptions and pricing models."
+    },
+    {
+      "id": "cluster-capital-002",
+      "source": "l3-entitlements",
+      "target": "l4-market-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L3 → L4",
+      "description": "Existing entitlements validate development potential—approved rights are bankable assets for feasibility analysis."
+    },
+    {
+      "id": "cluster-synth-001",
+      "source": "l3-void-markers",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L3 → L4",
+      "description": "Regulatory gaps around synthetic labor create uncertainty that the Infrastructure Agent must factor into deployment scenarios."
+    },
+    {
+      "id": "cluster-synth-002",
+      "source": "l5-stakeholders",
+      "target": "l2-embodied-ai-robots",
+      "edgeType": "M",
+      "edgeTypeName": "Memory",
+      "isPrimary": true,
+      "direction": "L5 → L2",
+      "description": "Past negative encounters with robots create stakeholder memory that affects acceptance of expanded synthetic labor."
+    },
+    {
+      "id": "cluster-metab-001",
+      "source": "l0-material-reservoirs",
+      "target": "l4-infrastructure-agent",
+      "edgeType": "V",
+      "edgeTypeName": "Validation",
+      "isPrimary": true,
+      "direction": "L0 → L4",
+      "description": "Material availability constrains the Infrastructure Agent's recommendations—can't build with resources that don't exist."
+    },
+    {
+      "id": "cluster-metab-002",
+      "source": "l2-actuators",
+      "target": "l1-infrastructure-networks",
+      "edgeType": "D",
+      "edgeTypeName": "Data",
+      "isPrimary": true,
+      "direction": "L2 → L1",
+      "description": "Smart actuators report infrastructure status—valve positions, pump rates, load levels—maintaining the digital twin of physical systems."
+    }
+  ],
+  "edgeTypes": {
+    "E": {
+      "name": "Energy",
+      "currency": "Metabolic Load / Joules",
+      "color": "#FACC15",
+      "description": "Physical power required to run the city. Flows from grid to robots/sensors."
+    },
+    "M": {
+      "name": "Memory",
+      "currency": "Historical Weight / Trauma",
+      "color": "#EC4899",
+      "description": "The systemic brake. Carries weight of past shocks forcing agents to reject risky scenarios."
+    },
+    "D": {
+      "name": "Data",
+      "currency": "Information / Telemetry",
+      "color": "#3B82F6",
+      "description": "Raw observations flowing up to be translated into City Facts."
+    },
+    "C": {
+      "name": "Constraint",
+      "currency": "Regulatory Limit / Geometry",
+      "color": "#EF4444",
+      "description": "The shape maker. Transmits rules that physically mold buildings and parcels."
+    },
+    "I": {
+      "name": "Intent",
+      "currency": "Goal / Bias / Will",
+      "color": "#8B5CF6",
+      "description": "Represents motivation. Tells agents what to optimize for."
+    },
+    "V": {
+      "name": "Validation",
+      "currency": "Truth / Confidence",
+      "color": "#10B981",
+      "description": "The reality check. Compares agent predictions against actual sensor readings."
+    },
+    "R": {
+      "name": "Reasoning",
+      "currency": "Intelligence-as-Infrastructure",
+      "color": "#F97316",
+      "description": "Brain-to-body connection. Robots subscribe to access high-level ethical and navigational logic."
+    }
+  },
+  "clusters": {
+    "structural-L0": {
+      "name": "Metabolic Cluster",
+      "layer": 0,
+      "description": "The base of the graph, grounding all other connections in planetary reality."
+    },
+    "structural-L1": {
+      "name": "Identity Cluster",
+      "layer": 1,
+      "description": "The central spine to which all regulatory and physical data snaps."
+    },
+    "structural-L2": {
+      "name": "Nervous System Cluster",
+      "layer": 2,
+      "description": "The bridge connecting physical ground to digital logic."
+    },
+    "structural-L3": {
+      "name": "Logic Cluster",
+      "layer": 3,
+      "description": "A dense web of rules hovering above the physical city."
+    },
+    "structural-L4": {
+      "name": "Agency Cluster",
+      "layer": 4,
+      "description": "The brain of the graph, radiating intent edges downward."
+    },
+    "structural-L5": {
+      "name": "Memory Cluster",
+      "layer": 5,
+      "description": "The conscience, wrapping around agents to constrain them."
+    },
+    "structural-L6": {
+      "name": "Governance Cluster",
+      "layer": 6,
+      "description": "The canopy—highest level of abstraction and authority."
+    },
+    "risk-resilience": {
+      "name": "Risk & Resilience",
+      "thematic": true,
+      "description": "Nodes that co-occur when describing safety, insurance, and climate adaptation."
+    },
+    "capital-value": {
+      "name": "Capital & Value",
+      "thematic": true,
+      "description": "Nodes that define the financial viability of the city."
+    },
+    "synthetic-labor": {
+      "name": "Synthetic Labor",
+      "thematic": true,
+      "description": "Nodes describing conflict and integration of new robotic workers."
+    },
+    "metabolic-flow": {
+      "name": "Metabolic Flow",
+      "thematic": true,
+      "description": "Nodes mapping the physical consumption of resources."
+    }
+  }
+}

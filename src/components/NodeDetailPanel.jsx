@@ -1,0 +1,221 @@
+import React from 'react'
+import { motion } from 'framer-motion'
+import useGraphStore from '../stores/graphStore'
+import edgesData from '../data/edges.json'
+
+const LAYER_NAMES = {
+  0: 'Bio-Physical Foundation',
+  1: 'Observable Reality',
+  2: 'Cyber-Physical Systems',
+  3: 'Logic & Knowledge',
+  4: 'Agentic Intelligence',
+  5: 'Socio-Economic Memory',
+  6: 'Governance',
+}
+
+const LAYER_COLORS = {
+  0: '#2E2F2C',
+  1: '#4A5A63',
+  2: '#4F7A74',
+  3: '#5A5F8C',
+  4: '#7A6A9E',
+  5: '#9B6A5F',
+  6: '#B89A5A',
+}
+
+const EDGE_TYPE_NAMES = {
+  E: 'Energy',
+  M: 'Memory',
+  D: 'Data',
+  C: 'Constraint',
+  I: 'Intent',
+  V: 'Validation',
+  R: 'Reasoning',
+}
+
+function NodeDetailPanel() {
+  const selectedNode = useGraphStore((state) => state.selectedNode)
+  const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+  const { edges } = edgesData
+
+  if (!selectedNode) return null
+
+  // Find connected edges
+  const connectedEdges = edges.filter(
+    edge => edge.source === selectedNode.id || edge.target === selectedNode.id
+  )
+
+  // Group by incoming/outgoing
+  const incomingEdges = connectedEdges.filter(e => e.target === selectedNode.id)
+  const outgoingEdges = connectedEdges.filter(e => e.source === selectedNode.id)
+
+  return (
+    <motion.div
+      className="fixed left-6 top-1/2 -translate-y-1/2 z-50 
+                 glass-panel rounded-2xl w-80 max-h-[70vh] overflow-hidden
+                 flex flex-col"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Header */}
+      <div className="p-4 border-b border-gray-100">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <div 
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: LAYER_COLORS[selectedNode.layer] }}
+              />
+              <span className="text-[10px] font-mono text-gray-400 uppercase">
+                Layer {selectedNode.layer}
+              </span>
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              {selectedNode.label}
+            </h2>
+            <p className="text-xs text-gray-500 mt-1">
+              {LAYER_NAMES[selectedNode.layer]}
+            </p>
+          </div>
+          <button
+            onClick={() => setSelectedNode(null)}
+            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4">
+        {/* Description */}
+        <div className="mb-6">
+          <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+            Description
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {selectedNode.description}
+          </p>
+        </div>
+
+        {/* Node Type */}
+        <div className="mb-6">
+          <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+            Type
+          </h3>
+          <span className="inline-block px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-700">
+            {selectedNode.nodeType}
+          </span>
+        </div>
+
+        {/* Clusters */}
+        {selectedNode.clusters && selectedNode.clusters.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+              Clusters
+            </h3>
+            <div className="flex flex-wrap gap-1">
+              {selectedNode.clusters.map(cluster => (
+                <span 
+                  key={cluster}
+                  className="inline-block px-2 py-1 bg-gray-50 border border-gray-200 
+                             rounded text-[10px] font-mono text-gray-600"
+                >
+                  {cluster}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Connections */}
+        {connectedEdges.length > 0 && (
+          <div>
+            <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">
+              Connections ({connectedEdges.length})
+            </h3>
+            
+            {/* Incoming */}
+            {incomingEdges.length > 0 && (
+              <div className="mb-4">
+                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                  </svg>
+                  Incoming
+                </p>
+                <div className="space-y-1">
+                  {incomingEdges.slice(0, 5).map(edge => (
+                    <div 
+                      key={edge.id}
+                      className="flex items-center gap-2 text-xs text-gray-600 py-1"
+                    >
+                      <span className="font-mono text-gray-400 w-4">
+                        {edge.edgeType}
+                      </span>
+                      <span className="text-gray-400">←</span>
+                      <span className="truncate flex-1">
+                        {edge.source.replace('l', 'L').replace(/-/g, ' ')}
+                      </span>
+                    </div>
+                  ))}
+                  {incomingEdges.length > 5 && (
+                    <p className="text-[10px] text-gray-400">
+                      +{incomingEdges.length - 5} more
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Outgoing */}
+            {outgoingEdges.length > 0 && (
+              <div>
+                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  </svg>
+                  Outgoing
+                </p>
+                <div className="space-y-1">
+                  {outgoingEdges.slice(0, 5).map(edge => (
+                    <div 
+                      key={edge.id}
+                      className="flex items-center gap-2 text-xs text-gray-600 py-1"
+                    >
+                      <span className="font-mono text-gray-400 w-4">
+                        {edge.edgeType}
+                      </span>
+                      <span className="text-gray-400">→</span>
+                      <span className="truncate flex-1">
+                        {edge.target.replace('l', 'L').replace(/-/g, ' ')}
+                      </span>
+                    </div>
+                  ))}
+                  {outgoingEdges.length > 5 && (
+                    <p className="text-[10px] text-gray-400">
+                      +{outgoingEdges.length - 5} more
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-gray-100 bg-gray-50/50">
+        <p className="text-[10px] text-gray-400 text-center font-mono">
+          {selectedNode.id}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
+export default NodeDetailPanel

@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --layer-0: #2E2F2C;
+  --layer-1: #4A5A63;
+  --layer-2: #4F7A74;
+  --layer-3: #5A5F8C;
+  --layer-4: #7A6A9E;
+  --layer-5: #9B6A5F;
+  --layer-6: #B89A5A;
+  --accent-lime: #C8E66E;
+  --accent-lime-light: #E8F5C8;
+}
+
+body {
+  background: #FFFFFF;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glass Panel Effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(200, 230, 110, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 20px 10px rgba(200, 230, 110, 0.2);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Legend Toggle Button States */
+.legend-toggle {
+  transition: all 0.2s ease;
+}
+
+.legend-toggle:hover {
+  transform: scale(1.02);
+}
+
+.legend-toggle.active {
+  background: #1A1A1A;
+  color: #FFFFFF;
+}
+
+/* Node Label */
+.node-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}

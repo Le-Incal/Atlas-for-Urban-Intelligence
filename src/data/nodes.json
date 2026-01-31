@@ -1,0 +1,580 @@
+{
+  "nodes": [
+    {
+      "id": "l0-bedrock",
+      "label": "Bedrock",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Geological",
+      "clusters": ["structural-L0", "metabolic-flow"],
+      "description": "The lithospheric substrate upon which all urban form rests. Bedrock determines foundational bearing capacity, excavation feasibility, and seismic transmission characteristics. It is the immutable constraint that precedes all human intention."
+    },
+    {
+      "id": "l0-water-tables",
+      "label": "Water Tables",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Hydrographic",
+      "clusters": ["structural-L0", "risk-resilience"],
+      "description": "Subsurface aquifer levels that govern foundation design, basement feasibility, and long-term settlement risk. Rising water tables under climate change threaten existing infrastructure assumptions."
+    },
+    {
+      "id": "l0-solar-potential",
+      "label": "Solar Potential",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Atmospheric",
+      "clusters": ["structural-L0", "metabolic-flow"],
+      "description": "The incident solar radiation available at a given latitude and microclimate. Determines photovoltaic viability, passive heating loads, and daylight autonomy calculations for building performance."
+    },
+    {
+      "id": "l0-material-reservoirs",
+      "label": "Material Reservoirs",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Metabolic",
+      "clusters": ["structural-L0", "metabolic-flow"],
+      "description": "Finite stocks of sand, aggregate, timber, and steel feedstocks. Urban growth depletes planetary material budgets; this node tracks the metabolic throughput required to build and maintain cities."
+    },
+    {
+      "id": "l0-hydrography",
+      "label": "Hydrography",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Hydrographic",
+      "clusters": ["structural-L0", "risk-resilience"],
+      "description": "Surface water systems including rivers, watersheds, and flood zones. Historical flood depths establish the 'Baseline City' constraints that precede any development proposal."
+    },
+    {
+      "id": "l0-energy-grid",
+      "label": "Energy Grid",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Atmospheric",
+      "clusters": ["structural-L0", "metabolic-flow"],
+      "description": "The electrical distribution network that powers all urban computation and actuation. Grid capacity limits determine how many robots, sensors, and data centers a district can metabolically support."
+    },
+    {
+      "id": "l0-climate-cycles",
+      "label": "Climate Cycles",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Atmospheric",
+      "clusters": ["structural-L0", "risk-resilience"],
+      "description": "Long-term atmospheric patterns including temperature trends, precipitation regimes, and extreme weather frequency. These cycles establish the evolutionary logic that shapes urban adaptation."
+    },
+    {
+      "id": "l0-soil-chemistry",
+      "label": "Soil Chemistry",
+      "layer": 0,
+      "layerName": "Bio-Physical Foundation",
+      "color": "#2E2F2C",
+      "nodeType": "Geological",
+      "clusters": ["structural-L0"],
+      "description": "The geochemical composition of urban soils, including contamination legacies from industrial land use. Brownfield remediation costs and ecological restoration potential derive from this substrate."
+    },
+
+    {
+      "id": "l1-parcels",
+      "label": "Parcels",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Land Asset",
+      "clusters": ["structural-L1", "capital-value"],
+      "description": "The fundamental unit of land ownership and regulatory control. Every parcel carries a unique identifier that anchors all other data layers to a specific location in physical and legal space."
+    },
+    {
+      "id": "l1-building-footprints",
+      "label": "Building Footprints",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Built Asset",
+      "clusters": ["structural-L1"],
+      "description": "The ground-plane projection of built structures. Footprints define lot coverage, establish setback compliance, and serve as the geometric anchor for 3D massing extrapolation."
+    },
+    {
+      "id": "l1-stable-ids",
+      "label": "Stable IDs",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Identity",
+      "clusters": ["structural-L1"],
+      "description": "Persistent identifiers that survive administrative boundary changes, ownership transfers, and physical modifications. The 'Identity Spine' ensures all data layers snap to consistent spatial truth."
+    },
+    {
+      "id": "l1-rights-of-way",
+      "label": "Rights-of-Way",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Mobility Asset",
+      "clusters": ["structural-L1", "metabolic-flow"],
+      "description": "Legal corridors for movement: streets, sidewalks, easements, and utility paths. Rights-of-way define the connective tissue between parcels and determine accessibility for humans and machines alike."
+    },
+    {
+      "id": "l1-infrastructure-networks",
+      "label": "Infrastructure Networks",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Built Asset",
+      "clusters": ["structural-L1", "metabolic-flow"],
+      "description": "Water mains, sewer lines, telecommunications conduits, and district energy systems. These buried networks represent massive sunk capital and constrain future development patterns."
+    },
+    {
+      "id": "l1-transit-networks",
+      "label": "Transit Networks",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Mobility Asset",
+      "clusters": ["structural-L1"],
+      "description": "Fixed-route public transportation systems: rail, bus rapid transit, and ferry lines. Transit access fundamentally reshapes land value gradients and density feasibility."
+    },
+    {
+      "id": "l1-spatial-mode-contest",
+      "label": "Spatial Mode: Contest",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Spatial Mode",
+      "clusters": ["structural-L1", "synthetic-labor"],
+      "description": "Zones where human and synthetic actors compete for the same space-time slots. Delivery robots blocking sidewalks, autonomous vehicles in mixed traffic—friction is the dominant interaction pattern."
+    },
+    {
+      "id": "l1-spatial-mode-coexist",
+      "label": "Spatial Mode: Coexist",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Spatial Mode",
+      "clusters": ["structural-L1", "synthetic-labor"],
+      "description": "Zones where humans and machines share space through negotiated protocols. Time-sharing, designated lanes, and behavioral norms enable parallel operation without constant conflict."
+    },
+    {
+      "id": "l1-spatial-mode-converge",
+      "label": "Spatial Mode: Converge",
+      "layer": 1,
+      "layerName": "Observable Reality",
+      "color": "#4A5A63",
+      "nodeType": "Spatial Mode",
+      "clusters": ["structural-L1", "synthetic-labor"],
+      "description": "Zones where human-machine integration becomes seamless. Exoskeletons, neural interfaces, and collaborative robotics blur the boundary between biological and synthetic actors."
+    },
+
+    {
+      "id": "l2-iot-sensors",
+      "label": "IoT Sensors",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Sensing",
+      "clusters": ["structural-L2", "metabolic-flow"],
+      "description": "Distributed environmental sensors measuring air quality, noise levels, pedestrian counts, and infrastructure stress. These nodes transform physical phenomena into data streams for urban intelligence."
+    },
+    {
+      "id": "l2-actuators",
+      "label": "Actuators",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Acting",
+      "clusters": ["structural-L2", "metabolic-flow"],
+      "description": "Mechanical systems that translate digital commands into physical action: traffic signals, smart locks, HVAC controls, and dynamic facades. The motor neurons of the urban nervous system."
+    },
+    {
+      "id": "l2-embodied-ai-robots",
+      "label": "Embodied AI: Robots",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Embodied AI",
+      "clusters": ["structural-L2", "synthetic-labor"],
+      "description": "Autonomous mobile robots performing delivery, security, cleaning, and maintenance tasks. These synthetic workers navigate physical space while subscribing to the Agentic Council for ethical reasoning."
+    },
+    {
+      "id": "l2-embodied-ai-drones",
+      "label": "Embodied AI: Drones",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Embodied AI",
+      "clusters": ["structural-L2", "synthetic-labor"],
+      "description": "Aerial autonomous vehicles for inspection, delivery, and surveillance. Drones operate in the vertical dimension, requiring new volumetric rights-of-way and acoustic impact considerations."
+    },
+    {
+      "id": "l2-edge-nodes",
+      "label": "Edge Compute Nodes",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Compute",
+      "clusters": ["structural-L2"],
+      "description": "Distributed processing units that perform low-latency inference at the network edge. Edge nodes reduce cloud dependency and enable real-time response for safety-critical applications."
+    },
+    {
+      "id": "l2-telecommunications",
+      "label": "Telecommunications",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Network",
+      "clusters": ["structural-L2"],
+      "description": "5G towers, fiber optic backbones, and mesh networks that carry urban data. Bandwidth and latency characteristics determine which synthetic actors can operate in which locations."
+    },
+    {
+      "id": "l2-autonomous-vehicles",
+      "label": "Autonomous Vehicles",
+      "layer": 2,
+      "layerName": "Cyber-Physical Systems",
+      "color": "#4F7A74",
+      "nodeType": "Embodied AI",
+      "clusters": ["structural-L2", "synthetic-labor", "metabolic-flow"],
+      "description": "Self-driving cars, trucks, and shuttles that reshape urban mobility patterns. AVs require new curb management protocols and threaten to induce sprawl if not carefully governed."
+    },
+
+    {
+      "id": "l3-zoning-codes",
+      "label": "Zoning Codes",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3", "risk-resilience", "capital-value"],
+      "description": "The legal text that defines permitted uses, densities, and building forms for each parcel. Zoning translates political intent into geometric constraint, shaping the physical city."
+    },
+    {
+      "id": "l3-constraint-objects",
+      "label": "Constraint Objects",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3"],
+      "description": "Computable representations of regulatory limits: FAR calculations, setback distances, height planes, and parking ratios. These objects make law machine-readable and auditable."
+    },
+    {
+      "id": "l3-far-limits",
+      "label": "FAR Limits",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3", "capital-value"],
+      "description": "Floor Area Ratio: the maximum buildable square footage relative to lot size. FAR is the primary lever controlling density and directly determines development economics."
+    },
+    {
+      "id": "l3-setbacks",
+      "label": "Setbacks",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3"],
+      "description": "Required distances between buildings and property lines. Setbacks shape street character, ensure light access, and create the negative space that defines urban form."
+    },
+    {
+      "id": "l3-height-limits",
+      "label": "Height Limits",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3"],
+      "description": "Maximum building heights established by zoning, aviation safety, or view protection. Height limits shape the skyline and distribute vertical development potential across the city."
+    },
+    {
+      "id": "l3-void-markers",
+      "label": "Void Markers",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Gap",
+      "clusters": ["structural-L3", "synthetic-labor"],
+      "description": "Identified gaps where existing regulatory frameworks fail to address emerging conditions: robot occupancy standards, drone corridors, autonomous vehicle liability. Voids signal where law must evolve."
+    },
+    {
+      "id": "l3-knowledge-graphs",
+      "label": "Knowledge Graphs",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Structure",
+      "clusters": ["structural-L3"],
+      "description": "Semantic networks that encode relationships between urban entities: which parcel is governed by which zone, which zone permits which uses, which uses generate which impacts."
+    },
+    {
+      "id": "l3-entitlements",
+      "label": "Entitlements",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3", "capital-value"],
+      "description": "Approved development rights beyond base zoning: variances, conditional use permits, and negotiated bonuses. Entitlements represent stored political capital converted into buildable square footage."
+    },
+    {
+      "id": "l3-environmental-review",
+      "label": "Environmental Review",
+      "layer": 3,
+      "layerName": "Logic & Knowledge",
+      "color": "#5A5F8C",
+      "nodeType": "Constraint",
+      "clusters": ["structural-L3", "risk-resilience"],
+      "description": "CEQA, NEPA, and equivalent impact assessment requirements. Environmental review translates ecological and social externalities into procedural constraints on development approval."
+    },
+
+    {
+      "id": "l4-market-agent",
+      "label": "Market Agent",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Agent",
+      "clusters": ["structural-L4", "capital-value"],
+      "description": "A synthetic reasoner optimizing for financial return: IRR, cap rates, and exit valuations. The Market Agent stress-tests development feasibility against capital market conditions and risk-adjusted returns."
+    },
+    {
+      "id": "l4-policy-agent",
+      "label": "Policy Agent",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Agent",
+      "clusters": ["structural-L4"],
+      "description": "A synthetic reasoner interpreting regulatory intent and procedural constraints. The Policy Agent translates zoning text into actionable guidance and flags compliance risks."
+    },
+    {
+      "id": "l4-climate-agent",
+      "label": "Climate Agent",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Agent",
+      "clusters": ["structural-L4", "risk-resilience"],
+      "description": "A synthetic reasoner modeling physical climate risk: sea level rise, heat island effects, wildfire exposure, and flood probability. The Climate Agent injects planetary boundaries into feasibility analysis."
+    },
+    {
+      "id": "l4-infrastructure-agent",
+      "label": "Infrastructure Agent",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Agent",
+      "clusters": ["structural-L4", "metabolic-flow", "synthetic-labor"],
+      "description": "A synthetic reasoner evaluating capacity constraints: utility loads, traffic generation, and service availability. The Infrastructure Agent determines whether the city can metabolically support proposed development."
+    },
+    {
+      "id": "l4-community-agent",
+      "label": "Community Agent",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Agent",
+      "clusters": ["structural-L4", "synthetic-labor"],
+      "description": "A synthetic reasoner representing stakeholder interests: displacement risk, affordability impacts, and neighborhood character. The Community Agent ensures social friction enters the feasibility calculation."
+    },
+    {
+      "id": "l4-consensus-artifacts",
+      "label": "Consensus Artifacts",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Output",
+      "clusters": ["structural-L4"],
+      "description": "The documented agreements and disagreements produced by agent deliberation. Consensus artifacts make the reasoning process transparent and auditable, exposing which trade-offs were accepted."
+    },
+    {
+      "id": "l4-probability-cones",
+      "label": "Probability Cones",
+      "layer": 4,
+      "layerName": "Agentic Intelligence",
+      "color": "#7A6A9E",
+      "nodeType": "Output",
+      "clusters": ["structural-L4"],
+      "description": "Spatial visualizations of scenario uncertainty. Where agents disagree, probability cones show the range of possible futures, making plural outcomes legible rather than collapsing to false precision."
+    },
+
+    {
+      "id": "l5-stakeholders",
+      "label": "Stakeholders",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Human",
+      "clusters": ["structural-L5", "synthetic-labor"],
+      "description": "The human actors who benefit from or bear the costs of urban change: residents, workers, business owners, and caregivers. Stakeholder mapping makes equity impacts explicit and traceable."
+    },
+    {
+      "id": "l5-social-friction-index",
+      "label": "Social Friction Index",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Metric",
+      "clusters": ["structural-L5", "risk-resilience"],
+      "description": "A composite measure of community resistance to change, derived from historical trauma, displacement patterns, and trust deficits. High friction signals that density acceptance will be low regardless of technical feasibility."
+    },
+    {
+      "id": "l5-historical-shocks",
+      "label": "Historical Shocks",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Memory",
+      "clusters": ["structural-L5", "risk-resilience"],
+      "description": "Past traumatic events that shape present perception: redlining, urban renewal, foreclosure crises, and industrial plant closures. These memories persist in community consciousness long after the events themselves."
+    },
+    {
+      "id": "l5-demography",
+      "label": "Demography",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Data",
+      "clusters": ["structural-L5"],
+      "description": "Population structure by age, household composition, and lifecycle stage. Demographic trends determine housing demand, service needs, and political constituency formation."
+    },
+    {
+      "id": "l5-market-potential",
+      "label": "Market Potential",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Data",
+      "clusters": ["structural-L5", "capital-value"],
+      "description": "Effective demand for space: absorption rates, rent tolerance, and buyer depth. Market potential translates demographic and economic conditions into development feasibility signals."
+    },
+    {
+      "id": "l5-income-distribution",
+      "label": "Income Distribution",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Data",
+      "clusters": ["structural-L5"],
+      "description": "The spread of household incomes across a geography. Income distribution determines affordability thresholds and reveals who can access housing produced by the market."
+    },
+    {
+      "id": "l5-economic-memory",
+      "label": "Economic Memory",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Memory",
+      "clusters": ["structural-L5", "capital-value"],
+      "description": "Institutional knowledge of past market cycles: boom-bust patterns, rent curves, and investment returns. Economic memory shapes lender behavior, investor appetite, and risk perception."
+    },
+    {
+      "id": "l5-fear-preparation-index",
+      "label": "Fear/Preparation Index",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Metric",
+      "clusters": ["structural-L5", "risk-resilience"],
+      "description": "A psychographic measure of collective anxiety derived from historical trauma. High fear dampens risk-taking and density acceptance; high preparation indicates adaptive capacity."
+    },
+    {
+      "id": "l5-displacement-risk",
+      "label": "Displacement Risk",
+      "layer": 5,
+      "layerName": "Socio-Economic Memory",
+      "color": "#9B6A5F",
+      "nodeType": "Metric",
+      "clusters": ["structural-L5", "synthetic-labor"],
+      "description": "The probability that existing residents or businesses will be involuntarily displaced by rising costs or changing land use. Displacement risk is the social cost most frequently externalized by development."
+    },
+
+    {
+      "id": "l6-regime-contested",
+      "label": "Regime: Contested",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Regime",
+      "clusters": ["structural-L6"],
+      "description": "A governance model prioritizing pluralist friction: litigation, public hearings, and stakeholder negotiation. Contested regimes produce slower, more legitimate decisions but struggle to achieve metabolic efficiency."
+    },
+    {
+      "id": "l6-regime-directed",
+      "label": "Regime: Directed",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Regime",
+      "clusters": ["structural-L6"],
+      "description": "A governance model prioritizing state-led scaling and rapid deployment. Directed regimes achieve metabolic efficiency but risk legitimacy deficits and concentrated costs."
+    },
+    {
+      "id": "l6-jurisdictions",
+      "label": "Jurisdictions",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Authority",
+      "clusters": ["structural-L6"],
+      "description": "The territorial boundaries within which specific authorities exercise power: municipalities, counties, special districts, and federal enclaves. Jurisdictional fragmentation creates coordination failures."
+    },
+    {
+      "id": "l6-policy-as-code",
+      "label": "Policy-as-Code",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Mechanism",
+      "clusters": ["structural-L6"],
+      "description": "The translation of legislative intent into executable algorithms. Policy-as-Code enables automated compliance checking but raises questions about discretion, interpretation, and democratic accountability."
+    },
+    {
+      "id": "l6-international-organizations",
+      "label": "International Organizations",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Authority",
+      "clusters": ["structural-L6"],
+      "description": "Supranational bodies that set standards, allocate capital, and coordinate across jurisdictions: UN-Habitat, World Bank, and regional development banks. These actors shape urban development through conditional lending."
+    },
+    {
+      "id": "l6-tort-law",
+      "label": "Tort Law",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Mechanism",
+      "clusters": ["structural-L6", "synthetic-labor"],
+      "description": "The legal framework governing liability for harm. Tort law determines who bears costs when autonomous systems cause damage, shaping deployment incentives for synthetic actors."
+    },
+    {
+      "id": "l6-legacy-governance",
+      "label": "Legacy Governance",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Memory",
+      "clusters": ["structural-L6"],
+      "description": "Historical governance patterns that persist through institutional inertia: colonial administrative boundaries, mid-century zoning paradigms, and path-dependent regulatory cultures."
+    },
+    {
+      "id": "l6-neo-governance",
+      "label": "Neo-Governance",
+      "layer": 6,
+      "layerName": "Governance",
+      "color": "#B89A5A",
+      "nodeType": "Mechanism",
+      "clusters": ["structural-L6"],
+      "description": "Emerging governance forms that operate outside traditional state structures: platform governance, algorithmic regulation, and private urban management. Neo-governance raises accountability questions."
+    }
+  ]
+}
