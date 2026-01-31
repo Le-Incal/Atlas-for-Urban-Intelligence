@@ -1020,9 +1020,12 @@ function GraphCanvas() {
     const map = {}
     nodes.forEach((n) => { map[n.id] = new Set() })
     edges.forEach((e) => {
-      map[e.source]?.add(e.target)
-      map[e.target]?.add(e.source)
+      if (map[e.source]) map[e.source].add(e.target)
+      if (map[e.target]) map[e.target].add(e.source)
     })
+    // Debug: log total neighbors found
+    const totalNeighbors = Object.values(map).reduce((acc, set) => acc + set.size, 0)
+    console.log('NeighborsById built:', { nodeCount: nodes.length, edgeCount: edges.length, totalNeighborLinks: totalNeighbors })
     return map
   }, [nodes, edges])
 
@@ -1031,6 +1034,7 @@ function GraphCanvas() {
     const set = new Set([selectedNode.id])
     const nbrs = neighborsById[selectedNode.id]
     if (nbrs) nbrs.forEach((id) => set.add(id))
+    console.log('FocusSet created:', { selectedId: selectedNode.id, neighborCount: nbrs?.size || 0, totalFocusSize: set.size })
     return set
   }, [selectedNode?.id, neighborsById])
 
@@ -1084,8 +1088,8 @@ function GraphCanvas() {
         if (dist > maxDist) maxDist = dist
       })
 
-      // Minimal padding - hull should be smaller than node spread
-      bounds[key] = { center, radius: Math.max(maxDist * 0.85, 15) }
+      // Match cluster size with minimal padding
+      bounds[key] = { center, radius: maxDist + 2 }
     })
     return bounds
   }, [clusterCenters, resolvedPositions, clusterOffsets])
