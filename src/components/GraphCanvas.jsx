@@ -939,28 +939,30 @@ function GraphCanvas() {
   )
 
   // Apply cluster offsets and manual overrides on top of computed layout
-  const resolvedPositions = useMemo(() => {
-    const out = { ...positions }
-    // First apply cluster offsets to all nodes
-    Object.keys(out).forEach((id) => {
-      const clusterKey = clusterKeyByNodeId?.[id]
-      const offset = clusterOffsets?.[clusterKey]
-      if (offset) {
-        out[id] = {
-          ...out[id],
-          x: out[id].x + offset.x,
-          y: out[id].y + offset.y,
-          z: out[id].z + offset.z,
-        }
+  // Intentionally NOT memoized - must recalculate when clusterOffsets changes
+  const resolvedPositions = {}
+  Object.keys(positions).forEach((id) => {
+    const basePos = positions[id]
+    const clusterKey = basePos.clusterKey
+    const offset = clusterOffsets?.[clusterKey]
+
+    if (offset && (offset.x !== 0 || offset.y !== 0 || offset.z !== 0)) {
+      resolvedPositions[id] = {
+        ...basePos,
+        x: basePos.x + offset.x,
+        y: basePos.y + offset.y,
+        z: basePos.z + offset.z,
       }
-    })
-    // Then apply individual node overrides (drag takes precedence)
-    Object.entries(nodeOverrides || {}).forEach(([id, p]) => {
-      const base = out[id] || { x: 0, y: 0, z: 0, connections: 0 }
-      out[id] = { ...base, x: p.x, y: p.y, z: p.z }
-    })
-    return out
-  }, [positions, nodeOverrides, clusterOffsets, clusterKeyByNodeId])
+    } else {
+      resolvedPositions[id] = { ...basePos }
+    }
+  })
+
+  // Apply individual node overrides (drag takes precedence)
+  Object.entries(nodeOverrides || {}).forEach(([id, p]) => {
+    const base = resolvedPositions[id] || { x: 0, y: 0, z: 0, connections: 0 }
+    resolvedPositions[id] = { ...base, x: p.x, y: p.y, z: p.z }
+  })
 
   // Keep latest positions in store for \"Save layout\" (admin)
   useEffect(() => {
@@ -999,46 +1001,57 @@ function GraphCanvas() {
   const actualClusterBounds = useMemo(() => {
     const bounds = {}
     Object.keys(clusterCenters || {}).forEach(key => {
-      const clusterNodes = nodes.filter(n => clusterKeyByNodeId?.[n.id] === key)
-      if (clusterNodes.length === 0) {
-        bounds[key] = { center: clusterCenters[key], radius: 20 }
+      // Use resolvedPositions to find nodes in this cluster (more reliable)
+      const clusterNodeIds = Object.keys(resolvedPositions).filter(id => {
+        const pos = resolvedPositions[id]
+        return pos?.clusterKey === key
+      })
+
+      if (clusterNodeIds.length === 0) {
+        // Apply offset to fallback center too
+        const offset = clusterOffsets?.[key] || { x: 0, y: 0, z: 0 }
+        const baseCenter = clusterCenters[key]
+        bounds[key] = {
+          center: {
+            x: baseCenter.x + offset.x,
+            y: baseCenter.y + offset.y,
+            z: baseCenter.z + offset.z
+          },
+          radius: 20
+        }
         return
       }
 
       // Calculate centroid from actual node positions
       let sumX = 0, sumY = 0, sumZ = 0
-      clusterNodes.forEach(node => {
-        const pos = resolvedPositions[node.id]
-        if (pos) {
-          sumX += pos.x
-          sumY += pos.y
-          sumZ += pos.z
-        }
+      clusterNodeIds.forEach(id => {
+        const pos = resolvedPositions[id]
+        sumX += pos.x
+        sumY += pos.y
+        sumZ += pos.z
       })
       const center = {
-        x: sumX / clusterNodes.length,
-        y: sumY / clusterNodes.length,
-        z: sumZ / clusterNodes.length
+        x: sumX / clusterNodeIds.length,
+        y: sumY / clusterNodeIds.length,
+        z: sumZ / clusterNodeIds.length
       }
 
       // Calculate radius to encompass all nodes
       let maxDist = 0
-      clusterNodes.forEach(node => {
-        const pos = resolvedPositions[node.id]
-        if (pos) {
-          const dx = pos.x - center.x
-          const dy = pos.y - center.y
-          const dz = pos.z - center.z
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-          if (dist > maxDist) maxDist = dist
-        }
+      clusterNodeIds.forEach(id => {
+        const pos = resolvedPositions[id]
+        const dx = pos.x - center.x
+        const dy = pos.y - center.y
+        const dz = pos.z - center.z
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+        if (dist > maxDist) maxDist = dist
       })
 
       // Add padding for node sizes
       bounds[key] = { center, radius: maxDist + 8 }
     })
     return bounds
-  }, [clusterCenters, nodes, clusterKeyByNodeId, resolvedPositions])
+  }, [clusterCenters, resolvedPositions, clusterOffsets])
 
   return (
     <group>
