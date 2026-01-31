@@ -94,6 +94,7 @@ const useGraphStore = create((set, get) => ({
     edgeVisibilityMode: 'primary',
     activeClusterKey: null,
     nodeOverrides: {},
+    clusterOffsets: {},
     visibleLayers: {
       0: true, 1: true, 2: true, 3: true, 4: true, 5: true, 6: true
     }
@@ -106,6 +107,29 @@ const useGraphStore = create((set, get) => ({
   // OrbitControls ref (used to disable controls while dragging nodes)
   controlsRef: null,
   setControlsRef: (ref) => set({ controlsRef: ref }),
+
+  // Cluster drag offsets (keyed by cluster key)
+  clusterOffsets: {},
+  updateClusterOffset: (clusterKey, delta) => set((state) => {
+    const current = state.clusterOffsets[clusterKey] || { x: 0, y: 0, z: 0 }
+    return {
+      clusterOffsets: {
+        ...state.clusterOffsets,
+        [clusterKey]: {
+          x: current.x + delta.x,
+          y: current.y + delta.y,
+          z: current.z + delta.z,
+        }
+      }
+    }
+  }),
+  setClusterOffset: (clusterKey, offset) => set((state) => ({
+    clusterOffsets: {
+      ...state.clusterOffsets,
+      [clusterKey]: offset
+    }
+  })),
+  clearClusterOffsets: () => set({ clusterOffsets: {} }),
 }))
 
 export default useGraphStore

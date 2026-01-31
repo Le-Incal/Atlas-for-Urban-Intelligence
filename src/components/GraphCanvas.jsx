@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react'
+import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Text, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
@@ -691,6 +691,145 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   )
 }
 
+// Draggable Cluster Hull - grab and drag to move all nodes in the cluster
+function DraggableClusterHull({ clusterKey, center, radius, count, alpha, clusterOffset, setActiveClusterKey }) {
+  const meshRef = useRef()
+  const { camera, gl } = useThree()
+  const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
+  const controlsRef = useGraphStore((state) => state.controlsRef)
+
+  const [isDragging, setIsDragging] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const dragStart = useRef({ point: null })
+  const didDrag = useRef(false)
+
+  // Apply cluster offset to center position
+  const offsetCenter = useMemo(() => ({
+    x: center.x + (clusterOffset?.x || 0),
+    y: center.y + (clusterOffset?.y || 0),
+    z: center.z + (clusterOffset?.z || 0),
+  }), [center, clusterOffset])
+
+  const handlePointerDown = useCallback((e) => {
+    if (e.button !== 0) return
+    e.stopPropagation()
+    setIsDragging(true)
+    didDrag.current = false
+    gl.domElement.style.cursor = 'grabbing'
+
+    // Disable orbit controls while dragging
+    if (controlsRef?.current) controlsRef.current.enabled = false
+
+    // Store initial intersection point
+    dragStart.current.point = e.point.clone()
+
+    // Capture pointer
+    if (gl?.domElement?.setPointerCapture) {
+      try { gl.domElement.setPointerCapture(e.pointerId) } catch {}
+    }
+  }, [gl, controlsRef])
+
+  const handlePointerMove = useCallback((e) => {
+    if (!isDragging || !dragStart.current.point) return
+    e.stopPropagation()
+
+    // Calculate delta in world space
+    const delta = {
+      x: e.point.x - dragStart.current.point.x,
+      y: e.point.y - dragStart.current.point.y,
+      z: e.point.z - dragStart.current.point.z
+    }
+
+    // Only update if there's meaningful movement
+    if (Math.abs(delta.x) > 0.1 || Math.abs(delta.y) > 0.1 || Math.abs(delta.z) > 0.1) {
+      didDrag.current = true
+      updateClusterOffset(clusterKey, delta)
+      dragStart.current.point = e.point.clone()
+    }
+  }, [isDragging, clusterKey, updateClusterOffset])
+
+  const handlePointerUp = useCallback((e) => {
+    if (!isDragging) return
+    e.stopPropagation()
+    setIsDragging(false)
+    gl.domElement.style.cursor = isHovered ? 'grab' : 'default'
+    dragStart.current.point = null
+
+    // Re-enable orbit controls
+    if (controlsRef?.current) controlsRef.current.enabled = true
+
+    if (gl?.domElement?.releasePointerCapture) {
+      try { gl.domElement.releasePointerCapture(e.pointerId) } catch {}
+    }
+  }, [isDragging, isHovered, gl, controlsRef])
+
+  const handlePointerOver = useCallback((e) => {
+    e.stopPropagation()
+    setIsHovered(true)
+    if (!isDragging) {
+      gl.domElement.style.cursor = 'grab'
+    }
+  }, [isDragging, gl])
+
+  const handlePointerOut = useCallback((e) => {
+    setIsHovered(false)
+    if (!isDragging) {
+      gl.domElement.style.cursor = 'default'
+    }
+  }, [isDragging, gl])
+
+  const handleClick = useCallback((e) => {
+    e.stopPropagation()
+    // Only toggle cluster filter if we didn't drag
+    if (!didDrag.current) {
+      setActiveClusterKey(clusterKey)
+    }
+    didDrag.current = false
+  }, [clusterKey, setActiveClusterKey])
+
+  return (
+    <group position={[offsetCenter.x, offsetCenter.y, offsetCenter.z]}>
+      {/* Soft hull hint */}
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[radius, 18, 18]} />
+        <meshBasicMaterial
+          color="#808080"
+          transparent
+          opacity={(isDragging ? 0.12 : isHovered ? 0.08 : 0.04) * alpha}
+          depthWrite={false}
+        />
+      </mesh>
+      {/* Draggable/clickable target */}
+      <mesh
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+        onClick={handleClick}
+      >
+        <sphereGeometry args={[radius + 6, 12, 12]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+      <Billboard>
+        <Text
+          position={[0, radius + 10, 0]}
+          fontSize={0.6}
+          color="#1a1a1a"
+          anchorX="center"
+          anchorY="middle"
+          fillOpacity={0.9 * alpha}
+          outlineWidth={0.02}
+          outlineColor="#ffffff"
+          outlineOpacity={0.9 * alpha}
+        >
+          {clusterKey} ({count})
+        </Text>
+      </Billboard>
+    </group>
+  )
+}
+
 // Main GraphCanvas component
 function GraphCanvas() {
   // Support both raw array and { nodes } / { edges } shapes
@@ -705,6 +844,7 @@ function GraphCanvas() {
   const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
   const setCurrentLayoutPositions = useGraphStore((state) => state.setCurrentLayoutPositions)
+  const clusterOffsets = useGraphStore((state) => state.clusterOffsets)
   
   // Calculate positions once
   const { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId } = useMemo(
@@ -712,15 +852,29 @@ function GraphCanvas() {
     [nodes, edges]
   )
 
-  // Apply manual overrides (dragged nodes) on top of computed layout
+  // Apply cluster offsets and manual overrides on top of computed layout
   const resolvedPositions = useMemo(() => {
     const out = { ...positions }
+    // First apply cluster offsets to all nodes
+    Object.keys(out).forEach((id) => {
+      const clusterKey = clusterKeyByNodeId?.[id]
+      const offset = clusterOffsets?.[clusterKey]
+      if (offset) {
+        out[id] = {
+          ...out[id],
+          x: out[id].x + offset.x,
+          y: out[id].y + offset.y,
+          z: out[id].z + offset.z,
+        }
+      }
+    })
+    // Then apply individual node overrides (drag takes precedence)
     Object.entries(nodeOverrides || {}).forEach(([id, p]) => {
       const base = out[id] || { x: 0, y: 0, z: 0, connections: 0 }
       out[id] = { ...base, x: p.x, y: p.y, z: p.z }
     })
     return out
-  }, [positions, nodeOverrides])
+  }, [positions, nodeOverrides, clusterOffsets, clusterKeyByNodeId])
 
   // Keep latest positions in store for \"Save layout\" (admin)
   useEffect(() => {
@@ -777,51 +931,22 @@ function GraphCanvas() {
 
   return (
     <group>
-      {/* Cluster labels + soft hulls (click to isolate cluster) */}
+      {/* Cluster labels + soft hulls (click to isolate, drag to move) */}
       {clusterCenters && Object.entries(clusterCenters).map(([key, center]) => {
         const count = clusterSizes?.[key] ?? 0
         const radius = 16 + Math.sqrt(count) * 3
         const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
         return (
-          <group key={key} position={[center.x, center.y, center.z]}>
-            {/* Soft hull hint */}
-            <mesh>
-              <sphereGeometry args={[radius, 18, 18]} />
-              <meshBasicMaterial
-                color="#808080"
-                transparent
-                opacity={0.04 * alpha}
-                depthWrite={false}
-              />
-            </mesh>
-            {/* Click target */}
-            <mesh
-              onClick={(e) => {
-                e.stopPropagation()
-                setActiveClusterKey(key)
-              }}
-              onPointerOver={() => { document.body.style.cursor = 'pointer' }}
-              onPointerOut={() => { document.body.style.cursor = 'default' }}
-            >
-              <sphereGeometry args={[radius + 6, 12, 12]} />
-              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-            </mesh>
-            <Billboard>
-              <Text
-                position={[0, radius + 10, 0]}
-                fontSize={0.6}
-                color="#1a1a1a"
-                anchorX="center"
-                anchorY="middle"
-                fillOpacity={0.9 * alpha}
-                outlineWidth={0.02}
-                outlineColor="#ffffff"
-                outlineOpacity={0.9 * alpha}
-              >
-                {key} ({count})
-              </Text>
-            </Billboard>
-          </group>
+          <DraggableClusterHull
+            key={key}
+            clusterKey={key}
+            center={center}
+            radius={radius}
+            count={count}
+            alpha={alpha}
+            clusterOffset={clusterOffsets?.[key]}
+            setActiveClusterKey={setActiveClusterKey}
+          />
         )
       })}
 
