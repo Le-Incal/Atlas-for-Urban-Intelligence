@@ -1,5 +1,5 @@
-import React, { Suspense, useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
+import React, { Suspense, useRef, useEffect, useCallback } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
 import GraphCanvas from './GraphCanvas'
@@ -65,6 +65,68 @@ function CursorTooltip() {
   )
 }
 
+// Custom trackpad handler for two-finger rotate + pinch zoom
+function TrackpadControls({ controlsRef }) {
+  const { camera, gl } = useThree()
+
+  const handleWheel = useCallback((event) => {
+    if (!controlsRef.current) return
+
+    // Pinch zoom (ctrlKey on Mac trackpad)
+    if (event.ctrlKey) {
+      event.preventDefault()
+      const zoomSpeed = 0.01
+      const delta = event.deltaY * zoomSpeed
+      const distance = camera.position.distanceTo(controlsRef.current.target)
+      const newDistance = distance * (1 + delta)
+
+      // Clamp distance
+      if (newDistance >= 30 && newDistance <= 300) {
+        const direction = new THREE.Vector3()
+          .subVectors(camera.position, controlsRef.current.target)
+          .normalize()
+        camera.position.copy(controlsRef.current.target)
+          .add(direction.multiplyScalar(newDistance))
+      }
+    } else {
+      // Two-finger scroll = rotate
+      event.preventDefault()
+      const rotateSpeed = 0.005
+
+      // Horizontal scroll = rotate around Y axis (azimuth)
+      // Vertical scroll = rotate around X axis (polar)
+      const azimuthDelta = -event.deltaX * rotateSpeed
+      const polarDelta = -event.deltaY * rotateSpeed
+
+      // Get current spherical coordinates
+      const offset = new THREE.Vector3().subVectors(camera.position, controlsRef.current.target)
+      const spherical = new THREE.Spherical().setFromVector3(offset)
+
+      // Apply rotation
+      spherical.theta += azimuthDelta
+      spherical.phi += polarDelta
+
+      // Clamp phi to prevent flipping
+      spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi))
+
+      // Convert back to Cartesian
+      offset.setFromSpherical(spherical)
+      camera.position.copy(controlsRef.current.target).add(offset)
+      camera.lookAt(controlsRef.current.target)
+    }
+
+    controlsRef.current.update()
+  }, [camera, controlsRef])
+
+  useEffect(() => {
+    const domElement = gl.domElement
+    domElement.addEventListener('wheel', handleWheel, { passive: false })
+    return () => domElement.removeEventListener('wheel', handleWheel)
+  }, [gl, handleWheel])
+
+  return null
+}
+
 function SceneContent({ controlsRef }) {
   return (
     <>
@@ -82,18 +144,17 @@ function SceneContent({ controlsRef }) {
       <directionalLight position={[-60, -30, -40]} intensity={0.6} color="#ffffff" />
       <directionalLight position={[-40, 20, 60]} intensity={0.4} color="#ffffff" />
 
-      {/* Controls - fluid trackpad/touch support */}
+      {/* Controls - click+drag to rotate, right-click to pan */}
       <OrbitControls
         ref={controlsRef}
         makeDefault
         enablePan={true}
-        enableZoom={true}
+        enableZoom={false}
         enableRotate={true}
         minDistance={30}
         maxDistance={300}
         dampingFactor={0.08}
         enableDamping={true}
-        zoomSpeed={1.2}
         rotateSpeed={1}
         panSpeed={1}
         screenSpacePanning={true}
@@ -102,11 +163,10 @@ function SceneContent({ controlsRef }) {
           MIDDLE: THREE.MOUSE.DOLLY,
           RIGHT: THREE.MOUSE.PAN
         }}
-        touches={{
-          ONE: THREE.TOUCH.ROTATE,
-          TWO: THREE.TOUCH.DOLLY_ROTATE
-        }}
       />
+
+      {/* Custom trackpad: two-finger drag = rotate, pinch = zoom */}
+      <TrackpadControls controlsRef={controlsRef} />
 
       {/* Graph */}
       <GraphCanvas />
