@@ -183,6 +183,8 @@ function TrackpadControls({ controlsRef }) {
 }
 
 function SceneContent({ controlsRef }) {
+  const autoRotateEnabled = useGraphStore((state) => state.autoRotateEnabled)
+
   return (
     <>
       <PerspectiveCamera
@@ -224,7 +226,7 @@ function SceneContent({ controlsRef }) {
       />
 
       {/* Continuous slow auto-rotate */}
-      <AutoRotate controlsRef={controlsRef} />
+      {autoRotateEnabled && <AutoRotate controlsRef={controlsRef} />}
 
       {/* Custom trackpad: two-finger drag = rotate, pinch = zoom */}
       <TrackpadControls controlsRef={controlsRef} />

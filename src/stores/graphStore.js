@@ -104,6 +104,11 @@ const useGraphStore = create((set, get) => ({
   cameraTarget: [0, 0, 0],
   setCameraTarget: (target) => set({ cameraTarget: target }),
 
+  // Auto-rotate toggle
+  autoRotateEnabled: true,
+  setAutoRotateEnabled: (enabled) => set({ autoRotateEnabled: enabled }),
+  toggleAutoRotate: () => set((state) => ({ autoRotateEnabled: !state.autoRotateEnabled })),
+
   // OrbitControls ref (used to disable controls while dragging nodes)
   controlsRef: null,
   setControlsRef: (ref) => set({ controlsRef: ref }),

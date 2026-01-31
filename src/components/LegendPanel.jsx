@@ -32,6 +32,8 @@ function LegendPanel() {
   const clearNodeOverrides = useGraphStore((state) => state.clearNodeOverrides)
   const loadDefaultLayout = useGraphStore((state) => state.loadDefaultLayout)
   const currentLayoutPositions = useGraphStore((state) => state.currentLayoutPositions)
+  const autoRotateEnabled = useGraphStore((state) => state.autoRotateEnabled)
+  const toggleAutoRotate = useGraphStore((state) => state.toggleAutoRotate)
 
   const [saveError, setSaveError] = useState(null)
   const STORAGE_KEY = 'atlas-layout'
@@ -86,6 +88,20 @@ function LegendPanel() {
         <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">
           Layout
         </h3>
+
+        {/* Auto-rotate toggle */}
+        <button
+          onClick={toggleAutoRotate}
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg
+                     bg-gray-50 hover:bg-gray-100 transition-colors mb-3"
+        >
+          <span className="text-xs font-medium text-gray-700">Auto-rotate</span>
+          <div className={`w-8 h-4 rounded-full transition-colors relative
+                          ${autoRotateEnabled ? 'bg-gray-900' : 'bg-gray-300'}`}>
+            <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform
+                            ${autoRotateEnabled ? 'translate-x-4' : 'translate-x-0.5'}`} />
+          </div>
+        </button>
 
         {activeClusterKey && (
           <div className="mt-3 px-3 py-2 bg-gray-50 rounded-lg flex items-center justify-between gap-2">
