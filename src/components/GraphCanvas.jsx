@@ -286,6 +286,27 @@ function calculatePositions(nodes, edges) {
     })
   }
 
+  // Layers along Z: Governance (6) at top, Bio-Physical (0) at bottom (matching legend).
+  // Keep X,Y as horizontal spread: current ring is in XZ, move to XY so Z = layer.
+  const layerSpacing = 22
+  nodes.forEach((node) => {
+    const pos = positions[node.id]
+    if (!pos) return
+    const oldZ = pos.z
+    pos.y = oldZ
+    pos.z = node.layer * layerSpacing + (rand01(`${node.id}-z`) - 0.5) * 4
+  })
+
+  // Cluster centers: same remap so hulls/labels sit in XY at middle layer
+  const midZ = 3 * layerSpacing
+  clusterKeys.forEach((key) => {
+    const c = clusterCenters[key]
+    if (!c) return
+    const oldZ = c.z
+    c.y = oldZ
+    c.z = midZ
+  })
+
   return { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId }
 }
 
@@ -331,11 +352,11 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
       const newEmissive = THREE.MathUtils.lerp(currentEmissive, targetEmissive, 0.1)
       setCurrentEmissive(newEmissive)
       materialRef.current.emissiveIntensity = newEmissive
-      // Focus mode: soften non-neighborhood nodes via opacity
-      materialRef.current.opacity = 0.25 + 0.75 * focusAlpha
+      // Focus mode: soften non-neighborhood nodes via opacity (higher base for legibility)
+      materialRef.current.opacity = 0.88 + 0.12 * focusAlpha
     }
     if (outlineMaterialRef.current) {
-      outlineMaterialRef.current.opacity = 0.4 * focusAlpha
+      outlineMaterialRef.current.opacity = 0.85 * focusAlpha
     }
   })
 
@@ -387,7 +408,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
           ref={outlineMaterialRef}
           color={outlineColor}
           transparent
-          opacity={0.4}
+          opacity={0.85}
         />
       </mesh>
 
@@ -425,7 +446,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
           emissive={emissiveColor}
           emissiveIntensity={0}
           transparent
-          opacity={0.25 + 0.75 * focusAlpha}
+          opacity={0.88 + 0.12 * focusAlpha}
         />
       </mesh>
 
@@ -471,15 +492,15 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
   // Determine opacity and base radius (tube will taper/swell from this)
-  // Lower default opacity reduces central clutter; focus state stays strong
-  let opacity = 0.16
-  let baseRadius = 0.055
+  // Higher default opacity for legibility; focus state stays strong
+  let opacity = 0.52
+  let baseRadius = 0.07
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
     baseRadius = 0.18
   } else if (activeEdgeType || selectedNode) {
-    opacity = 0.08
+    opacity = 0.28
   }
   opacity *= focusAlpha
 
@@ -598,9 +619,6 @@ function GraphCanvas() {
   const visibleLayers = useGraphStore((state) => state.visibleLayers)
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
-  const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
-  const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
-  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   
   // Calculate positions once
   const { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId } = useMemo(
@@ -641,7 +659,6 @@ function GraphCanvas() {
     const byCluster = {}
     nodes.forEach((n) => {
       const ck = clusterKeyByNodeId?.[n.id] || n?.clusters?.[0] || `layer-${n.layer}`
-      if (activeClusterKey && ck !== activeClusterKey) return
       if (!byCluster[ck]) byCluster[ck] = []
       byCluster[ck].push(n)
     })
@@ -654,15 +671,14 @@ function GraphCanvas() {
       list.forEach((x) => hubSet.add(x.id))
     })
     return hubSet
-  }, [nodes, connectionCount, clusterKeyByNodeId, activeClusterKey])
+  }, [nodes, connectionCount, clusterKeyByNodeId])
 
   return (
     <group>
-      {/* Cluster labels + soft hulls (click to isolate cluster) */}
+      {/* Cluster labels + soft hulls */}
       {clusterCenters && Object.entries(clusterCenters).map(([key, center]) => {
         const count = clusterSizes?.[key] ?? 0
         const radius = 16 + Math.sqrt(count) * 3
-        const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
         return (
           <group key={key} position={[center.x, center.y, center.z]}>
             {/* Soft hull hint */}
@@ -671,21 +687,9 @@ function GraphCanvas() {
               <meshBasicMaterial
                 color="#808080"
                 transparent
-                opacity={0.04 * alpha}
+                opacity={0.04}
                 depthWrite={false}
               />
-            </mesh>
-            {/* Click target */}
-            <mesh
-              onClick={(e) => {
-                e.stopPropagation()
-                setActiveClusterKey(key)
-              }}
-              onPointerOver={() => { document.body.style.cursor = 'pointer' }}
-              onPointerOut={() => { document.body.style.cursor = 'default' }}
-            >
-              <sphereGeometry args={[radius + 6, 12, 12]} />
-              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
             <Billboard>
               <Text
@@ -694,10 +698,10 @@ function GraphCanvas() {
                 color="#1a1a1a"
                 anchorX="center"
                 anchorY="middle"
-                fillOpacity={0.9 * alpha}
+                fillOpacity={0.9}
                 outlineWidth={0.02}
                 outlineColor="#ffffff"
-                outlineOpacity={0.9 * alpha}
+                outlineOpacity={0.9}
               >
                 {key} ({count})
               </Text>
@@ -717,22 +721,7 @@ function GraphCanvas() {
           visibleLayers[sourceNode?.layer] && 
           visibleLayers[targetNode?.layer]
 
-        const inActiveCluster = !activeClusterKey || (
-          (clusterKeyByNodeId?.[edge.source] === activeClusterKey) &&
-          (clusterKeyByNodeId?.[edge.target] === activeClusterKey)
-        )
-
-        let isVisible = inVisibleLayers && inActiveCluster
-
-        // Progressive disclosure: primary-only by default (unless filtering/focusing)
-        if (
-          edgeVisibilityMode === 'primary' &&
-          !selectedNode &&
-          !activeEdgeType &&
-          !activeClusterKey
-        ) {
-          isVisible = isVisible && !!edge.isPrimary
-        }
+        let isVisible = inVisibleLayers
 
         // Edge-type filter: hide non-matching for cleanliness
         if (activeEdgeType && edge.edgeType !== activeEdgeType) {
@@ -792,8 +781,7 @@ function GraphCanvas() {
         const size = baseSize * (node.scale ?? 1.0)
 
         const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
-        const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
-        const isVisible = visibleLayers[node.layer] && inActiveCluster
+        const isVisible = visibleLayers[node.layer]
 
         const showLabel =
           (!!focusSet && focusSet.has(node.id)) ||

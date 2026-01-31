@@ -28,19 +28,6 @@ const useGraphStore = create((set, get) => ({
   signalEdge: (edge) => set({ signaledEdge: edge }),
   clearSignaledEdge: () => set({ signaledEdge: null }),
 
-  // Visibility / disclosure controls
-  // - 'primary': show primary edges by default, expand on focus/filter
-  // - 'all': show all edges (focus/fog still apply)
-  edgeVisibilityMode: 'primary',
-  setEdgeVisibilityMode: (mode) => set({ edgeVisibilityMode: mode }),
-
-  // Cluster focus (island filtering)
-  activeClusterKey: null,
-  setActiveClusterKey: (key) => set((state) => ({
-    activeClusterKey: state.activeClusterKey === key ? null : key
-  })),
-  clearActiveClusterKey: () => set({ activeClusterKey: null }),
-
   // Layer visibility
   visibleLayers: {
     0: true,
@@ -66,8 +53,6 @@ const useGraphStore = create((set, get) => ({
     hoveredEdge: null,
     activeEdgeType: null,
     signaledEdge: null,
-    edgeVisibilityMode: 'primary',
-    activeClusterKey: null,
     visibleLayers: {
       0: true, 1: true, 2: true, 3: true, 4: true, 5: true, 6: true
     }
