@@ -177,7 +177,7 @@ function Node({ node, position, size, isVisible }) {
 
   // Scale and glow based on state
   const targetScale = isSelected ? 1.3 : isHovered ? 1.15 : 1
-  const targetEmissive = isHovered || isSelected ? 0.4 : 0
+  const targetEmissive = isHovered || isSelected ? 0.2 : 0
   const [currentScale, setCurrentScale] = useState(1)
   const [currentEmissive, setCurrentEmissive] = useState(0)
 
@@ -225,12 +225,12 @@ function Node({ node, position, size, isVisible }) {
     <group position={[position.x, position.y, position.z]}>
       {/* Glow sphere (larger, semi-transparent) */}
       {(isHovered || isSelected) && (
-        <mesh scale={1.3}>
+        <mesh scale={1.25}>
           <sphereGeometry args={[size, 32, 32]} />
           <meshBasicMaterial
             color={emissiveColor}
             transparent
-            opacity={0.15}
+            opacity={0.08}
             depthWrite={false}
           />
         </mesh>
@@ -381,11 +381,15 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     <group>
       {/* Main edge - tube geometry for visible thickness */}
       <mesh ref={lineRef}>
-        <tubeGeometry args={[curve, 20, tubeRadius, 8, false]} />
+        <tubeGeometry args={[curve, 64, tubeRadius, 8, false]} />
         <meshBasicMaterial
           color="#595959"
           transparent
           opacity={opacity}
+          depthWrite={false}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
         />
       </mesh>
 
@@ -394,11 +398,12 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         const segCurve = new THREE.CatmullRomCurve3([seg.p1, seg.p2])
         return (
           <mesh key={i}>
-            <tubeGeometry args={[segCurve, 4, 0.4, 8, false]} />
+            <tubeGeometry args={[segCurve, 8, 0.4, 8, false]} />
             <meshBasicMaterial
               color={sourceColor}
               transparent
               opacity={seg.opacity}
+              depthWrite={false}
             />
           </mesh>
         )
@@ -412,8 +417,8 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[curve, 20, 1.5, 8, false]} />
-        <meshBasicMaterial transparent opacity={0} />
+        <tubeGeometry args={[curve, 32, 1.5, 8, false]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
     </group>
   )
