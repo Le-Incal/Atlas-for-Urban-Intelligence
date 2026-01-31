@@ -1,6 +1,5 @@
 import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Text, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import useGraphStore from '../stores/graphStore'
 import nodesData from '../data/nodes.json'
@@ -752,6 +751,8 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
+  const setHoveredCluster = useGraphStore((state) => state.setHoveredCluster)
+  const setMousePosition = useGraphStore((state) => state.setMousePosition)
 
   const [isHovered, setIsHovered] = useState(false)
   const draggingRef = useRef(false)
@@ -839,19 +840,26 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
     window.addEventListener('pointercancel', onUp)
   }, [camera, gl, controlsRef, clusterKey, updateClusterOffset, offsetCenter])
 
-  const handlePointerOver = useCallback(() => {
+  const handlePointerOver = useCallback((e) => {
     setIsHovered(true)
+    setHoveredCluster({ key: clusterKey, count })
+    setMousePosition({ x: e.clientX, y: e.clientY })
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'grab'
     }
-  }, [gl])
+  }, [gl, clusterKey, count, setHoveredCluster, setMousePosition])
+
+  const handlePointerMove = useCallback((e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY })
+  }, [setMousePosition])
 
   const handlePointerOut = useCallback(() => {
     setIsHovered(false)
+    setHoveredCluster(null)
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'default'
     }
-  }, [gl])
+  }, [gl, setHoveredCluster])
 
   const handleClick = useCallback((e) => {
     e.stopPropagation()
@@ -878,27 +886,13 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
       <mesh
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
+        onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
         <sphereGeometry args={[radius + 6, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-      <Billboard>
-        <Text
-          position={[0, radius + 10, 0]}
-          fontSize={0.6}
-          color="#1a1a1a"
-          anchorX="center"
-          anchorY="middle"
-          fillOpacity={0.9 * alpha}
-          outlineWidth={0.02}
-          outlineColor="#ffffff"
-          outlineOpacity={0.9 * alpha}
-        >
-          {clusterKey} ({count})
-        </Text>
-      </Billboard>
     </group>
   )
 }

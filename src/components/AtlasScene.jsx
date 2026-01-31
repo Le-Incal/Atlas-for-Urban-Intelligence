@@ -45,9 +45,10 @@ function Title() {
 
 function CursorTooltip() {
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
+  const hoveredCluster = useGraphStore((state) => state.hoveredCluster)
   const mousePosition = useGraphStore((state) => state.mousePosition)
 
-  if (!hoveredNode) return null
+  if (!hoveredNode && !hoveredCluster) return null
 
   return (
     <div
@@ -58,14 +59,27 @@ function CursorTooltip() {
       }}
     >
       <div className="max-w-xs px-3 py-2 rounded-lg bg-black text-white shadow-lg">
-        <div className="text-sm font-semibold mb-1">
-          {hoveredNode.label}
-        </div>
-        {hoveredNode.description && (
-          <div className="text-xs text-gray-300 leading-relaxed">
-            {hoveredNode.description}
-          </div>
-        )}
+        {hoveredNode ? (
+          <>
+            <div className="text-sm font-semibold mb-1">
+              {hoveredNode.label}
+            </div>
+            {hoveredNode.description && (
+              <div className="text-xs text-gray-300 leading-relaxed">
+                {hoveredNode.description}
+              </div>
+            )}
+          </>
+        ) : hoveredCluster ? (
+          <>
+            <div className="text-sm font-semibold mb-1">
+              {hoveredCluster.key}
+            </div>
+            <div className="text-xs text-gray-300">
+              {hoveredCluster.count} nodes
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   )

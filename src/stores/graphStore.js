@@ -12,9 +12,11 @@ const useGraphStore = create((set, get) => ({
   // Node state
   selectedNode: null,
   hoveredNode: null,
+  hoveredCluster: null,
   mousePosition: { x: 0, y: 0 },
   setSelectedNode: (node) => set({ selectedNode: node }),
   setHoveredNode: (node) => set({ hoveredNode: node }),
+  setHoveredCluster: (cluster) => set({ hoveredCluster: cluster }),
   setMousePosition: (pos) => set({ mousePosition: pos }),
 
   // Manual layout overrides (drag-to-arrange)
