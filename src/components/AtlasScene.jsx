@@ -142,16 +142,23 @@ function SceneContent({ controlsRef }) {
       <directionalLight position={[-60, -30, -40]} intensity={0.6} color="#ffffff" />
       <directionalLight position={[-40, 20, 60]} intensity={0.4} color="#ffffff" />
 
-      {/* Controls - zoom disabled, handled by ZoomToMouse */}
+      {/* Controls - enable all gestures for trackpad support */}
       <OrbitControls
         ref={controlsRef}
         enablePan={true}
-        enableZoom={false}
+        enableZoom={true}
         enableRotate={true}
         minDistance={30}
         maxDistance={300}
         dampingFactor={0.05}
         enableDamping={true}
+        zoomSpeed={1}
+        rotateSpeed={0.8}
+        panSpeed={0.8}
+        touches={{
+          ONE: THREE.TOUCH.ROTATE,
+          TWO: THREE.TOUCH.DOLLY_PAN
+        }}
       />
 
       {/* Custom zoom toward mouse */}
