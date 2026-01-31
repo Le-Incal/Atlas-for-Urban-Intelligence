@@ -266,11 +266,11 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
   // Determine opacity and thickness
   let opacity = 0.4 // Default
-  let lineWidth = 1
+  let tubeRadius = 0.15 // Base thickness
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
-    lineWidth = 2
+    tubeRadius = 0.25 // Thicker when active
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.1 // Fade when something else is active
   }
@@ -302,9 +302,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
   const startPoint = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
   const endPoint = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
-
   const points = [startPoint, endPoint]
-  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
 
   // Source node color for pulse
   const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
@@ -342,34 +340,37 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     return segments
   }, [pulseProgress, sourcePos, targetPos])
 
+  // Create curve for tube geometry
+  const curve = useMemo(() => new THREE.CatmullRomCurve3(points), [points])
+
   return (
     <group>
-      {/* Main edge line */}
-      <line ref={lineRef} geometry={lineGeometry}>
-        <lineBasicMaterial
+      {/* Main edge - tube geometry for visible thickness */}
+      <mesh ref={lineRef}>
+        <tubeGeometry args={[curve, 1, tubeRadius, 8, false]} />
+        <meshBasicMaterial
           color="#000000"
           transparent
           opacity={opacity}
-          linewidth={lineWidth}
         />
-      </line>
+      </mesh>
 
-      {/* Pulse wave effect - glowing segments */}
+      {/* Pulse wave effect - thicker glowing tube segments */}
       {pulseSegments && pulseSegments.map((seg, i) => {
-        const segGeometry = new THREE.BufferGeometry().setFromPoints([seg.p1, seg.p2])
+        const segCurve = new THREE.CatmullRomCurve3([seg.p1, seg.p2])
         return (
-          <line key={i} geometry={segGeometry}>
-            <lineBasicMaterial
+          <mesh key={i}>
+            <tubeGeometry args={[segCurve, 1, 0.4, 8, false]} />
+            <meshBasicMaterial
               color={sourceColor}
               transparent
               opacity={seg.opacity}
-              linewidth={3}
             />
-          </line>
+          </mesh>
         )
       })}
 
-      {/* Invisible thicker line for easier hover detection */}
+      {/* Invisible thicker tube for easier hover detection */}
       <mesh
         onPointerOver={(e) => {
           e.stopPropagation()
@@ -377,13 +378,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[
-          new THREE.CatmullRomCurve3(points),
-          1,
-          2,
-          8,
-          false
-        ]} />
+        <tubeGeometry args={[curve, 1, 1.5, 8, false]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
     </group>
