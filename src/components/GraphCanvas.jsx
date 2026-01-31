@@ -125,28 +125,28 @@ function calculatePositions(nodes, edges) {
 
   // Layer-clustered layout: larger globe — distinct Y bands + radius rings
   const totalLayers = 7
-  const baseRadius = 98
+  const baseRadius = 82
 
   Object.keys(nodesByLayer).forEach(layer => {
     const layerNodes = nodesByLayer[layer]
     const layerIndex = parseInt(layer)
 
-    // Strong vertical separation — each layer in its own Y band
+    // Tighter vertical bands — layers clustered
     const normalizedLayer = (layerIndex - 3) / 3 // -1 to 1
-    const layerY = normalizedLayer * 138
+    const layerY = normalizedLayer * 72
 
-    // Each layer gets its own radius ring: L0 inner, L6 outer (globe-like shells)
-    const layerRadiusOffset = (layerIndex - 3) * 26
-    const layerRadius = baseRadius + layerRadiusOffset + Math.cos(normalizedLayer * Math.PI * 0.5) * 12
+    // Each layer its own radius ring, closer together
+    const layerRadiusOffset = (layerIndex - 3) * 14
+    const layerRadius = baseRadius + layerRadiusOffset + Math.cos(normalizedLayer * Math.PI * 0.5) * 8
 
     layerNodes.forEach((node, i) => {
       const goldenAngle = Math.PI * (3 - Math.sqrt(5))
       const angle = i * goldenAngle + layerIndex * 0.5
 
       // More variation so nodes don’t sit on top of each other
-      const radiusVariation = (Math.random() - 0.5) * 38
-      const heightVariation = (Math.random() - 0.5) * 22
-      const angleVariation = (Math.random() - 0.5) * 0.5
+      const radiusVariation = (Math.random() - 0.5) * 28
+      const heightVariation = (Math.random() - 0.5) * 14
+      const angleVariation = (Math.random() - 0.5) * 0.45
 
       const r = layerRadius + radiusVariation
       const finalAngle = angle + angleVariation
@@ -219,12 +219,12 @@ function calculatePositions(nodes, edges) {
       }
     })
 
-    // Soft center pull only at large distance (globe radius)
+    // Soft center pull (tighter globe)
     nodes.forEach(node => {
       const pos = positions[node.id]
       const dist = Math.sqrt(pos.x * pos.x + pos.z * pos.z)
-      if (dist > 182) {
-        const pullForce = (dist - 182) * 0.01 * cooling
+      if (dist > 128) {
+        const pullForce = (dist - 128) * 0.01 * cooling
         pos.x -= (pos.x / dist) * pullForce
         pos.z -= (pos.z / dist) * pullForce
       }
@@ -368,7 +368,7 @@ function Node({ node, position, size, isVisible }) {
       <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
         <Text
           position={[0, 0, size + 0.5]}
-          fontSize={Math.max(1, size * 0.7)}
+          fontSize={0.35}
           color="#ffffff"
           anchorX="center"
           anchorY="middle"
@@ -468,7 +468,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
       {/* Neural pathway tube: organic curve, variable thickness */}
       <mesh geometry={tubeGeometry}>
         <meshBasicMaterial
-          color="#B3B3B3"
+          color="#808080"
           transparent
           opacity={opacity}
           depthWrite={false}
