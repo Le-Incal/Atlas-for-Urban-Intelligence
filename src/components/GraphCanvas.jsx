@@ -153,20 +153,44 @@ function calculatePositions(nodes, edges) {
   const clusterCount = clusterKeys.length || 1
   const goldenAngle = Math.PI * (3 - Math.sqrt(5))
 
-  // Place cluster centers on a ring so clusters read as separated \"islands\"
-  const clusterRingRadius = Math.max(220, 90 + clusterCount * 10)
+  // Predefined cluster positions based on conceptual X,Y,Z coordinate map
+  // Coordinates are on 0-10 scale, centered at 5, scaled by 30 for world space
+  const PREDEFINED_CLUSTER_POSITIONS = {
+    'structural-L0': { x: 1, y: 6, z: 3 },   // Bio-Physical (gray)
+    'structural-L1': { x: 5, y: 0, z: 0 },   // Observable Reality (steel)
+    'structural-L2': { x: 10, y: 3, z: 4 },  // Cyber-Physical (lime)
+    'structural-L3': { x: 5, y: 5, z: 5 },   // Logic/Knowledge (blue) - center
+    'structural-L4': { x: 10, y: 7, z: 8 },  // Agentic Intelligence (purple)
+    'structural-L5': { x: 3, y: 2, z: 6 },   // Socio-Economic (teal)
+    'structural-L6': { x: 5, y: 5, z: 10 },  // Governance (tan)
+  }
+  const SCALE = 30  // Scale factor for 0-10 → world coordinates
+  const CENTER = 5  // Center of the 0-10 coordinate system
+
   const clusterCenters = {}
   const clusterSizes = {}
   clusterKeys.forEach((key, idx) => {
     clusterSizes[key] = nodesByCluster[key]?.length || 0
-    const angle = idx * goldenAngle
-    const jitter = (rand01(`${key}-j`) - 0.5) * 40
-    const yJitter = (rand01(`${key}-y`) - 0.5) * 60
-    const r = clusterRingRadius + jitter
-    clusterCenters[key] = {
-      x: Math.cos(angle) * r,
-      y: yJitter,
-      z: Math.sin(angle) * r
+
+    // Use predefined position if available, otherwise fall back to ring layout
+    const predefined = PREDEFINED_CLUSTER_POSITIONS[key]
+    if (predefined) {
+      clusterCenters[key] = {
+        x: (predefined.x - CENTER) * SCALE,
+        y: (predefined.y - CENTER) * SCALE,
+        z: (predefined.z - CENTER) * SCALE
+      }
+    } else {
+      // Fallback for cross-layer clusters (capital-value, metabolic-flow, etc.)
+      const angle = idx * goldenAngle
+      const jitter = (rand01(`${key}-j`) - 0.5) * 40
+      const yJitter = (rand01(`${key}-y`) - 0.5) * 60
+      const r = 120 + jitter
+      clusterCenters[key] = {
+        x: Math.cos(angle) * r,
+        y: yJitter,
+        z: Math.sin(angle) * r
+      }
     }
   })
 
@@ -286,26 +310,7 @@ function calculatePositions(nodes, edges) {
     })
   }
 
-  // Layers along Z: Governance (6) at top, Bio-Physical (0) at bottom (matching legend).
-  // Keep X,Y as horizontal spread: current ring is in XZ, move to XY so Z = layer.
-  const layerSpacing = 22
-  nodes.forEach((node) => {
-    const pos = positions[node.id]
-    if (!pos) return
-    const oldZ = pos.z
-    pos.y = oldZ
-    pos.z = node.layer * layerSpacing + (rand01(`${node.id}-z`) - 0.5) * 4
-  })
-
-  // Cluster centers: same remap so hulls/labels sit in XY at middle layer
-  const midZ = 3 * layerSpacing
-  clusterKeys.forEach((key) => {
-    const c = clusterCenters[key]
-    if (!c) return
-    const oldZ = c.z
-    c.y = oldZ
-    c.z = midZ
-  })
+  // Positions are now defined by predefined cluster coordinates - no layer remapping needed
 
   return { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId }
 }
