@@ -113,8 +113,8 @@ function TrackpadControls({ controlsRef }) {
       // Pinch zoom
       const delta = event.deltaY * zoomSpeed
       const newRadius = spherical.radius * (1 + delta)
-      // Clamp distance
-      if (newRadius >= 30 && newRadius <= 300) {
+      // Clamp distance (match OrbitControls maxDistance)
+      if (newRadius >= 40 && newRadius <= 580) {
         spherical.radius = newRadius
       }
     } else {
@@ -147,10 +147,10 @@ function SceneContent({ controlsRef }) {
     <>
       <PerspectiveCamera
         makeDefault
-        position={[0, 0, 160]}
+        position={[0, 0, 260]}
         fov={50}
         near={0.1}
-        far={1000}
+        far={2000}
       />
 
       {/* Lighting - top right to bottom left */}
@@ -166,8 +166,8 @@ function SceneContent({ controlsRef }) {
         enablePan={true}
         enableZoom={false}
         enableRotate={true}
-        minDistance={30}
-        maxDistance={300}
+        minDistance={40}
+        maxDistance={580}
         dampingFactor={0.08}
         enableDamping={true}
         rotateSpeed={1}

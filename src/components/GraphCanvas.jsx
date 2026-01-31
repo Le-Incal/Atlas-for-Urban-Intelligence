@@ -41,10 +41,10 @@ function createOrganicCurve(start, end, edgeId) {
   perp1.normalize()
   const perp2 = new THREE.Vector3().crossVectors(direction, perp1).normalize()
 
-  // Organic bulge + subtle asymmetry (different scale per axis)
-  const bulge = 0.12 + 0.08 * hashEdgeId(edgeId)
-  const asymA = (hashEdgeId(edgeId, 'a') - 0.5) * 0.15
-  const asymB = (hashEdgeId(edgeId, 'b') - 0.5) * 0.1
+  // Gentle curve: slight organic bulge, minimal asymmetry (cleaner lines)
+  const bulge = 0.035 + 0.025 * hashEdgeId(edgeId)
+  const asymA = (hashEdgeId(edgeId, 'a') - 0.5) * 0.04
+  const asymB = (hashEdgeId(edgeId, 'b') - 0.5) * 0.03
   const control = new THREE.Vector3()
     .copy(midpoint)
     .addScaledVector(perp1, length * (bulge + asymA))
@@ -54,7 +54,7 @@ function createOrganicCurve(start, end, edgeId) {
 }
 
 // Variable-radius tube along curve: taper at ends, swell in middle (neural pathway look)
-function createVariableRadiusTube(curve, baseRadius, tubularSegments = 20, radialSegments = 6) {
+function createVariableRadiusTube(curve, baseRadius, tubularSegments = 28, radialSegments = 6) {
   const vertices = []
   const indices = []
   const up = new THREE.Vector3(0, 1, 0)
@@ -69,9 +69,9 @@ function createVariableRadiusTube(curve, baseRadius, tubularSegments = 20, radia
     normal.normalize()
     const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize()
 
-    // Radius: taper at ends, swell in middle (biological asymmetry - slightly fatter past midpoint)
+    // Subtle taper: mostly uniform thickness, gentle swell in middle (cleaner look)
     const swell = Math.sin(Math.PI * u)
-    const taper = 0.35 + 0.65 * swell
+    const taper = 0.78 + 0.22 * swell
     const radius = baseRadius * taper
 
     for (let j = 0; j <= radialSegments; j++) {
@@ -123,21 +123,21 @@ function calculatePositions(nodes, edges) {
     connectionCount[edge.target] = (connectionCount[edge.target] || 0) + 1
   })
 
-  // Layer-clustered layout: each layer in a distinct vertical band + radius ring
+  // Layer-clustered layout: larger globe — distinct Y bands + radius rings
   const totalLayers = 7
-  const baseRadius = 78
+  const baseRadius = 98
 
   Object.keys(nodesByLayer).forEach(layer => {
     const layerNodes = nodesByLayer[layer]
     const layerIndex = parseInt(layer)
 
-    // Strong vertical separation — each layer in its own Y band (L0 bottom, L6 top)
+    // Strong vertical separation — each layer in its own Y band
     const normalizedLayer = (layerIndex - 3) / 3 // -1 to 1
-    const layerY = normalizedLayer * 125
+    const layerY = normalizedLayer * 138
 
-    // Each layer gets its own radius ring: L0 inner, L6 outer (concentric shells)
-    const layerRadiusOffset = (layerIndex - 3) * 20
-    const layerRadius = baseRadius + layerRadiusOffset + Math.cos(normalizedLayer * Math.PI * 0.5) * 10
+    // Each layer gets its own radius ring: L0 inner, L6 outer (globe-like shells)
+    const layerRadiusOffset = (layerIndex - 3) * 26
+    const layerRadius = baseRadius + layerRadiusOffset + Math.cos(normalizedLayer * Math.PI * 0.5) * 12
 
     layerNodes.forEach((node, i) => {
       const goldenAngle = Math.PI * (3 - Math.sqrt(5))
@@ -219,12 +219,12 @@ function calculatePositions(nodes, edges) {
       }
     })
 
-    // Soft center pull only at large distance
+    // Soft center pull only at large distance (globe radius)
     nodes.forEach(node => {
       const pos = positions[node.id]
       const dist = Math.sqrt(pos.x * pos.x + pos.z * pos.z)
-      if (dist > 145) {
-        const pullForce = (dist - 145) * 0.01 * cooling
+      if (dist > 182) {
+        const pullForce = (dist - 182) * 0.01 * cooling
         pos.x -= (pos.x / dist) * pullForce
         pos.z -= (pos.z / dist) * pullForce
       }
@@ -364,15 +364,17 @@ function Node({ node, position, size, isVisible }) {
         />
       </mesh>
 
-      {/* Node initials - 3D text that properly occludes */}
+      {/* Node initials - high-contrast so readable on all layer colors */}
       <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
         <Text
           position={[0, 0, size + 0.5]}
-          fontSize={1.2}
-          color="#00e600"
+          fontSize={Math.max(1, size * 0.7)}
+          color="#ffffff"
           anchorX="center"
           anchorY="middle"
           fontWeight="bold"
+          outlineWidth={0.03}
+          outlineColor="#1a1a1a"
         >
           {node.label.split(' ').map(word => word.charAt(0)).join('')}
         </Text>
@@ -400,14 +402,15 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
   // Determine opacity and base radius (tube will taper/swell from this)
-  let opacity = 0.4
-  let baseRadius = 0.08
+  // Lower default opacity reduces central clutter; focus state stays strong
+  let opacity = 0.16
+  let baseRadius = 0.055
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
     baseRadius = 0.18
   } else if (activeEdgeType || selectedNode) {
-    opacity = 0.1
+    opacity = 0.08
   }
 
   // Organic curve: stable per edge, slight irregularity + asymmetry
@@ -419,14 +422,14 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
   // Variable-radius tube geometry (taper at ends, swell in middle)
   const tubeGeometry = useMemo(() => {
     if (!curve) return null
-    const geom = createVariableRadiusTube(curve, baseRadius, 20, 6)
+    const geom = createVariableRadiusTube(curve, baseRadius, 28, 6)
     return geom
   }, [curve, baseRadius])
 
   // Hover hit area: same curve, larger radius tube (invisible)
   const hitTubeGeometry = useMemo(() => {
     if (!curve) return null
-    return createVariableRadiusTube(curve, 1.2, 12, 6)
+    return createVariableRadiusTube(curve, 1.2, 16, 6)
   }, [curve])
 
   // Start pulse on hover or when signaled from panel (state only for show/hide)
@@ -465,7 +468,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
       {/* Neural pathway tube: organic curve, variable thickness */}
       <mesh geometry={tubeGeometry}>
         <meshBasicMaterial
-          color="#595959"
+          color="#B3B3B3"
           transparent
           opacity={opacity}
           depthWrite={false}
