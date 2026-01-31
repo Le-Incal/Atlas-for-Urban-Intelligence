@@ -13,15 +13,16 @@ function ViewToggle() {
       <div className="relative flex items-center bg-white/90 backdrop-blur border border-gray-200 rounded-full shadow-sm p-1.5">
         {/* Sliding highlight */}
         <motion.div
-          className="absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gray-100 rounded-full"
+          className="absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gray-100 rounded-full shadow-sm"
           initial={false}
           animate={{
             x: isAtlas ? 6 : 'calc(100% + 6px)',
           }}
           transition={{
             type: 'spring',
-            stiffness: 300,
-            damping: 30,
+            stiffness: 180,
+            damping: 22,
+            mass: 1,
           }}
         />
 
