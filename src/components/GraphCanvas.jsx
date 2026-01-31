@@ -260,11 +260,11 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
   // Determine opacity and thickness
   let opacity = 0.4 // Default
-  let tubeRadius = 0.15 // Base thickness
+  let tubeRadius = 0.08 // Base thickness (thinner)
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
-    tubeRadius = 0.25 // Thicker when active
+    tubeRadius = 0.18 // Thicker when active
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.1 // Fade when something else is active
   }
@@ -346,7 +346,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
       <mesh ref={lineRef}>
         <tubeGeometry args={[curve, 1, tubeRadius, 8, false]} />
         <meshBasicMaterial
-          color="#000000"
+          color="#595959"
           transparent
           opacity={opacity}
         />
