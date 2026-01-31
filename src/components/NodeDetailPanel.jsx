@@ -50,9 +50,15 @@ function NodeDetailPanel() {
     return map
   }, [nodes])
 
-  // Handle clicking on a connection to signal it
-  const handleConnectionClick = (edge) => {
+  // Handle hovering on a connection to signal it
+  const clearSignaledEdge = useGraphStore((state) => state.clearSignaledEdge)
+
+  const handleConnectionHover = (edge) => {
     signalEdge(edge)
+  }
+
+  const handleConnectionLeave = () => {
+    clearSignaledEdge()
   }
 
   if (!selectedNode) return null
@@ -169,9 +175,10 @@ function NodeDetailPanel() {
                   {incomingEdges.map(edge => {
                     const sourceNode = nodeMap[edge.source]
                     return (
-                      <button
+                      <div
                         key={edge.id}
-                        onClick={() => handleConnectionClick(edge)}
+                        onMouseEnter={() => handleConnectionHover(edge)}
+                        onMouseLeave={handleConnectionLeave}
                         className="w-full text-left bg-gray-50 rounded-lg p-2
                                    hover:bg-gray-100 transition-colors cursor-pointer
                                    border border-transparent hover:border-gray-200"
@@ -196,7 +203,7 @@ function NodeDetailPanel() {
                           <span className="text-gray-400">→</span>
                           <span className="text-gray-400">this node</span>
                         </div>
-                      </button>
+                      </div>
                     )
                   })}
                 </div>
@@ -216,9 +223,10 @@ function NodeDetailPanel() {
                   {outgoingEdges.map(edge => {
                     const targetNode = nodeMap[edge.target]
                     return (
-                      <button
+                      <div
                         key={edge.id}
-                        onClick={() => handleConnectionClick(edge)}
+                        onMouseEnter={() => handleConnectionHover(edge)}
+                        onMouseLeave={handleConnectionLeave}
                         className="w-full text-left bg-gray-50 rounded-lg p-2
                                    hover:bg-gray-100 transition-colors cursor-pointer
                                    border border-transparent hover:border-gray-200"
@@ -243,7 +251,7 @@ function NodeDetailPanel() {
                           </span>
                           <span>{EDGE_TYPE_NAMES[edge.edgeType]}</span>
                         </div>
-                      </button>
+                      </div>
                     )
                   })}
                 </div>
