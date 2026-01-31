@@ -378,7 +378,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   }, [finalPosition])
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
-  const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
+  const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, (1 - focusAlpha) * 0.5), [baseColor, focusAlpha])
 
   // Create emissive color (slightly brighter version of base)
   const emissiveColor = useMemo(() => {
@@ -925,27 +925,29 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
   }, [clusterKey, setActiveClusterKey])
 
   return (
-    <group position={[center.x, center.y, center.z]}>
-      {/* Soft hull hint */}
-      <mesh>
+    <group position={[center.x, center.y, center.z]} renderOrder={-1}>
+      {/* Soft hull hint - renders behind nodes */}
+      <mesh renderOrder={-1}>
         <sphereGeometry args={[radius, 18, 18]} />
         <meshBasicMaterial
           color="#808080"
           transparent
-          opacity={(isHovered ? 0.08 : 0.04) * alpha}
+          opacity={(isHovered ? 0.06 : 0.03) * alpha}
           depthWrite={false}
+          depthTest={false}
         />
       </mesh>
-      {/* Draggable/clickable target */}
+      {/* Draggable/clickable target - slightly smaller to not block nodes */}
       <mesh
+        renderOrder={-1}
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
-        <sphereGeometry args={[radius + 6, 12, 12]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        <sphereGeometry args={[radius, 12, 12]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} depthTest={false} />
       </mesh>
     </group>
   )
@@ -1082,8 +1084,8 @@ function GraphCanvas() {
         if (dist > maxDist) maxDist = dist
       })
 
-      // Add padding for node sizes
-      bounds[key] = { center, radius: maxDist + 8 }
+      // Minimal padding - hull should be smaller than node spread
+      bounds[key] = { center, radius: Math.max(maxDist * 0.85, 15) }
     })
     return bounds
   }, [clusterCenters, resolvedPositions, clusterOffsets])
@@ -1144,8 +1146,8 @@ function GraphCanvas() {
           (edge.source === selectedNode?.id || edge.target === selectedNode?.id)
             ? 1
             : (focusSet.has(edge.source) && focusSet.has(edge.target))
-              ? 0.45
-              : 0.08
+              ? 0.5
+              : 0.15
         )
 
         // Inter-cluster edge bundling: route via cluster \"ports\" so links form bridges
@@ -1199,7 +1201,7 @@ function GraphCanvas() {
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
-        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
+        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.4)
         const inActiveCluster = !activeClusterKey || (clusterKey === activeClusterKey)
         const isVisible = visibleLayers[node.layer] && inActiveCluster
 
