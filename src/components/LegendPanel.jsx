@@ -146,7 +146,7 @@ function LegendPanel() {
       {/* Layout Section */}
       <div>
         {/* Auto-rotate toggle */}
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-3 px-2">
           <span className="text-[10px] font-medium text-gray-500">Auto-rotate</span>
           <button
             onClick={toggleAutoRotate}
@@ -173,8 +173,8 @@ function LegendPanel() {
           </div>
         )}
 
-        {/* Compact side-by-side Reset/Save buttons */}
-        <div className="flex gap-1.5">
+        {/* Stacked Reset/Save buttons */}
+        <div className="space-y-1.5">
           <button
             onClick={() => {
               setSaveError(null)
@@ -184,9 +184,9 @@ function LegendPanel() {
               clearNodeOverrides()
               loadDefaultLayout()
             }}
-            className="flex-1 px-2 py-1 rounded text-[10px] font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="w-full px-2 py-1.5 rounded-lg bg-gray-50 text-left text-[10px] font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            Reset
+            Reset Layout
           </button>
           <button
             onClick={() => {
@@ -201,9 +201,9 @@ function LegendPanel() {
                 setSaveError(e?.message || 'Save failed.')
               }
             }}
-            className="flex-1 px-2 py-1 rounded text-[10px] font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="w-full px-2 py-1.5 rounded-lg bg-gray-50 text-left text-[10px] font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            Save
+            Save Layout
           </button>
         </div>
 
