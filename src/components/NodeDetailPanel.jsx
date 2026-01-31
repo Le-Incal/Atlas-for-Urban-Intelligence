@@ -37,6 +37,7 @@ const EDGE_TYPE_NAMES = {
 function NodeDetailPanel() {
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+  const signalEdge = useGraphStore((state) => state.signalEdge)
   const { edges } = edgesData
   const { nodes } = nodesData
 
@@ -48,6 +49,11 @@ function NodeDetailPanel() {
     })
     return map
   }, [nodes])
+
+  // Handle clicking on a connection to signal it
+  const handleConnectionClick = (edge) => {
+    signalEdge(edge)
+  }
 
   if (!selectedNode) return null
 
@@ -163,9 +169,12 @@ function NodeDetailPanel() {
                   {incomingEdges.map(edge => {
                     const sourceNode = nodeMap[edge.source]
                     return (
-                      <div
+                      <button
                         key={edge.id}
-                        className="bg-gray-50 rounded-lg p-2"
+                        onClick={() => handleConnectionClick(edge)}
+                        className="w-full text-left bg-gray-50 rounded-lg p-2
+                                   hover:bg-gray-100 transition-colors cursor-pointer
+                                   border border-transparent hover:border-gray-200"
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <div
@@ -187,7 +196,7 @@ function NodeDetailPanel() {
                           <span className="text-gray-400">→</span>
                           <span className="text-gray-400">this node</span>
                         </div>
-                      </div>
+                      </button>
                     )
                   })}
                 </div>
@@ -207,9 +216,12 @@ function NodeDetailPanel() {
                   {outgoingEdges.map(edge => {
                     const targetNode = nodeMap[edge.target]
                     return (
-                      <div
+                      <button
                         key={edge.id}
-                        className="bg-gray-50 rounded-lg p-2"
+                        onClick={() => handleConnectionClick(edge)}
+                        className="w-full text-left bg-gray-50 rounded-lg p-2
+                                   hover:bg-gray-100 transition-colors cursor-pointer
+                                   border border-transparent hover:border-gray-200"
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <div
@@ -231,7 +243,7 @@ function NodeDetailPanel() {
                           </span>
                           <span>{EDGE_TYPE_NAMES[edge.edgeType]}</span>
                         </div>
-                      </div>
+                      </button>
                     )
                   })}
                 </div>

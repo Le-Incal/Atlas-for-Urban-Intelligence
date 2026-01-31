@@ -255,8 +255,11 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
   const setHoveredEdge = useGraphStore((state) => state.setHoveredEdge)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const selectedNode = useGraphStore((state) => state.selectedNode)
+  const signaledEdge = useGraphStore((state) => state.signaledEdge)
+  const clearSignaledEdge = useGraphStore((state) => state.clearSignaledEdge)
 
   const isHovered = hoveredEdge?.id === edge.id
+  const isSignaled = signaledEdge?.id === edge.id
   const isTypeActive = activeEdgeType === edge.edgeType
   const isConnectedToSelected = selectedNode &&
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
@@ -272,14 +275,21 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     opacity = 0.1 // Fade when something else is active
   }
 
-  // Start pulse on hover
+  // Start pulse on hover or when signaled from panel
   useEffect(() => {
-    if (isHovered) {
+    if (isHovered || isSignaled) {
       setPulseProgress(0)
     } else {
       setPulseProgress(null)
     }
-  }, [isHovered])
+  }, [isHovered, isSignaled])
+
+  // Clear signaled edge when pulse completes
+  useEffect(() => {
+    if (isSignaled && pulseProgress !== null && pulseProgress >= 1) {
+      clearSignaledEdge()
+    }
+  }, [isSignaled, pulseProgress, clearSignaledEdge])
 
   // Animate pulse
   useFrame((state, delta) => {
