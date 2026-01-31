@@ -45,8 +45,21 @@ const EDGE_TYPE_NAMES = {
 }
 
 function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
+  const [expandedNodes, setExpandedNodes] = useState(new Set())
   const layerNodes = nodes.filter(n => n.layer === layer)
   const nodeIds = new Set(layerNodes.map(n => n.id))
+
+  const toggleNode = (nodeId) => {
+    setExpandedNodes(prev => {
+      const next = new Set(prev)
+      if (next.has(nodeId)) {
+        next.delete(nodeId)
+      } else {
+        next.add(nodeId)
+      }
+      return next
+    })
+  }
 
   // Calculate layer-level edge stats
   const incomingEdges = edges.filter(e => nodeIds.has(e.target) && !nodeIds.has(e.source))
@@ -153,7 +166,13 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
               {/* Nodes List */}
               <div className="pl-8 space-y-2">
                 {layerNodes.map(node => (
-                  <NodeRow key={node.id} node={node} edges={edges} />
+                  <NodeRow
+                    key={node.id}
+                    node={node}
+                    edges={edges}
+                    isExpanded={expandedNodes.has(node.id)}
+                    onToggle={() => toggleNode(node.id)}
+                  />
                 ))}
               </div>
             </div>
@@ -164,7 +183,7 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
   )
 }
 
-function NodeRow({ node, edges }) {
+function NodeRow({ node, edges, isExpanded, onToggle }) {
   const incomingEdges = edges.filter(e => e.target === node.id)
   const outgoingEdges = edges.filter(e => e.source === node.id)
 
@@ -173,44 +192,70 @@ function NodeRow({ node, edges }) {
   const outTypes = [...new Set(outgoingEdges.map(e => e.edgeType))].sort()
 
   return (
-    <div className="bg-gray-50 rounded-lg p-3">
+    <div
+      className="bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100 transition-colors"
+      onClick={onToggle}
+    >
       <div className="flex items-start gap-3">
+        {/* Expand/collapse indicator */}
+        <svg
+          className={`w-3 h-3 text-gray-400 mt-1 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
         <div
           className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
           style={{ backgroundColor: LAYER_COLORS[node.layer] }}
         />
         <div className="flex-1 min-w-0">
-          <div className="flex items-baseline gap-2 mb-1">
+          <div className="flex items-baseline gap-2">
             <span className="text-sm font-medium text-gray-900">
               {node.label}
             </span>
             <span className="text-[10px] font-mono text-gray-400">
               {node.nodeType}
             </span>
-          </div>
-          <p className="text-xs text-gray-500 leading-relaxed mb-2">
-            {node.description}
-          </p>
-          <div className="flex gap-4 text-[10px]">
-            <div>
-              <span className="text-gray-400">In: </span>
-              <span className="text-green-600 font-medium">{incomingEdges.length}</span>
-              {inTypes.length > 0 && (
-                <span className="text-gray-400 ml-1">
-                  [{inTypes.join(', ')}]
-                </span>
-              )}
-            </div>
-            <div>
-              <span className="text-gray-400">Out: </span>
-              <span className="text-blue-600 font-medium">{outgoingEdges.length}</span>
-              {outTypes.length > 0 && (
-                <span className="text-gray-400 ml-1">
-                  [{outTypes.join(', ')}]
-                </span>
-              )}
+            <div className="flex gap-4 text-[10px] ml-auto">
+              <div>
+                <span className="text-gray-400">In: </span>
+                <span className="text-green-600 font-medium">{incomingEdges.length}</span>
+                {inTypes.length > 0 && (
+                  <span className="text-gray-400 ml-1">
+                    [{inTypes.join(', ')}]
+                  </span>
+                )}
+              </div>
+              <div>
+                <span className="text-gray-400">Out: </span>
+                <span className="text-blue-600 font-medium">{outgoingEdges.length}</span>
+                {outTypes.length > 0 && (
+                  <span className="text-gray-400 ml-1">
+                    [{outTypes.join(', ')}]
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+
+          {/* Expandable description */}
+          <AnimatePresence>
+            {isExpanded && node.description && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="overflow-hidden"
+              >
+                <p className="text-xs text-gray-500 leading-relaxed mt-2 pt-2 border-t border-gray-200">
+                  {node.description}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -245,7 +290,7 @@ function IndexPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="h-screen overflow-y-auto bg-white">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-6 py-4">
@@ -297,7 +342,7 @@ function IndexPage() {
       </div>
 
       {/* Layer Sections */}
-      <main className="max-w-4xl mx-auto">
+      <main className="max-w-4xl mx-auto pb-20">
         {[0, 1, 2, 3, 4, 5, 6].map(layer => (
           <LayerSection
             key={layer}
