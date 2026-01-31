@@ -194,26 +194,36 @@ function calculatePositions(nodes, edges) {
   })
 
   // Initial per-node placement inside its cluster
+  // Sort by importance (scale) - higher scale = more important to survival = higher position
   clusterKeys.forEach((key) => {
-    const clusterNodes = nodesByCluster[key]
+    const clusterNodes = [...nodesByCluster[key]]
     const center = clusterCenters[key]
     const n = clusterNodes.length
 
-    // Cluster radius scales with cluster size
-    const clusterRadius = 18 + Math.sqrt(n) * 7
+    // Sort nodes by scale (importance) - highest first
+    clusterNodes.sort((a, b) => (b.scale ?? 1) - (a.scale ?? 1))
+
+    // Increased cluster radius for more spacing
+    const clusterRadius = 28 + Math.sqrt(n) * 10
+
+    // Vertical spread based on importance ranking
+    const verticalSpread = 50 // Total vertical range within cluster
 
     clusterNodes.forEach((node, i) => {
+      // Horizontal placement using golden angle spiral
       const t = (i + 0.5) / Math.max(1, n)
-      const a = i * goldenAngle + (rand01(`${node.id}-a`) - 0.5) * 0.6
-      const rr = clusterRadius * Math.sqrt(t) + (rand01(`${node.id}-r`) - 0.5) * 10
+      const a = i * goldenAngle + (rand01(`${node.id}-a`) - 0.5) * 0.5
+      const rr = clusterRadius * Math.sqrt(t) + (rand01(`${node.id}-r`) - 0.5) * 12
 
-      // Keep layers lightly separated within the cluster (so L0–L6 still read)
-      const layerYOffset = (node.layer - 3) * 6
-      const yVar = (rand01(`${node.id}-y`) - 0.5) * 6
+      // Vertical position based on importance ranking (higher rank = higher Y)
+      // i=0 is most important (top), i=n-1 is least important (bottom)
+      const importanceRatio = 1 - (i / Math.max(1, n - 1))
+      const yOffset = (importanceRatio - 0.5) * verticalSpread
+      const yVar = (rand01(`${node.id}-y`) - 0.5) * 8
 
       positions[node.id] = {
         x: center.x + Math.cos(a) * rr,
-        y: center.y + layerYOffset + yVar,
+        y: center.y + yOffset + yVar,
         z: center.z + Math.sin(a) * rr,
         connections: connectionCount[node.id] || 1,
         clusterKey: key
@@ -240,8 +250,8 @@ function calculatePositions(nodes, edges) {
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
 
         const sameCluster = posA.clusterKey === posB.clusterKey
-        const threshold = sameCluster ? 20 : 70
-        const strength = sameCluster ? 0.14 : 0.035
+        const threshold = sameCluster ? 30 : 80
+        const strength = sameCluster ? 0.16 : 0.04
 
         if (dist < threshold) {
           const force = (threshold - dist) * strength * cooling
