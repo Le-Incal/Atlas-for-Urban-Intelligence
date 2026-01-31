@@ -240,8 +240,21 @@ function AtlasScene() {
     return () => setControlsRef(null)
   }, [setControlsRef])
 
-  // Load persisted layout (if available)
+  // Load persisted layout: prefer user's localStorage, else server default
   useEffect(() => {
+    const STORAGE_KEY = 'atlas-layout'
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) {
+        const positions = JSON.parse(raw)
+        if (positions && typeof positions === 'object') {
+          setNodeOverrides(positions)
+          return
+        }
+      }
+    } catch {
+      // ignore invalid or missing localStorage
+    }
     let cancelled = false
     ;(async () => {
       try {

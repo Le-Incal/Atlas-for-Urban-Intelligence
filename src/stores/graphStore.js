@@ -26,7 +26,19 @@ const useGraphStore = create((set, get) => ({
   setNodeOverrides: (overrides) => set({ nodeOverrides: overrides || {} }),
   clearNodeOverrides: () => set({ nodeOverrides: {} }),
 
-  // Latest resolved positions (used for admin \"save layout\")
+  // Load default layout from server (used after Reset)
+  loadDefaultLayout: () => {
+    fetch('/api/layout')
+      .then((res) => (res.ok ? res.json() : {}))
+      .then((data) => {
+        const positions = data?.positions
+        if (positions && typeof positions === 'object') get().setNodeOverrides(positions)
+        else get().setNodeOverrides({})
+      })
+      .catch(() => get().setNodeOverrides({}))
+  },
+
+  // Latest resolved positions (used for Save layout to localStorage)
   currentLayoutPositions: null,
   setCurrentLayoutPositions: (positions) => set({ currentLayoutPositions: positions }),
 

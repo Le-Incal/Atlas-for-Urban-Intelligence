@@ -32,10 +32,11 @@ function LegendPanel() {
   const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
   const clearActiveClusterKey = useGraphStore((state) => state.clearActiveClusterKey)
   const clearNodeOverrides = useGraphStore((state) => state.clearNodeOverrides)
+  const loadDefaultLayout = useGraphStore((state) => state.loadDefaultLayout)
   const currentLayoutPositions = useGraphStore((state) => state.currentLayoutPositions)
 
-  const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState(null)
+  const STORAGE_KEY = 'atlas-layout'
 
   return (
     <motion.div
@@ -126,50 +127,34 @@ function LegendPanel() {
         <div className="mt-3 space-y-2">
           <button
             onClick={() => {
-              clearNodeOverrides()
               setSaveError(null)
+              try {
+                localStorage.removeItem(STORAGE_KEY)
+              } catch {}
+              clearNodeOverrides()
+              loadDefaultLayout()
             }}
             className="w-full px-3 py-2 rounded-lg text-xs font-medium bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            Reset layout (local)
+            Reset layout
           </button>
 
           <button
-            disabled={saving}
-            onClick={async () => {
+            onClick={() => {
               setSaveError(null)
-              const password = window.prompt('Admin password to save layout:')
-              if (!password) return
               if (!currentLayoutPositions) {
                 setSaveError('Layout not ready yet.')
                 return
               }
               try {
-                setSaving(true)
-                const res = await fetch('/api/layout', {
-                  method: 'POST',
-                  headers: {
-                    'content-type': 'application/json',
-                    'x-atlas-admin-password': password,
-                  },
-                  body: JSON.stringify({ positions: currentLayoutPositions }),
-                })
-                if (!res.ok) {
-                  const msg = await res.text().catch(() => '')
-                  throw new Error(msg || `Save failed (${res.status})`)
-                }
-                // After save, clear local overrides so we rely on persisted layout
-                clearNodeOverrides()
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(currentLayoutPositions))
               } catch (e) {
                 setSaveError(e?.message || 'Save failed.')
-              } finally {
-                setSaving(false)
               }
             }}
-            className={`w-full px-3 py-2 rounded-lg text-xs font-medium transition-colors
-                        ${saving ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
+            className="w-full px-3 py-2 rounded-lg text-xs font-medium bg-gray-900 text-white hover:bg-gray-800 transition-colors"
           >
-            {saving ? 'Saving…' : 'Save layout (admin)'}
+            Save layout
           </button>
 
           {saveError && (
