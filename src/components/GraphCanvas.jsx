@@ -8,7 +8,7 @@ import edgesData from '../data/edges.json'
 
 // Layer colors
 const LAYER_COLORS = {
-  0: '#2E2F2C',
+  0: '#5D554C',
   1: '#4A5A63',
   2: '#4F7A74',
   3: '#5A658C',

@@ -5,6 +5,10 @@ const useGraphStore = create((set, get) => ({
   currentView: 'landing', // 'landing' | 'atlas'
   setCurrentView: (view) => set({ currentView: view }),
 
+  // Panel state
+  infoPanelOpen: true, // Panel starts open with welcome message
+  setInfoPanelOpen: (open) => set({ infoPanelOpen: open }),
+
   // Node state
   selectedNode: null,
   hoveredNode: null,
@@ -41,6 +45,7 @@ const useGraphStore = create((set, get) => ({
   
   // Reset all filters
   resetFilters: () => set({
+    infoPanelOpen: true,
     selectedNode: null,
     hoveredNode: null,
     hoveredEdge: null,

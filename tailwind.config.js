@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         // Layer colors
-        'layer-0': '#2E2F2C', // Bio-Physical - Deep Slate
+        'layer-0': '#5D554C', // Bio-Physical - Warm Taupe
         'layer-1': '#4A5A63', // Observable Reality - Blue-Gray
         'layer-2': '#4F7A74', // Cyber-Physical - Desaturated Teal
         'layer-3': '#5A658C', // Logic/Knowledge - Muted Indigo

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 import edgesData from '../data/edges.json'
 import nodesData from '../data/nodes.json'
@@ -15,7 +15,7 @@ const LAYER_NAMES = {
 }
 
 const LAYER_COLORS = {
-  0: '#2E2F2C',
+  0: '#5D554C',
   1: '#4A5A63',
   2: '#4F7A74',
   3: '#5A658C',
@@ -34,24 +34,90 @@ const EDGE_TYPE_NAMES = {
   R: 'Reasoning',
 }
 
-function NodeDetailPanel() {
-  const selectedNode = useGraphStore((state) => state.selectedNode)
-  const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+function WelcomeContent() {
+  return (
+    <>
+      {/* Header */}
+      <div className="p-4 border-b border-gray-100">
+        <h2 className="text-lg font-semibold text-gray-900">
+          Welcome to the Atlas
+        </h2>
+        <p className="text-xs text-gray-500 mt-1">
+          Epistemic Knowledge Graph
+        </p>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4">
+        {/* Description */}
+        <div className="mb-6">
+          <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+            About
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            An interactive exploration of the epistemic architecture that binds
+            physical matter to digital intelligence, regulatory constraint to
+            social memory, and human intent to synthetic agency.
+          </p>
+        </div>
+
+        {/* Navigation */}
+        <div className="mb-6">
+          <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+            Navigation
+          </h3>
+          <div className="space-y-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">Drag</span>
+              <span>to rotate the view</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">Scroll</span>
+              <span>to zoom in and out</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">Click</span>
+              <span>on nodes to explore</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div>
+          <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">
+            Structure
+          </h3>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-gray-50 rounded-lg p-2 text-center">
+              <p className="text-lg font-semibold text-gray-900">55</p>
+              <p className="text-[10px] text-gray-500 uppercase">Nodes</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-2 text-center">
+              <p className="text-lg font-semibold text-gray-900">72</p>
+              <p className="text-[10px] text-gray-500 uppercase">Edges</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-2 text-center">
+              <p className="text-lg font-semibold text-gray-900">7</p>
+              <p className="text-[10px] text-gray-500 uppercase">Layers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-gray-100 bg-gray-50/50">
+        <p className="text-[10px] text-gray-400 text-center font-mono">
+          From Parcel to Planet
+        </p>
+      </div>
+    </>
+  )
+}
+
+function NodeContent({ selectedNode, nodeMap, onClose }) {
   const signalEdge = useGraphStore((state) => state.signalEdge)
-  const { edges } = edgesData
-  const { nodes } = nodesData
-
-  // Create node lookup map
-  const nodeMap = useMemo(() => {
-    const map = {}
-    nodes.forEach(node => {
-      map[node.id] = node
-    })
-    return map
-  }, [nodes])
-
-  // Handle hovering on a connection to signal it
   const clearSignaledEdge = useGraphStore((state) => state.clearSignaledEdge)
+  const { edges } = edgesData
 
   const handleConnectionHover = (edge) => {
     signalEdge(edge)
@@ -60,8 +126,6 @@ function NodeDetailPanel() {
   const handleConnectionLeave = () => {
     clearSignaledEdge()
   }
-
-  if (!selectedNode) return null
 
   // Find connected edges
   const connectedEdges = edges.filter(
@@ -73,21 +137,13 @@ function NodeDetailPanel() {
   const outgoingEdges = connectedEdges.filter(e => e.source === selectedNode.id)
 
   return (
-    <motion.div
-      className="fixed left-6 top-32 z-50
-                 glass-panel rounded-2xl w-72 max-h-[75vh] overflow-hidden
-                 flex flex-col"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.3 }}
-    >
+    <>
       {/* Header */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <div 
+              <div
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: LAYER_COLORS[selectedNode.layer] }}
               />
@@ -103,7 +159,7 @@ function NodeDetailPanel() {
             </p>
           </div>
           <button
-            onClick={() => setSelectedNode(null)}
+            onClick={onClose}
             className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,9 +199,9 @@ function NodeDetailPanel() {
             </h3>
             <div className="flex flex-wrap gap-1">
               {selectedNode.clusters.map(cluster => (
-                <span 
+                <span
                   key={cluster}
-                  className="inline-block px-2 py-1 bg-gray-50 border border-gray-200 
+                  className="inline-block px-2 py-1 bg-gray-50 border border-gray-200
                              rounded text-[10px] font-mono text-gray-600"
                 >
                   {cluster}
@@ -267,7 +323,66 @@ function NodeDetailPanel() {
           {selectedNode.id}
         </p>
       </div>
-    </motion.div>
+    </>
+  )
+}
+
+function NodeDetailPanel() {
+  const selectedNode = useGraphStore((state) => state.selectedNode)
+  const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+  const infoPanelOpen = useGraphStore((state) => state.infoPanelOpen)
+  const setInfoPanelOpen = useGraphStore((state) => state.setInfoPanelOpen)
+  const { nodes } = nodesData
+
+  // Create node lookup map
+  const nodeMap = useMemo(() => {
+    const map = {}
+    nodes.forEach(node => {
+      map[node.id] = node
+    })
+    return map
+  }, [nodes])
+
+  const handleClose = () => {
+    setSelectedNode(null)
+    setInfoPanelOpen(false)
+  }
+
+  // Don't render if panel is closed and no node selected
+  if (!infoPanelOpen && !selectedNode) return null
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed left-6 top-32 z-50
+                   glass-panel rounded-2xl w-72 max-h-[75vh] overflow-hidden
+                   flex flex-col"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.3 }}
+      >
+        {selectedNode ? (
+          <NodeContent
+            selectedNode={selectedNode}
+            nodeMap={nodeMap}
+            onClose={handleClose}
+          />
+        ) : (
+          <>
+            <WelcomeContent />
+            <button
+              onClick={handleClose}
+              className="absolute top-4 right-4 p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </>
+        )}
+      </motion.div>
+    </AnimatePresence>
   )
 }
 

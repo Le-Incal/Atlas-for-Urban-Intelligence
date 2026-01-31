@@ -5,7 +5,7 @@
       "label": "Bedrock",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Geological",
       "clusters": ["structural-L0", "metabolic-flow"],
       "description": "The lithospheric substrate upon which all urban form rests. Bedrock determines foundational bearing capacity, excavation feasibility, and seismic transmission characteristics. It is the immutable constraint that precedes all human intention."
@@ -15,7 +15,7 @@
       "label": "Water Tables",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Hydrographic",
       "clusters": ["structural-L0", "risk-resilience"],
       "description": "Subsurface aquifer levels that govern foundation design, basement feasibility, and long-term settlement risk. Rising water tables under climate change threaten existing infrastructure assumptions."
@@ -25,7 +25,7 @@
       "label": "Solar Potential",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Atmospheric",
       "clusters": ["structural-L0", "metabolic-flow"],
       "description": "The incident solar radiation available at a given latitude and microclimate. Determines photovoltaic viability, passive heating loads, and daylight autonomy calculations for building performance."
@@ -35,7 +35,7 @@
       "label": "Material Reservoirs",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Metabolic",
       "clusters": ["structural-L0", "metabolic-flow"],
       "description": "Finite stocks of sand, aggregate, timber, and steel feedstocks. Urban growth depletes planetary material budgets; this node tracks the metabolic throughput required to build and maintain cities."
@@ -45,7 +45,7 @@
       "label": "Hydrography",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Hydrographic",
       "clusters": ["structural-L0", "risk-resilience"],
       "description": "Surface water systems including rivers, watersheds, and flood zones. Historical flood depths establish the 'Baseline City' constraints that precede any development proposal."
@@ -55,7 +55,7 @@
       "label": "Energy Grid",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Atmospheric",
       "clusters": ["structural-L0", "metabolic-flow"],
       "description": "The electrical distribution network that powers all urban computation and actuation. Grid capacity limits determine how many robots, sensors, and data centers a district can metabolically support."
@@ -65,7 +65,7 @@
       "label": "Climate Cycles",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Atmospheric",
       "clusters": ["structural-L0", "risk-resilience"],
       "description": "Long-term atmospheric patterns including temperature trends, precipitation regimes, and extreme weather frequency. These cycles establish the evolutionary logic that shapes urban adaptation."
@@ -75,7 +75,7 @@
       "label": "Soil Chemistry",
       "layer": 0,
       "layerName": "Bio-Physical Foundation",
-      "color": "#2E2F2C",
+      "color": "#5D554C",
       "nodeType": "Geological",
       "clusters": ["structural-L0"],
       "description": "The geochemical composition of urban soils, including contamination legacies from industrial land use. Brownfield remediation costs and ecological restoration potential derive from this substrate."

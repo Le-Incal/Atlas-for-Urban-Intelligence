@@ -86,7 +86,7 @@ function LandingPage() {
           transition={{ delay: 1, duration: 0.8 }}
         >
           {[
-            { color: '#2E2F2C', label: 'L0' },
+            { color: '#5D554C', label: 'L0' },
             { color: '#4A5A63', label: 'L1' },
             { color: '#4F7A74', label: 'L2' },
             { color: '#5A658C', label: 'L3' },

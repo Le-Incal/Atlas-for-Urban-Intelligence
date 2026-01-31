@@ -53,8 +53,6 @@ function Instructions() {
 }
 
 function AtlasScene() {
-  const selectedNode = useGraphStore((state) => state.selectedNode)
-
   return (
     <div className="w-full h-full relative bg-white">
       {/* 3D Canvas */}
@@ -101,7 +99,7 @@ function AtlasScene() {
       {/* UI Overlays */}
       <Title />
       <LegendPanel />
-      {selectedNode && <NodeDetailPanel />}
+      <NodeDetailPanel />
       <Instructions />
     </div>
   )

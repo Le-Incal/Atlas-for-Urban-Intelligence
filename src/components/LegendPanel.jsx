@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 
 const LAYERS = [
-  { id: 0, name: 'Bio-Physical', color: '#2E2F2C', shortName: 'L0' },
+  { id: 0, name: 'Bio-Physical', color: '#5D554C', shortName: 'L0' },
   { id: 1, name: 'Observable Reality', color: '#4A5A63', shortName: 'L1' },
   { id: 2, name: 'Cyber-Physical', color: '#4F7A74', shortName: 'L2' },
   { id: 3, name: 'Logic/Knowledge', color: '#5A658C', shortName: 'L3' },
