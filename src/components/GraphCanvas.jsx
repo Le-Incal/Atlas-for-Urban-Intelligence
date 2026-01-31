@@ -227,10 +227,27 @@ function Node({ node, position, size, isVisible }) {
     }
   }
 
+  // Create a darker version of the base color for the outline
+  const outlineColor = useMemo(() => {
+    const c = baseColor.clone()
+    c.offsetHSL(0, 0, -0.25) // Darken by 25%
+    return c
+  }, [baseColor])
+
   if (!isVisible) return null
 
   return (
     <group position={[position.x, position.y, position.z]}>
+      {/* Dark outline sphere (slightly larger, behind main sphere) */}
+      <mesh scale={1.08}>
+        <sphereGeometry args={[size, 32, 32]} />
+        <meshBasicMaterial
+          color={outlineColor}
+          transparent
+          opacity={0.6}
+        />
+      </mesh>
+
       {/* Glow sphere (larger, semi-transparent) */}
       {(isHovered || isSelected) && (
         <mesh scale={1.25}>
@@ -266,19 +283,6 @@ function Node({ node, position, size, isVisible }) {
           emissiveIntensity={0}
         />
       </mesh>
-
-      {/* Node initial */}
-      <Html
-        center
-        style={{
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        <div className="text-[8px] font-bold" style={{ color: '#00e600' }}>
-          {node.label.charAt(0)}
-        </div>
-      </Html>
     </group>
   )
 }
