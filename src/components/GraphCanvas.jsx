@@ -157,6 +157,7 @@ function calculatePositions(nodes, edges) {
 // Single Node component with gradient shading
 function Node({ node, position, size, isVisible }) {
   const meshRef = useRef()
+  const materialRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setHoveredNode = useGraphStore((state) => state.setHoveredNode)
   const selectedNode = useGraphStore((state) => state.selectedNode)
@@ -167,22 +168,18 @@ function Node({ node, position, size, isVisible }) {
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
 
-  // Create slightly lighter and darker versions for gradient effect
-  const colorLight = useMemo(() => {
+  // Create emissive color (slightly brighter version of base)
+  const emissiveColor = useMemo(() => {
     const c = baseColor.clone()
-    c.offsetHSL(0, -0.05, 0.15) // Slightly lighter, less saturated
+    c.offsetHSL(0, 0.1, 0.2)
     return c
   }, [baseColor])
 
-  const colorDark = useMemo(() => {
-    const c = baseColor.clone()
-    c.offsetHSL(0, 0.05, -0.1) // Slightly darker, more saturated
-    return c
-  }, [baseColor])
-
-  // Scale based on state
+  // Scale and glow based on state
   const targetScale = isSelected ? 1.3 : isHovered ? 1.15 : 1
+  const targetEmissive = isHovered || isSelected ? 0.4 : 0
   const [currentScale, setCurrentScale] = useState(1)
+  const [currentEmissive, setCurrentEmissive] = useState(0)
 
   useFrame(() => {
     if (meshRef.current) {
@@ -191,33 +188,73 @@ function Node({ node, position, size, isVisible }) {
       setCurrentScale(newScale)
       meshRef.current.scale.setScalar(newScale)
     }
+    if (materialRef.current) {
+      // Smooth emissive (glow) transition
+      const newEmissive = THREE.MathUtils.lerp(currentEmissive, targetEmissive, 0.1)
+      setCurrentEmissive(newEmissive)
+      materialRef.current.emissiveIntensity = newEmissive
+    }
   })
+
+  // Handle pointer events more robustly
+  const handlePointerOver = (e) => {
+    e.stopPropagation()
+    setHoveredNode(node)
+    document.body.style.cursor = 'pointer'
+  }
+
+  const handlePointerOut = (e) => {
+    // Only clear if this node is currently hovered
+    if (hoveredNode?.id === node.id) {
+      setHoveredNode(null)
+      document.body.style.cursor = 'default'
+    }
+  }
+
+  const handlePointerLeave = (e) => {
+    // Backup clear on pointer leave
+    if (hoveredNode?.id === node.id) {
+      setHoveredNode(null)
+      document.body.style.cursor = 'default'
+    }
+  }
 
   if (!isVisible) return null
 
   return (
     <group position={[position.x, position.y, position.z]}>
+      {/* Glow sphere (larger, semi-transparent) */}
+      {(isHovered || isSelected) && (
+        <mesh scale={1.3}>
+          <sphereGeometry args={[size, 32, 32]} />
+          <meshBasicMaterial
+            color={emissiveColor}
+            transparent
+            opacity={0.15}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+
       <mesh
         ref={meshRef}
         onClick={(e) => {
           e.stopPropagation()
           setSelectedNode(isSelected ? null : node)
         }}
-        onPointerOver={(e) => {
-          e.stopPropagation()
-          setHoveredNode(node)
-          document.body.style.cursor = 'pointer'
-        }}
-        onPointerOut={() => {
-          setHoveredNode(null)
-          document.body.style.cursor = 'default'
-        }}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+        onPointerLeave={handlePointerLeave}
+        onPointerCancel={handlePointerLeave}
       >
         <sphereGeometry args={[size, 48, 48]} />
         <meshStandardMaterial
+          ref={materialRef}
           color={baseColor}
           roughness={0.75}
           metalness={0}
+          emissive={emissiveColor}
+          emissiveIntensity={0}
         />
       </mesh>
 
