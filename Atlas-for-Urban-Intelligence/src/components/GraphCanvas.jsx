@@ -1088,7 +1088,11 @@ function GraphCanvas() {
           (clusterKeyByNodeId?.[edge.target] === activeClusterKey)
         )
 
-        let isVisible = inVisibleLayers && inActiveCluster
+        // When a node is selected, show edges connecting to its neighborhood (inputs/outputs) even across clusters
+        const edgeInFocusSet = focusSet && focusSet.has(edge.source) && focusSet.has(edge.target)
+        const expandedForFocus = !!selectedNode && edgeInFocusSet
+
+        let isVisible = inVisibleLayers && (inActiveCluster || expandedForFocus)
 
         // Progressive disclosure: primary-only by default (unless filtering/focusing)
         if (
@@ -1165,7 +1169,10 @@ function GraphCanvas() {
 
         const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
         const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
-        const isVisible = visibleLayers[node.layer] && inActiveCluster
+        // When a node is selected, show all connected nodes (inputs/outputs) even if they're in other clusters
+        const inFocusSet = focusSet?.has(node.id)
+        const expandedForFocus = !!selectedNode && inFocusSet
+        const isVisible = visibleLayers[node.layer] && (inActiveCluster || expandedForFocus)
 
         return (
           <Node
