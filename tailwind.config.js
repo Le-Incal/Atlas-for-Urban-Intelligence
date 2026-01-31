@@ -11,9 +11,9 @@ export default {
         'layer-0': '#2E2F2C', // Bio-Physical - Deep Slate
         'layer-1': '#4A5A63', // Observable Reality - Blue-Gray
         'layer-2': '#4F7A74', // Cyber-Physical - Desaturated Teal
-        'layer-3': '#5A5F8C', // Logic/Knowledge - Muted Indigo
-        'layer-4': '#7A6A9E', // Agentic Intelligence - Soft Amethyst
-        'layer-5': '#9B6A5F', // Socio-Economic - Burnt Umber
+        'layer-3': '#5A658C', // Logic/Knowledge - Muted Indigo
+        'layer-4': '#8B6A9E', // Agentic Intelligence - Soft Amethyst
+        'layer-5': '#9C615F', // Socio-Economic - Burnt Umber
         'layer-6': '#B89A5A', // Governance - Warm Brass
         // Accent
         'accent-lime': '#C8E66E',

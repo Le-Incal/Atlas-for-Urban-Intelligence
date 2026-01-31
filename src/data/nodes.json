@@ -248,7 +248,7 @@
       "label": "Zoning Codes",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3", "risk-resilience", "capital-value"],
       "description": "The legal text that defines permitted uses, densities, and building forms for each parcel. Zoning translates political intent into geometric constraint, shaping the physical city."
@@ -258,7 +258,7 @@
       "label": "Constraint Objects",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3"],
       "description": "Computable representations of regulatory limits: FAR calculations, setback distances, height planes, and parking ratios. These objects make law machine-readable and auditable."
@@ -268,7 +268,7 @@
       "label": "FAR Limits",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3", "capital-value"],
       "description": "Floor Area Ratio: the maximum buildable square footage relative to lot size. FAR is the primary lever controlling density and directly determines development economics."
@@ -278,7 +278,7 @@
       "label": "Setbacks",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3"],
       "description": "Required distances between buildings and property lines. Setbacks shape street character, ensure light access, and create the negative space that defines urban form."
@@ -288,7 +288,7 @@
       "label": "Height Limits",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3"],
       "description": "Maximum building heights established by zoning, aviation safety, or view protection. Height limits shape the skyline and distribute vertical development potential across the city."
@@ -298,7 +298,7 @@
       "label": "Void Markers",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Gap",
       "clusters": ["structural-L3", "synthetic-labor"],
       "description": "Identified gaps where existing regulatory frameworks fail to address emerging conditions: robot occupancy standards, drone corridors, autonomous vehicle liability. Voids signal where law must evolve."
@@ -308,7 +308,7 @@
       "label": "Knowledge Graphs",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Structure",
       "clusters": ["structural-L3"],
       "description": "Semantic networks that encode relationships between urban entities: which parcel is governed by which zone, which zone permits which uses, which uses generate which impacts."
@@ -318,7 +318,7 @@
       "label": "Entitlements",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3", "capital-value"],
       "description": "Approved development rights beyond base zoning: variances, conditional use permits, and negotiated bonuses. Entitlements represent stored political capital converted into buildable square footage."
@@ -328,7 +328,7 @@
       "label": "Environmental Review",
       "layer": 3,
       "layerName": "Logic & Knowledge",
-      "color": "#5A5F8C",
+      "color": "#5A658C",
       "nodeType": "Constraint",
       "clusters": ["structural-L3", "risk-resilience"],
       "description": "CEQA, NEPA, and equivalent impact assessment requirements. Environmental review translates ecological and social externalities into procedural constraints on development approval."
@@ -339,7 +339,7 @@
       "label": "Market Agent",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Agent",
       "clusters": ["structural-L4", "capital-value"],
       "description": "A synthetic reasoner optimizing for financial return: IRR, cap rates, and exit valuations. The Market Agent stress-tests development feasibility against capital market conditions and risk-adjusted returns."
@@ -349,7 +349,7 @@
       "label": "Policy Agent",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Agent",
       "clusters": ["structural-L4"],
       "description": "A synthetic reasoner interpreting regulatory intent and procedural constraints. The Policy Agent translates zoning text into actionable guidance and flags compliance risks."
@@ -359,7 +359,7 @@
       "label": "Climate Agent",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Agent",
       "clusters": ["structural-L4", "risk-resilience"],
       "description": "A synthetic reasoner modeling physical climate risk: sea level rise, heat island effects, wildfire exposure, and flood probability. The Climate Agent injects planetary boundaries into feasibility analysis."
@@ -369,7 +369,7 @@
       "label": "Infrastructure Agent",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Agent",
       "clusters": ["structural-L4", "metabolic-flow", "synthetic-labor"],
       "description": "A synthetic reasoner evaluating capacity constraints: utility loads, traffic generation, and service availability. The Infrastructure Agent determines whether the city can metabolically support proposed development."
@@ -379,7 +379,7 @@
       "label": "Community Agent",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Agent",
       "clusters": ["structural-L4", "synthetic-labor"],
       "description": "A synthetic reasoner representing stakeholder interests: displacement risk, affordability impacts, and neighborhood character. The Community Agent ensures social friction enters the feasibility calculation."
@@ -389,7 +389,7 @@
       "label": "Consensus Artifacts",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Output",
       "clusters": ["structural-L4"],
       "description": "The documented agreements and disagreements produced by agent deliberation. Consensus artifacts make the reasoning process transparent and auditable, exposing which trade-offs were accepted."
@@ -399,7 +399,7 @@
       "label": "Probability Cones",
       "layer": 4,
       "layerName": "Agentic Intelligence",
-      "color": "#7A6A9E",
+      "color": "#8B6A9E",
       "nodeType": "Output",
       "clusters": ["structural-L4"],
       "description": "Spatial visualizations of scenario uncertainty. Where agents disagree, probability cones show the range of possible futures, making plural outcomes legible rather than collapsing to false precision."
@@ -410,7 +410,7 @@
       "label": "Stakeholders",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Human",
       "clusters": ["structural-L5", "synthetic-labor"],
       "description": "The human actors who benefit from or bear the costs of urban change: residents, workers, business owners, and caregivers. Stakeholder mapping makes equity impacts explicit and traceable."
@@ -420,7 +420,7 @@
       "label": "Social Friction Index",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Metric",
       "clusters": ["structural-L5", "risk-resilience"],
       "description": "A composite measure of community resistance to change, derived from historical trauma, displacement patterns, and trust deficits. High friction signals that density acceptance will be low regardless of technical feasibility."
@@ -430,7 +430,7 @@
       "label": "Historical Shocks",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Memory",
       "clusters": ["structural-L5", "risk-resilience"],
       "description": "Past traumatic events that shape present perception: redlining, urban renewal, foreclosure crises, and industrial plant closures. These memories persist in community consciousness long after the events themselves."
@@ -440,7 +440,7 @@
       "label": "Demography",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Data",
       "clusters": ["structural-L5"],
       "description": "Population structure by age, household composition, and lifecycle stage. Demographic trends determine housing demand, service needs, and political constituency formation."
@@ -450,7 +450,7 @@
       "label": "Market Potential",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Data",
       "clusters": ["structural-L5", "capital-value"],
       "description": "Effective demand for space: absorption rates, rent tolerance, and buyer depth. Market potential translates demographic and economic conditions into development feasibility signals."
@@ -460,7 +460,7 @@
       "label": "Income Distribution",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Data",
       "clusters": ["structural-L5"],
       "description": "The spread of household incomes across a geography. Income distribution determines affordability thresholds and reveals who can access housing produced by the market."
@@ -470,7 +470,7 @@
       "label": "Economic Memory",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Memory",
       "clusters": ["structural-L5", "capital-value"],
       "description": "Institutional knowledge of past market cycles: boom-bust patterns, rent curves, and investment returns. Economic memory shapes lender behavior, investor appetite, and risk perception."
@@ -480,7 +480,7 @@
       "label": "Fear/Preparation Index",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Metric",
       "clusters": ["structural-L5", "risk-resilience"],
       "description": "A psychographic measure of collective anxiety derived from historical trauma. High fear dampens risk-taking and density acceptance; high preparation indicates adaptive capacity."
@@ -490,7 +490,7 @@
       "label": "Displacement Risk",
       "layer": 5,
       "layerName": "Socio-Economic Memory",
-      "color": "#9B6A5F",
+      "color": "#9C615F",
       "nodeType": "Metric",
       "clusters": ["structural-L5", "synthetic-labor"],
       "description": "The probability that existing residents or businesses will be involuntarily displaced by rising costs or changing land use. Displacement risk is the social cost most frequently externalized by development."

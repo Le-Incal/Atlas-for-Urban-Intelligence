@@ -89,9 +89,9 @@ function LandingPage() {
             { color: '#2E2F2C', label: 'L0' },
             { color: '#4A5A63', label: 'L1' },
             { color: '#4F7A74', label: 'L2' },
-            { color: '#5A5F8C', label: 'L3' },
-            { color: '#7A6A9E', label: 'L4' },
-            { color: '#9B6A5F', label: 'L5' },
+            { color: '#5A658C', label: 'L3' },
+            { color: '#8B6A9E', label: 'L4' },
+            { color: '#9C615F', label: 'L5' },
             { color: '#B89A5A', label: 'L6' },
           ].map((layer, i) => (
             <motion.div

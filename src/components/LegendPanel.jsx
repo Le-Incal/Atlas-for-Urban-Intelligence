@@ -6,9 +6,9 @@ const LAYERS = [
   { id: 0, name: 'Bio-Physical', color: '#2E2F2C', shortName: 'L0' },
   { id: 1, name: 'Observable Reality', color: '#4A5A63', shortName: 'L1' },
   { id: 2, name: 'Cyber-Physical', color: '#4F7A74', shortName: 'L2' },
-  { id: 3, name: 'Logic/Knowledge', color: '#5A5F8C', shortName: 'L3' },
-  { id: 4, name: 'Agentic Intelligence', color: '#7A6A9E', shortName: 'L4' },
-  { id: 5, name: 'Socio-Economic', color: '#9B6A5F', shortName: 'L5' },
+  { id: 3, name: 'Logic/Knowledge', color: '#5A658C', shortName: 'L3' },
+  { id: 4, name: 'Agentic Intelligence', color: '#8B6A9E', shortName: 'L4' },
+  { id: 5, name: 'Socio-Economic', color: '#9C615F', shortName: 'L5' },
   { id: 6, name: 'Governance', color: '#B89A5A', shortName: 'L6' },
 ]
 

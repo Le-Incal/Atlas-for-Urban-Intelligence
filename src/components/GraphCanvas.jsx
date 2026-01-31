@@ -11,9 +11,9 @@ const LAYER_COLORS = {
   0: '#2E2F2C',
   1: '#4A5A63',
   2: '#4F7A74',
-  3: '#5A5F8C',
-  4: '#7A6A9E',
-  5: '#9B6A5F',
+  3: '#5A658C',
+  4: '#8B6A9E',
+  5: '#9C615F',
   6: '#B89A5A',
 }
 
@@ -214,15 +214,10 @@ function Node({ node, position, size, isVisible }) {
         }}
       >
         <sphereGeometry args={[size, 48, 48]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color={baseColor}
-          roughness={0.6}
-          metalness={0.05}
-          clearcoat={0.1}
-          clearcoatRoughness={0.8}
-          envMapIntensity={0.3}
-          transparent
-          opacity={0.95}
+          roughness={0.3}
+          metalness={0.1}
         />
       </mesh>
 
