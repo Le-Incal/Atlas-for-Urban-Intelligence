@@ -14,7 +14,11 @@ const useGraphStore = create((set, get) => ({
   hoveredNode: null,
   hoveredCluster: null,
   mousePosition: { x: 0, y: 0 },
-  setSelectedNode: (node) => set({ selectedNode: node }),
+  setSelectedNode: (node) => set({
+    selectedNode: node,
+    // Reopen panel when selecting a node
+    ...(node ? { infoPanelOpen: true } : {})
+  }),
   setHoveredNode: (node) => set({ hoveredNode: node }),
   setHoveredCluster: (cluster) => set({ hoveredCluster: cluster }),
   setMousePosition: (pos) => set({ mousePosition: pos }),
