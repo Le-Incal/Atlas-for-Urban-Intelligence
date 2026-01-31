@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
+import ViewToggle from './ViewToggle'
 import nodesData from '../data/nodes.json'
 import edgesData from '../data/edges.json'
 
@@ -263,7 +264,6 @@ function NodeRow({ node, edges, isExpanded, onToggle }) {
 }
 
 function IndexPage() {
-  const setCurrentView = useGraphStore((state) => state.setCurrentView)
   const [expandedLayers, setExpandedLayers] = useState(new Set())
 
   const nodes = Array.isArray(nodesData) ? nodesData : (nodesData?.nodes ?? [])
@@ -317,13 +317,6 @@ function IndexPage() {
               >
                 Collapse all
               </button>
-              <button
-                onClick={() => setCurrentView('atlas')}
-                className="ml-4 px-4 py-1.5 rounded-full bg-gray-900 text-white text-xs font-medium
-                           hover:bg-gray-800 transition-colors"
-              >
-                Back to Atlas
-              </button>
             </div>
           </div>
         </div>
@@ -355,18 +348,8 @@ function IndexPage() {
         ))}
       </main>
 
-      {/* Footer Toggle */}
-      <div className="sticky bottom-0 py-4 flex justify-center">
-        <button
-          onClick={() => setCurrentView('atlas')}
-          className="px-5 py-2 rounded-full bg-white/90 backdrop-blur
-                     border border-gray-200 shadow-sm
-                     text-xs font-medium text-gray-600 hover:bg-white hover:border-gray-300
-                     transition-all"
-        >
-          View Atlas
-        </button>
-      </div>
+      {/* View Toggle */}
+      <ViewToggle />
     </div>
   )
 }

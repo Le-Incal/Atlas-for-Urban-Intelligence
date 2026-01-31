@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import GraphCanvas from './GraphCanvas'
 import LegendPanel from './LegendPanel'
 import NodeDetailPanel from './NodeDetailPanel'
+import ViewToggle from './ViewToggle'
 import useGraphStore from '../stores/graphStore'
 
 function LoadingFallback() {
@@ -324,18 +325,7 @@ function AtlasScene() {
       <LegendPanel />
       <NodeDetailPanel />
       <CursorTooltip />
-
-      {/* Index Toggle */}
-      <button
-        onClick={() => setCurrentView('index')}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50
-                   px-5 py-2 rounded-full bg-white/90 backdrop-blur
-                   border border-gray-200 shadow-sm
-                   text-xs font-medium text-gray-600 hover:bg-white hover:border-gray-300
-                   transition-all"
-      >
-        View Index
-      </button>
+      <ViewToggle />
     </div>
   )
 }
