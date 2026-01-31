@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 import edgesData from '../data/edges.json'
+import nodesData from '../data/nodes.json'
 
 const LAYER_NAMES = {
   0: 'Bio-Physical Foundation',
@@ -37,6 +38,16 @@ function NodeDetailPanel() {
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const { edges } = edgesData
+  const { nodes } = nodesData
+
+  // Create node lookup map
+  const nodeMap = useMemo(() => {
+    const map = {}
+    nodes.forEach(node => {
+      map[node.id] = node
+    })
+    return map
+  }, [nodes])
 
   if (!selectedNode) return null
 
@@ -138,36 +149,47 @@ function NodeDetailPanel() {
             <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">
               Connections ({connectedEdges.length})
             </h3>
-            
+
             {/* Incoming */}
             {incomingEdges.length > 0 && (
-              <div className="mb-4">
-                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1">
+              <div className="mb-5">
+                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1 font-medium">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                   </svg>
-                  Incoming
+                  Incoming ({incomingEdges.length})
                 </p>
-                <div className="space-y-1">
-                  {incomingEdges.slice(0, 5).map(edge => (
-                    <div 
-                      key={edge.id}
-                      className="flex items-center gap-2 text-xs text-gray-600 py-1"
-                    >
-                      <span className="font-mono text-gray-400 w-4">
-                        {edge.edgeType}
-                      </span>
-                      <span className="text-gray-400">←</span>
-                      <span className="truncate flex-1">
-                        {edge.source.replace('l', 'L').replace(/-/g, ' ')}
-                      </span>
-                    </div>
-                  ))}
-                  {incomingEdges.length > 5 && (
-                    <p className="text-[10px] text-gray-400">
-                      +{incomingEdges.length - 5} more
-                    </p>
-                  )}
+                <div className="space-y-2">
+                  {incomingEdges.map(edge => {
+                    const sourceNode = nodeMap[edge.source]
+                    return (
+                      <div
+                        key={edge.id}
+                        className="bg-gray-50 rounded-lg p-2"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <div
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: LAYER_COLORS[sourceNode?.layer] }}
+                          />
+                          <span className="text-xs font-medium text-gray-700 truncate flex-1">
+                            {sourceNode?.label || edge.source}
+                          </span>
+                          <span className="text-[10px] font-mono text-gray-400">
+                            L{sourceNode?.layer}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                          <span className="font-mono bg-gray-200 px-1 rounded">
+                            {edge.edgeType}
+                          </span>
+                          <span>{EDGE_TYPE_NAMES[edge.edgeType]}</span>
+                          <span className="text-gray-400">→</span>
+                          <span className="text-gray-400">this node</span>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )}
@@ -175,32 +197,43 @@ function NodeDetailPanel() {
             {/* Outgoing */}
             {outgoingEdges.length > 0 && (
               <div>
-                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1">
+                <p className="text-[10px] text-gray-400 mb-2 flex items-center gap-1 font-medium">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                   </svg>
-                  Outgoing
+                  Outgoing ({outgoingEdges.length})
                 </p>
-                <div className="space-y-1">
-                  {outgoingEdges.slice(0, 5).map(edge => (
-                    <div 
-                      key={edge.id}
-                      className="flex items-center gap-2 text-xs text-gray-600 py-1"
-                    >
-                      <span className="font-mono text-gray-400 w-4">
-                        {edge.edgeType}
-                      </span>
-                      <span className="text-gray-400">→</span>
-                      <span className="truncate flex-1">
-                        {edge.target.replace('l', 'L').replace(/-/g, ' ')}
-                      </span>
-                    </div>
-                  ))}
-                  {outgoingEdges.length > 5 && (
-                    <p className="text-[10px] text-gray-400">
-                      +{outgoingEdges.length - 5} more
-                    </p>
-                  )}
+                <div className="space-y-2">
+                  {outgoingEdges.map(edge => {
+                    const targetNode = nodeMap[edge.target]
+                    return (
+                      <div
+                        key={edge.id}
+                        className="bg-gray-50 rounded-lg p-2"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <div
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: LAYER_COLORS[targetNode?.layer] }}
+                          />
+                          <span className="text-xs font-medium text-gray-700 truncate flex-1">
+                            {targetNode?.label || edge.target}
+                          </span>
+                          <span className="text-[10px] font-mono text-gray-400">
+                            L{targetNode?.layer}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                          <span className="text-gray-400">this node</span>
+                          <span className="text-gray-400">→</span>
+                          <span className="font-mono bg-gray-200 px-1 rounded">
+                            {edge.edgeType}
+                          </span>
+                          <span>{EDGE_TYPE_NAMES[edge.edgeType]}</span>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )}
