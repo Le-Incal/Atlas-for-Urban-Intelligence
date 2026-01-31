@@ -17,7 +17,7 @@ function LoadingFallback() {
   )
 }
 
-function BackButton() {
+function Title() {
   const setCurrentView = useGraphStore((state) => state.setCurrentView)
   const resetFilters = useGraphStore((state) => state.resetFilters)
 
@@ -29,28 +29,16 @@ function BackButton() {
   return (
     <button
       onClick={handleBack}
-      className="fixed top-6 left-6 z-50 glass-panel px-4 py-2 rounded-full
-                 flex items-center gap-2 text-sm font-medium text-gray-700
-                 hover:bg-white/90 transition-all duration-200"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 text-center cursor-pointer
+                 hover:opacity-70 transition-opacity duration-200"
     >
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-      </svg>
-      Back
-    </button>
-  )
-}
-
-function Title() {
-  return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
       <h1 className="text-sm font-medium text-gray-900 tracking-wide">
         Atlas for Urban Intelligence
       </h1>
       <p className="text-xs text-gray-400 font-mono mt-1">
         Epistemic Knowledge Graph
       </p>
-    </div>
+    </button>
   )
 }
 
@@ -110,7 +98,6 @@ function AtlasScene() {
       </Suspense>
 
       {/* UI Overlays */}
-      <BackButton />
       <Title />
       <LegendPanel />
       {selectedNode && <NodeDetailPanel />}
