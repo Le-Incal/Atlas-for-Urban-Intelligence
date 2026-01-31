@@ -378,7 +378,20 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   }, [finalPosition])
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
-  const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, (1 - focusAlpha) * 0.5), [baseColor, focusAlpha])
+  // Primary nodes (scale >= 1.0) are darker, secondary (scale < 1.0) are much lighter
+  const isPrimary = (node.scale ?? 1.0) >= 1.0
+  const displayColor = useMemo(() => {
+    const c = baseColor.clone()
+    if (isPrimary) {
+      // Darken and saturate primary nodes significantly
+      c.offsetHSL(0, 0.15, -0.25)
+    } else {
+      // Lighten and desaturate secondary nodes significantly
+      c.offsetHSL(0, -0.3, 0.35)
+    }
+    // Apply focus alpha
+    return c.lerp(WHITE, (1 - focusAlpha) * 0.5)
+  }, [baseColor, focusAlpha, isPrimary])
 
   // Create emissive color (slightly brighter version of base)
   const emissiveColor = useMemo(() => {
@@ -791,8 +804,8 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   )
 }
 
-// Draggable Cluster Hull - grab and drag to move all nodes in the cluster
-function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setActiveClusterKey }) {
+// Draggable Cluster Hull - grab and drag to move all nodes in the cluster (no click-to-filter)
+function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
@@ -915,15 +928,6 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
     }
   }, [gl, setHoveredCluster])
 
-  const handleClick = useCallback((e) => {
-    // Don't stop propagation - let nodes receive clicks too
-    // Only toggle cluster filter if we didn't drag
-    if (!didDragRef.current) {
-      setActiveClusterKey(clusterKey)
-    }
-    didDragRef.current = false
-  }, [clusterKey, setActiveClusterKey])
-
   return (
     <group position={[center.x, center.y, center.z]} renderOrder={-1}>
       {/* Soft hull hint - renders behind nodes */}
@@ -937,14 +941,13 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
           depthTest={false}
         />
       </mesh>
-      {/* Draggable/clickable target - slightly smaller to not block nodes */}
+      {/* Draggable target - clusters are for grouping and moving only (no click-to-filter) */}
       <mesh
         renderOrder={-1}
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
-        onClick={handleClick}
       >
         <sphereGeometry args={[radius, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} depthTest={false} />
@@ -964,7 +967,6 @@ function GraphCanvas() {
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
   const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
-  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
   const setCurrentLayoutPositions = useGraphStore((state) => state.setCurrentLayoutPositions)
   const clusterOffsets = useGraphStore((state) => state.clusterOffsets)
@@ -1096,7 +1098,7 @@ function GraphCanvas() {
 
   return (
     <group>
-      {/* Cluster labels + soft hulls (click to isolate, drag to move) */}
+      {/* Cluster hulls (drag to move - no click-to-filter) */}
       {actualClusterBounds && Object.entries(actualClusterBounds).map(([key, { center, radius }]) => {
         const count = clusterSizes?.[key] ?? 0
         const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
@@ -1108,7 +1110,6 @@ function GraphCanvas() {
             radius={radius}
             count={count}
             alpha={alpha}
-            setActiveClusterKey={setActiveClusterKey}
           />
         )
       })}

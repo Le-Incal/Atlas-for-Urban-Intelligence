@@ -256,6 +256,7 @@ function AtlasScene() {
   const controlsRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setActiveEdgeType = useGraphStore((state) => state.setActiveEdgeType)
+  const clearActiveClusterKey = useGraphStore((state) => state.clearActiveClusterKey)
   const setCurrentView = useGraphStore((state) => state.setCurrentView)
   const setControlsRef = useGraphStore((state) => state.setControlsRef)
   const setNodeOverrides = useGraphStore((state) => state.setNodeOverrides)
@@ -313,6 +314,7 @@ function AtlasScene() {
             onPointerMissed={() => {
               setSelectedNode(null)
               setActiveEdgeType(null)
+              clearActiveClusterKey()
             }}
           >
             <SceneContent controlsRef={controlsRef} />

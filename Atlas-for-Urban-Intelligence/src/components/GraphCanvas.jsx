@@ -756,8 +756,8 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   )
 }
 
-// Draggable Cluster Hull - grab and drag to move all nodes in the cluster
-function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setActiveClusterKey }) {
+// Draggable Cluster Hull - grab and drag to move all nodes in the cluster (no click-to-filter)
+function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
@@ -880,15 +880,6 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
     }
   }, [gl, setHoveredCluster])
 
-  const handleClick = useCallback((e) => {
-    // Don't stop propagation - let nodes receive clicks too
-    // Only toggle cluster filter if we didn't drag
-    if (!didDragRef.current) {
-      setActiveClusterKey(clusterKey)
-    }
-    didDragRef.current = false
-  }, [clusterKey, setActiveClusterKey])
-
   return (
     <group position={[center.x, center.y, center.z]}>
       {/* Soft hull hint */}
@@ -901,13 +892,12 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
           depthWrite={false}
         />
       </mesh>
-      {/* Draggable/clickable target */}
+      {/* Draggable target - clusters are for grouping and moving only (no click-to-filter) */}
       <mesh
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
-        onClick={handleClick}
       >
         <sphereGeometry args={[radius + 6, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -927,7 +917,6 @@ function GraphCanvas() {
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
   const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
-  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
   const setCurrentLayoutPositions = useGraphStore((state) => state.setCurrentLayoutPositions)
   const clusterOffsets = useGraphStore((state) => state.clusterOffsets)
@@ -1067,7 +1056,6 @@ function GraphCanvas() {
             radius={radius}
             count={count}
             alpha={alpha}
-            setActiveClusterKey={setActiveClusterKey}
           />
         )
       })}
