@@ -370,6 +370,18 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
   const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
 
+  // Calculate pulse position along the edge
+  const pulsePosition = useMemo(() => {
+    if (pulseProgress === null || !sourcePos || !targetPos) return null
+
+    const start = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
+    const end = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
+
+    // Interpolate position along the edge based on progress
+    const pos = new THREE.Vector3().lerpVectors(start, end, pulseProgress)
+    return [pos.x, pos.y, pos.z]
+  }, [pulseProgress, sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z])
+
   return (
     <group>
       {/* Main edge cylinder */}
@@ -386,17 +398,14 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         />
       </mesh>
 
-      {/* Pulse effect */}
-      {pulseProgress !== null && (
-        <mesh
-          position={cylinderProps.position}
-          rotation={cylinderProps.rotation}
-        >
-          <cylinderGeometry args={[0.3, 0.3, cylinderProps.length * 0.15, 8]} />
+      {/* Pulse effect - sphere that travels along the edge */}
+      {pulseProgress !== null && pulsePosition && (
+        <mesh position={pulsePosition}>
+          <sphereGeometry args={[0.5, 16, 16]} />
           <meshBasicMaterial
             color={sourceColor}
             transparent
-            opacity={0.6 * (1 - pulseProgress)}
+            opacity={0.8}
             depthWrite={false}
           />
         </mesh>
