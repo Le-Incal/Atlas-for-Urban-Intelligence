@@ -68,8 +68,8 @@ function NodeDetailPanel() {
 
   return (
     <motion.div
-      className="fixed left-6 top-6 z-50
-                 glass-panel rounded-2xl w-72 max-h-[85vh] overflow-hidden
+      className="fixed left-6 top-20 z-50
+                 glass-panel rounded-2xl w-72 max-h-[80vh] overflow-hidden
                  flex flex-col"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
