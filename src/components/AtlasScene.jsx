@@ -43,16 +43,6 @@ function Title() {
   )
 }
 
-function Instructions() {
-  return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
-      <p className="text-xs text-gray-400 font-mono">
-        Drag to rotate · Scroll to zoom · Click nodes to explore
-      </p>
-    </div>
-  )
-}
-
 function CursorTooltip() {
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
   const mousePosition = useGraphStore((state) => state.mousePosition)
@@ -198,7 +188,6 @@ function AtlasScene() {
       <LegendPanel />
       <NodeDetailPanel />
       <CursorTooltip />
-      <Instructions />
     </div>
   )
 }
