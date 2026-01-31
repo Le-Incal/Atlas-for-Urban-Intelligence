@@ -254,6 +254,7 @@ function SceneContent({ controlsRef }) {
 function AtlasScene() {
   const controlsRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+  const setActiveEdgeType = useGraphStore((state) => state.setActiveEdgeType)
   const setControlsRef = useGraphStore((state) => state.setControlsRef)
   const setNodeOverrides = useGraphStore((state) => state.setNodeOverrides)
 
@@ -307,7 +308,10 @@ function AtlasScene() {
             }}
             dpr={[1, 2]}
             style={{ background: '#FFFFFF', width: '100%', height: '100%', display: 'block' }}
-            onPointerMissed={() => setSelectedNode(null)}
+            onPointerMissed={() => {
+              setSelectedNode(null)
+              setActiveEdgeType(null)
+            }}
           >
             <SceneContent controlsRef={controlsRef} />
           </Canvas>
