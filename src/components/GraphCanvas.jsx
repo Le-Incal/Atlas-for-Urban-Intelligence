@@ -344,7 +344,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     <group>
       {/* Main edge - tube geometry for visible thickness */}
       <mesh ref={lineRef}>
-        <tubeGeometry args={[curve, 1, tubeRadius, 8, false]} />
+        <tubeGeometry args={[curve, 20, tubeRadius, 8, false]} />
         <meshBasicMaterial
           color="#595959"
           transparent
@@ -357,7 +357,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         const segCurve = new THREE.CatmullRomCurve3([seg.p1, seg.p2])
         return (
           <mesh key={i}>
-            <tubeGeometry args={[segCurve, 1, 0.4, 8, false]} />
+            <tubeGeometry args={[segCurve, 4, 0.4, 8, false]} />
             <meshBasicMaterial
               color={sourceColor}
               transparent
@@ -375,7 +375,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[curve, 1, 1.5, 8, false]} />
+        <tubeGeometry args={[curve, 20, 1.5, 8, false]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
     </group>
