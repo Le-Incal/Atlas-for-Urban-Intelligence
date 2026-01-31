@@ -137,7 +137,7 @@ function TrackpadControls({ controlsRef }) {
       const newRadius = oldRadius * (1 + delta)
 
       // Clamp distance (match OrbitControls)
-      if (newRadius >= 40 && newRadius <= 580) {
+      if (newRadius >= 40 && newRadius <= 1200) {
         // Zoom-to-cursor: move target toward the point under the pointer
         const dom = gl.domElement
         const rect = dom.getBoundingClientRect()
@@ -226,7 +226,7 @@ function SceneContent({ controlsRef }) {
         enableZoom={false}
         enableRotate={true}
         minDistance={40}
-        maxDistance={580}
+        maxDistance={1200}
         dampingFactor={0.08}
         enableDamping={true}
         rotateSpeed={1}
