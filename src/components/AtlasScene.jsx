@@ -181,7 +181,7 @@ function SceneContent({ controlsRef }) {
     <>
       <PerspectiveCamera
         makeDefault
-        position={[180, 120, 180]}
+        position={[320, 200, 320]}
         fov={50}
         near={0.1}
         far={2000}
