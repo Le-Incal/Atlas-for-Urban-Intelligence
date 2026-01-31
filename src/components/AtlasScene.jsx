@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect, useCallback, useState } from 'react'
+import React, { Suspense, useRef, useEffect, useCallback } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
@@ -65,15 +65,15 @@ function CursorTooltip() {
   )
 }
 
-// Auto-rotate on load (stops when user interacts)
-function AutoRotate({ controlsRef, enabled }) {
+// Continuous slow auto-rotate
+function AutoRotate({ controlsRef }) {
   const { camera } = useThree()
 
   useFrame(() => {
-    if (!enabled || !controlsRef.current) return
+    if (!controlsRef.current) return
 
     // Slow rotation from right to left (positive theta)
-    const rotateSpeed = 0.001
+    const rotateSpeed = 0.0008
 
     const offset = new THREE.Vector3().subVectors(camera.position, controlsRef.current.target)
     const spherical = new THREE.Spherical().setFromVector3(offset)
@@ -91,13 +91,12 @@ function AutoRotate({ controlsRef, enabled }) {
 }
 
 // Custom trackpad handler for two-finger rotate + pinch zoom (simultaneous)
-function TrackpadControls({ controlsRef, onInteraction }) {
+function TrackpadControls({ controlsRef }) {
   const { camera, gl } = useThree()
 
   const handleWheel = useCallback((event) => {
     if (!controlsRef.current) return
     event.preventDefault()
-    if (onInteraction) onInteraction()
 
     const rotateSpeed = 0.005
     const zoomSpeed = 0.01
@@ -132,7 +131,7 @@ function TrackpadControls({ controlsRef, onInteraction }) {
     camera.lookAt(controlsRef.current.target)
 
     controlsRef.current.update()
-  }, [camera, controlsRef, onInteraction])
+  }, [camera, controlsRef])
 
   useEffect(() => {
     const domElement = gl.domElement
@@ -144,12 +143,6 @@ function TrackpadControls({ controlsRef, onInteraction }) {
 }
 
 function SceneContent({ controlsRef }) {
-  const [autoRotate, setAutoRotate] = useState(true)
-
-  const stopAutoRotate = useCallback(() => {
-    setAutoRotate(false)
-  }, [])
-
   return (
     <>
       <PerspectiveCamera
@@ -185,14 +178,13 @@ function SceneContent({ controlsRef }) {
           MIDDLE: THREE.MOUSE.DOLLY,
           RIGHT: THREE.MOUSE.PAN
         }}
-        onStart={stopAutoRotate}
       />
 
-      {/* Auto-rotate on load */}
-      <AutoRotate controlsRef={controlsRef} enabled={autoRotate} />
+      {/* Continuous slow auto-rotate */}
+      <AutoRotate controlsRef={controlsRef} />
 
       {/* Custom trackpad: two-finger drag = rotate, pinch = zoom */}
-      <TrackpadControls controlsRef={controlsRef} onInteraction={stopAutoRotate} />
+      <TrackpadControls controlsRef={controlsRef} />
 
       {/* Graph */}
       <GraphCanvas />
