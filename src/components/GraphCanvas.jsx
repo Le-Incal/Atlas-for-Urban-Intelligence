@@ -761,6 +761,8 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
+  const setHoveredCluster = useGraphStore((state) => state.setHoveredCluster)
+  const setMousePosition = useGraphStore((state) => state.setMousePosition)
 
   const [isHovered, setIsHovered] = useState(false)
   const draggingRef = useRef(false)
@@ -772,7 +774,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
 
   const handlePointerDown = useCallback((e) => {
     if (e.button !== 0) return
-    e.stopPropagation()
+    // Don't stop propagation - let nodes receive clicks too
 
     draggingRef.current = true
     didDragRef.current = false
@@ -857,22 +859,29 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
     window.addEventListener('pointercancel', onUp)
   }, [camera, gl, controlsRef, clusterKey, updateClusterOffset, center])
 
-  const handlePointerOver = useCallback(() => {
+  const handlePointerOver = useCallback((e) => {
     setIsHovered(true)
+    setHoveredCluster({ key: clusterKey, count })
+    setMousePosition({ x: e.clientX, y: e.clientY })
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'grab'
     }
-  }, [gl])
+  }, [gl, clusterKey, count, setHoveredCluster, setMousePosition])
+
+  const handlePointerMove = useCallback((e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY })
+  }, [setMousePosition])
 
   const handlePointerOut = useCallback(() => {
     setIsHovered(false)
+    setHoveredCluster(null)
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'default'
     }
-  }, [gl])
+  }, [gl, setHoveredCluster])
 
   const handleClick = useCallback((e) => {
-    e.stopPropagation()
+    // Don't stop propagation - let nodes receive clicks too
     // Only toggle cluster filter if we didn't drag
     if (!didDragRef.current) {
       setActiveClusterKey(clusterKey)
@@ -896,6 +905,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
       <mesh
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
+        onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
