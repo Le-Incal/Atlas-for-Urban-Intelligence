@@ -30,7 +30,7 @@ function LegendPanel() {
 
   return (
     <motion.div
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 
+      className="fixed right-6 top-6 z-50
                  glass-panel rounded-2xl p-4 w-56"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}

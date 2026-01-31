@@ -44,7 +44,7 @@ function Title() {
 
 function Instructions() {
   return (
-    <div className="fixed top-20 left-6 z-50 text-left pointer-events-none">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
       <p className="text-xs text-gray-400 font-mono">
         Drag to rotate · Scroll to zoom · Click nodes to explore
       </p>
@@ -70,7 +70,7 @@ function AtlasScene() {
         >
           <PerspectiveCamera
             makeDefault
-            position={[0, 0, 220]}
+            position={[0, 0, 160]}
             fov={50}
             near={0.1}
             far={1000}
