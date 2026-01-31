@@ -1,5 +1,5 @@
-import React, { Suspense, useRef, useCallback } from 'react'
-import { Canvas, useThree, useFrame } from '@react-three/fiber'
+import React, { Suspense, useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
 import GraphCanvas from './GraphCanvas'
@@ -65,66 +65,6 @@ function CursorTooltip() {
   )
 }
 
-// Custom zoom component that zooms toward mouse position
-function ZoomToMouse({ controlsRef, minDistance = 30, maxDistance = 300 }) {
-  const { camera, gl } = useThree()
-  const raycaster = useRef(new THREE.Raycaster())
-  const mouse = useRef(new THREE.Vector2())
-  const zoomTarget = useRef(new THREE.Vector3())
-
-  const handleWheel = useCallback((event) => {
-    event.preventDefault()
-
-    if (!controlsRef.current) return
-
-    // Get mouse position in normalized device coordinates
-    const rect = gl.domElement.getBoundingClientRect()
-    mouse.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-    mouse.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
-
-    // Cast ray from camera through mouse position
-    raycaster.current.setFromCamera(mouse.current, camera)
-
-    // Calculate a point along the ray at a reasonable distance
-    const currentDistance = camera.position.length()
-    const targetPoint = raycaster.current.ray.at(currentDistance, zoomTarget.current)
-
-    // Zoom factor
-    const zoomSpeed = 0.1
-    const delta = event.deltaY > 0 ? 1 + zoomSpeed : 1 - zoomSpeed
-
-    // Calculate new camera distance
-    const currentCamDistance = camera.position.distanceTo(controlsRef.current.target)
-    const newDistance = currentCamDistance * delta
-
-    // Clamp to min/max distance
-    if (newDistance < minDistance || newDistance > maxDistance) return
-
-    // Calculate the direction from target point to camera
-    const direction = new THREE.Vector3().subVectors(camera.position, targetPoint).normalize()
-
-    // Move camera toward/away from the target point
-    const moveAmount = (1 - delta) * currentCamDistance * 0.5
-    const offset = new THREE.Vector3().copy(raycaster.current.ray.direction).multiplyScalar(moveAmount)
-
-    camera.position.add(offset)
-    controlsRef.current.target.add(offset.multiplyScalar(0.5))
-
-    controlsRef.current.update()
-  }, [camera, gl, controlsRef, minDistance, maxDistance])
-
-  // Add wheel event listener
-  React.useEffect(() => {
-    const domElement = gl.domElement
-    domElement.addEventListener('wheel', handleWheel, { passive: false })
-    return () => {
-      domElement.removeEventListener('wheel', handleWheel)
-    }
-  }, [gl, handleWheel])
-
-  return null
-}
-
 function SceneContent({ controlsRef }) {
   return (
     <>
@@ -142,7 +82,7 @@ function SceneContent({ controlsRef }) {
       <directionalLight position={[-60, -30, -40]} intensity={0.6} color="#ffffff" />
       <directionalLight position={[-40, 20, 60]} intensity={0.4} color="#ffffff" />
 
-      {/* Controls - enable all gestures for trackpad support */}
+      {/* Controls - fluid trackpad support */}
       <OrbitControls
         ref={controlsRef}
         enablePan={true}
@@ -150,19 +90,18 @@ function SceneContent({ controlsRef }) {
         enableRotate={true}
         minDistance={30}
         maxDistance={300}
-        dampingFactor={0.05}
+        dampingFactor={0.08}
         enableDamping={true}
-        zoomSpeed={1}
-        rotateSpeed={0.8}
-        panSpeed={0.8}
-        touches={{
-          ONE: THREE.TOUCH.ROTATE,
-          TWO: THREE.TOUCH.DOLLY_PAN
+        zoomSpeed={1.2}
+        rotateSpeed={1}
+        panSpeed={1}
+        screenSpacePanning={true}
+        mouseButtons={{
+          LEFT: THREE.MOUSE.ROTATE,
+          MIDDLE: THREE.MOUSE.DOLLY,
+          RIGHT: THREE.MOUSE.PAN
         }}
       />
-
-      {/* Custom zoom toward mouse */}
-      <ZoomToMouse controlsRef={controlsRef} minDistance={30} maxDistance={300} />
 
       {/* Graph */}
       <GraphCanvas />
