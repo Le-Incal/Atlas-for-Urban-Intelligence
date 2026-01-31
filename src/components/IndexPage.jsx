@@ -335,7 +335,7 @@ function IndexPage() {
       </div>
 
       {/* Layer Sections */}
-      <main className="max-w-4xl mx-auto pb-20">
+      <main className="max-w-4xl mx-auto pt-4 pb-20">
         {[0, 1, 2, 3, 4, 5, 6].map(layer => (
           <LayerSection
             key={layer}
