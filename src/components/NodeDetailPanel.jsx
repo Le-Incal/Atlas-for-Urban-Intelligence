@@ -35,6 +35,15 @@ const EDGE_TYPE_NAMES = {
 }
 
 function WelcomeContent() {
+  const nodes = Array.isArray(nodesData) ? nodesData : (nodesData?.nodes ?? [])
+  const edges = Array.isArray(edgesData) ? edgesData : (edgesData?.edges ?? [])
+  const nodeCount = nodes.length
+  const edgeCount = edges.length
+  const layerCount = useMemo(
+    () => new Set(nodes.map((n) => n.layer)).size,
+    [nodes]
+  )
+
   return (
     <>
       {/* Header */}
@@ -89,15 +98,15 @@ function WelcomeContent() {
           </h3>
           <div className="grid grid-cols-3 gap-2">
             <div className="bg-gray-50 rounded-lg p-2 text-center">
-              <p className="text-lg font-semibold text-gray-900">55</p>
+              <p className="text-lg font-semibold text-gray-900">{nodeCount}</p>
               <p className="text-[10px] text-gray-500 uppercase">Nodes</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-2 text-center">
-              <p className="text-lg font-semibold text-gray-900">72</p>
+              <p className="text-lg font-semibold text-gray-900">{edgeCount}</p>
               <p className="text-[10px] text-gray-500 uppercase">Edges</p>
             </div>
             <div className="bg-gray-50 rounded-lg p-2 text-center">
-              <p className="text-lg font-semibold text-gray-900">7</p>
+              <p className="text-lg font-semibold text-gray-900">{layerCount}</p>
               <p className="text-[10px] text-gray-500 uppercase">Layers</p>
             </div>
           </div>
