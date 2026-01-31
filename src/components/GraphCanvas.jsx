@@ -540,10 +540,60 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   )
 }
 
+// Create partial tube geometry for the flowing current effect
+function createPartialTube(curve, progress, baseRadius, tubularSegments = 28, radialSegments = 6) {
+  if (progress <= 0) return null
+
+  const vertices = []
+  const indices = []
+  const up = new THREE.Vector3(0, 1, 0)
+
+  // Only render segments up to the current progress
+  const activeSegments = Math.max(1, Math.floor(tubularSegments * progress))
+
+  for (let i = 0; i <= activeSegments; i++) {
+    const u = (i / tubularSegments) * progress
+    const point = curve.getPoint(u)
+    const tangent = curve.getTangent(u).normalize()
+
+    let normal = new THREE.Vector3().crossVectors(tangent, up)
+    if (normal.lengthSq() < 0.01) normal.set(1, 0, 0)
+    normal.normalize()
+    const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize()
+
+    // Glow radius - slightly larger than base edge
+    const radius = baseRadius * 2.5
+
+    for (let j = 0; j <= radialSegments; j++) {
+      const angle = (j / radialSegments) * Math.PI * 2
+      const x = Math.cos(angle) * radius
+      const y = Math.sin(angle) * radius
+      const offset = new THREE.Vector3().addScaledVector(normal, x).addScaledVector(binormal, y)
+      vertices.push(point.x + offset.x, point.y + offset.y, point.z + offset.z)
+    }
+  }
+
+  for (let i = 0; i < activeSegments; i++) {
+    for (let j = 0; j < radialSegments; j++) {
+      const a = i * (radialSegments + 1) + j
+      const b = a + radialSegments + 1
+      const c = a + 1
+      const d = b + 1
+      indices.push(a, c, b, c, d, b)
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+  geometry.setIndex(indices)
+  geometry.computeVertexNormals()
+  return geometry
+}
+
 // Edge component: neural pathway style (organic curve + variable-radius tube)
 function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 1, viaPoints = null }) {
-  const pulseGroupRef = useRef()
   const pulseProgressRef = useRef(null)
+  const [pulseProgress, setPulseProgress] = useState(0)
   const [pulseActive, setPulseActive] = useState(false)
 
   const hoveredEdge = useGraphStore((state) => state.hoveredEdge)
@@ -559,7 +609,6 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
   // Determine opacity and base radius (tube will taper/swell from this)
-  // Higher default opacity for legibility; focus state stays strong
   let opacity = 0.52
   let baseRadius = 0.07
 
@@ -600,40 +649,53 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
     return createVariableRadiusTube(curve, 1.2, 16, 6)
   }, [curve])
 
-  // Start pulse on hover or when signaled from panel (state only for show/hide)
+  // Flowing current geometry - updates as pulse progresses
+  const currentGeometry = useMemo(() => {
+    if (!curve || !pulseActive || pulseProgress <= 0) return null
+    return createPartialTube(curve, pulseProgress, baseRadius, 28, 6)
+  }, [curve, pulseActive, pulseProgress, baseRadius])
+
+  // Start pulse on hover or when signaled
   useEffect(() => {
     if (isHovered || isSignaled) {
       pulseProgressRef.current = 0
+      setPulseProgress(0)
       setPulseActive(true)
     } else {
       pulseProgressRef.current = null
       setPulseActive(false)
+      setPulseProgress(0)
     }
   }, [isHovered, isSignaled])
 
-  // Animate pulse along curve: update position via ref, no setState per frame
+  // Animate the flowing current
   useFrame((state, delta) => {
-    if (pulseProgressRef.current === null || !curve || !pulseGroupRef.current) return
-    const newProgress = pulseProgressRef.current + delta * 0.8
+    if (pulseProgressRef.current === null || !curve) return
+
+    const newProgress = pulseProgressRef.current + delta * 1.2
     if (newProgress >= 1) {
       if (isSignaled) {
         pulseProgressRef.current = 0
+        setPulseProgress(0)
       } else {
         pulseProgressRef.current = null
         setPulseActive(false)
+        setPulseProgress(0)
       }
     } else {
       pulseProgressRef.current = newProgress
+      // Update state less frequently for performance (every ~3 frames)
+      if (Math.floor(newProgress * 30) !== Math.floor(pulseProgress * 30)) {
+        setPulseProgress(newProgress)
+      }
     }
-    const pos = curve.getPoint(Math.min(1, Math.max(0, pulseProgressRef.current ?? 0)))
-    pulseGroupRef.current.position.set(pos.x, pos.y, pos.z)
   })
 
   if (!isVisible || !curve || !tubeGeometry) return null
 
   return (
     <group>
-      {/* Neural pathway tube: organic curve, variable thickness */}
+      {/* Base neural pathway tube */}
       <mesh geometry={tubeGeometry}>
         <meshBasicMaterial
           color="#808080"
@@ -644,25 +706,33 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
         />
       </mesh>
 
-      {/* Pulse: travels along the curved path (position updated in useFrame via ref) */}
-      {pulseActive && (
-        <group ref={pulseGroupRef}>
-          <mesh>
-            <sphereGeometry args={[0.8, 16, 16]} />
-            <meshBasicMaterial color="#00e600" transparent opacity={0.3} depthWrite={false} />
+      {/* Flowing electric current - illuminates the edge from source to target */}
+      {pulseActive && currentGeometry && (
+        <>
+          {/* Outer glow */}
+          <mesh geometry={currentGeometry}>
+            <meshBasicMaterial
+              color="#00e600"
+              transparent
+              opacity={0.4}
+              depthWrite={false}
+              side={THREE.DoubleSide}
+            />
           </mesh>
-          <mesh>
-            <sphereGeometry args={[0.4, 16, 16]} />
-            <meshBasicMaterial color="#00e600" transparent opacity={0.9} depthWrite={false} />
+          {/* Inner bright core */}
+          <mesh geometry={currentGeometry}>
+            <meshBasicMaterial
+              color="#00ff00"
+              transparent
+              opacity={0.9}
+              depthWrite={false}
+              side={THREE.DoubleSide}
+            />
           </mesh>
-          <mesh>
-            <sphereGeometry args={[0.2, 12, 12]} />
-            <meshBasicMaterial color="#ffffff" transparent opacity={1} depthWrite={false} />
-          </mesh>
-        </group>
+        </>
       )}
 
-      {/* Invisible tube for hover (follows same curve) */}
+      {/* Invisible tube for hover detection */}
       <mesh
         geometry={hitTubeGeometry}
         onPointerOver={(e) => {
