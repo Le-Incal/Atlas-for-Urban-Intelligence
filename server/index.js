@@ -9,7 +9,6 @@ const __dirname = path.dirname(__filename)
 const projectRoot = path.resolve(__dirname, '..')
 
 const PORT = Number(process.env.PORT || 3000)
-const distDir = path.join(projectRoot, 'dist')
 
 // For true persistence on Railway, mount a volume and set ATLAS_DATA_DIR=/data.
 // We default to /data in production if ATLAS_DATA_DIR isn't provided.
@@ -58,48 +57,84 @@ function validatePositions(positions) {
   return true
 }
 
-const app = express()
-app.use(express.json({ limit: '3mb' }))
+function createApp(distDir) {
+  const app = express()
+  app.use(express.json({ limit: '3mb' }))
 
-app.get('/api/layout', async (req, res) => {
-  try {
-    const existing = await readLayout()
-    if (!existing?.positions) return res.status(404).json({ ok: false })
-    return res.json(existing)
-  } catch (e) {
-    return res.status(500).json({ ok: false, error: 'failed_to_read_layout' })
+  app.get('/api/layout', async (req, res) => {
+    try {
+      const existing = await readLayout()
+      if (!existing?.positions) return res.status(404).json({ ok: false })
+      return res.json(existing)
+    } catch (e) {
+      return res.status(500).json({ ok: false, error: 'failed_to_read_layout' })
+    }
+  })
+
+  app.post('/api/layout', async (req, res) => {
+    const provided = req.header('x-atlas-admin-password') || ''
+    if (!ADMIN_PASSWORD || !timingSafeEqualStr(provided, ADMIN_PASSWORD)) {
+      return res.status(401).send('Unauthorized')
+    }
+
+    const positions = req.body?.positions
+    if (!validatePositions(positions)) {
+      return res.status(400).send('Invalid positions')
+    }
+
+    try {
+      await writeLayout({ positions, updatedAt: new Date().toISOString() })
+      return res.json({ ok: true })
+    } catch (e) {
+      return res.status(500).send('Failed to save')
+    }
+  })
+
+  app.use(express.static(distDir))
+
+  // SPA fallback: only for app routes; don't return HTML for asset paths (so 404s are visible)
+  app.get('*', (req, res, next) => {
+    const p = req.path
+    if (p.startsWith('/assets/') || (p.includes('.') && !p.endsWith('.html'))) {
+      return res.status(404).send('Not found')
+    }
+    res.sendFile(path.join(distDir, 'index.html'), (err) => {
+      if (err) next(err)
+    })
+  })
+
+  return app
+}
+
+async function start() {
+  const candidates = [
+    path.join(projectRoot, 'dist'),
+    path.join(process.cwd(), 'dist')
+  ]
+  let distDir = null
+  for (const dir of candidates) {
+    try {
+      await fs.access(path.join(dir, 'index.html'))
+      distDir = dir
+      break
+    } catch {
+      continue
+    }
   }
-})
-
-app.post('/api/layout', async (req, res) => {
-  const provided = req.header('x-atlas-admin-password') || ''
-  if (!ADMIN_PASSWORD || !timingSafeEqualStr(provided, ADMIN_PASSWORD)) {
-    return res.status(401).send('Unauthorized')
+  if (!distDir) {
+    // eslint-disable-next-line no-console
+    console.error('Build output missing: no dist/index.html at', candidates.join(' or '))
+    process.exit(1)
   }
-
-  const positions = req.body?.positions
-  if (!validatePositions(positions)) {
-    return res.status(400).send('Invalid positions')
-  }
-
-  try {
-    await writeLayout({ positions, updatedAt: new Date().toISOString() })
-    return res.json({ ok: true })
-  } catch (e) {
-    return res.status(500).send('Failed to save')
-  }
-})
-
-// Serve built frontend
-app.use(express.static(distDir))
-
-// SPA fallback
-app.get('*', async (req, res) => {
-  res.sendFile(path.join(distDir, 'index.html'))
-})
-
-app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`Atlas server listening on :${PORT}`)
-})
+  console.log(`Serving static from ${distDir}`)
+
+  const app = createApp(distDir)
+  app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Atlas server listening on :${PORT}`)
+  })
+}
+
+start()
 
