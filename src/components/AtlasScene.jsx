@@ -76,11 +76,11 @@ function AtlasScene() {
             far={1000}
           />
           
-          {/* Lighting - positioned for subtle gradient shading */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[50, 80, 40]} intensity={0.8} color="#ffffff" />
-          <directionalLight position={[-30, -20, -30]} intensity={0.3} color="#e8e8ff" />
-          <directionalLight position={[0, -50, 20]} intensity={0.15} color="#fff5e8" />
+          {/* Lighting - bright even illumination */}
+          <ambientLight intensity={0.9} />
+          <directionalLight position={[50, 80, 40]} intensity={1.2} color="#ffffff" />
+          <directionalLight position={[-30, -20, -30]} intensity={0.8} color="#ffffff" />
+          <directionalLight position={[0, -50, 20]} intensity={0.6} color="#ffffff" />
           
           {/* Controls */}
           <OrbitControls
