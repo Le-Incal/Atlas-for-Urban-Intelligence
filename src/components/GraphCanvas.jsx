@@ -270,8 +270,6 @@ function Node({ node, position, size, isVisible }) {
       {/* Node initial */}
       <Html
         center
-        occlude
-        zIndexRange={[0, 10]}
         style={{
           pointerEvents: 'none',
           userSelect: 'none',
@@ -389,7 +387,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     <group>
       {/* Main edge - tube geometry for visible thickness */}
       <mesh ref={lineRef} renderOrder={-1}>
-        <tubeGeometry args={[curve, 1, tubeRadius, 8, false]} />
+        <tubeGeometry args={[curve, 16, tubeRadius, 8, false]} />
         <meshBasicMaterial
           color="#595959"
           transparent
@@ -403,7 +401,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         const segCurve = new THREE.LineCurve3(seg.p1, seg.p2)
         return (
           <mesh key={i} renderOrder={0}>
-            <tubeGeometry args={[segCurve, 1, 0.4, 8, false]} />
+            <tubeGeometry args={[segCurve, 8, 0.4, 8, false]} />
             <meshBasicMaterial
               color={sourceColor}
               transparent
@@ -422,7 +420,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[curve, 1, 1.5, 8, false]} />
+        <tubeGeometry args={[curve, 16, 1.5, 8, false]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
     </group>
