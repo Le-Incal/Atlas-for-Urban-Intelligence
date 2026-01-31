@@ -17,6 +17,89 @@ const LAYER_COLORS = {
   6: '#D49174', // Toasted Almond
 }
 
+// --- Neural pathway edge helpers ---
+// Deterministic hash from edge id for stable organic variation
+function hashEdgeId(edgeId, seed = '') {
+  let h = 0
+  const s = edgeId + seed
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0
+  return (h % 10000) / 10000
+}
+
+// Organic curve from source to target: quadratic Bezier with offset control point (slight irregularity + asymmetry)
+function createOrganicCurve(start, end, edgeId) {
+  const startV = new THREE.Vector3(start.x, start.y, start.z)
+  const endV = new THREE.Vector3(end.x, end.y, end.z)
+  const midpoint = new THREE.Vector3().addVectors(startV, endV).multiplyScalar(0.5)
+  const direction = new THREE.Vector3().subVectors(endV, startV).normalize()
+  const length = startV.distanceTo(endV)
+
+  // Perpendicular axes for control-point offset (stable, not aligned to world)
+  const up = new THREE.Vector3(0, 1, 0)
+  let perp1 = new THREE.Vector3().crossVectors(direction, up)
+  if (perp1.lengthSq() < 0.01) perp1.set(1, 0, 0)
+  perp1.normalize()
+  const perp2 = new THREE.Vector3().crossVectors(direction, perp1).normalize()
+
+  // Organic bulge + subtle asymmetry (different scale per axis)
+  const bulge = 0.12 + 0.08 * hashEdgeId(edgeId)
+  const asymA = (hashEdgeId(edgeId, 'a') - 0.5) * 0.15
+  const asymB = (hashEdgeId(edgeId, 'b') - 0.5) * 0.1
+  const control = new THREE.Vector3()
+    .copy(midpoint)
+    .addScaledVector(perp1, length * (bulge + asymA))
+    .addScaledVector(perp2, length * asymB)
+
+  return new THREE.QuadraticBezierCurve3(startV, control, endV)
+}
+
+// Variable-radius tube along curve: taper at ends, swell in middle (neural pathway look)
+function createVariableRadiusTube(curve, baseRadius, tubularSegments = 20, radialSegments = 6) {
+  const vertices = []
+  const indices = []
+  const up = new THREE.Vector3(0, 1, 0)
+
+  for (let i = 0; i <= tubularSegments; i++) {
+    const u = i / tubularSegments
+    const point = curve.getPoint(u)
+    const tangent = curve.getTangent(u).normalize()
+
+    let normal = new THREE.Vector3().crossVectors(tangent, up)
+    if (normal.lengthSq() < 0.01) normal.set(1, 0, 0)
+    normal.normalize()
+    const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize()
+
+    // Radius: taper at ends, swell in middle (biological asymmetry - slightly fatter past midpoint)
+    const swell = Math.sin(Math.PI * u)
+    const taper = 0.35 + 0.65 * swell
+    const radius = baseRadius * taper
+
+    for (let j = 0; j <= radialSegments; j++) {
+      const angle = (j / radialSegments) * Math.PI * 2
+      const x = Math.cos(angle) * radius
+      const y = Math.sin(angle) * radius
+      const offset = new THREE.Vector3().addScaledVector(normal, x).addScaledVector(binormal, y)
+      vertices.push(point.x + offset.x, point.y + offset.y, point.z + offset.z)
+    }
+  }
+
+  for (let i = 0; i < tubularSegments; i++) {
+    for (let j = 0; j < radialSegments; j++) {
+      const a = i * (radialSegments + 1) + j
+      const b = a + radialSegments + 1
+      const c = a + 1
+      const d = b + 1
+      indices.push(a, c, b, c, d, b)
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+  geometry.setIndex(indices)
+  geometry.computeVertexNormals()
+  return geometry
+}
+
 // Calculate node positions using an organic spherical approach
 function calculatePositions(nodes, edges) {
   const positions = {}
@@ -301,9 +384,11 @@ function Node({ node, position, size, isVisible }) {
   )
 }
 
-// Edge component using cylinder geometry for reliable rendering
+// Edge component: neural pathway style (organic curve + variable-radius tube)
 function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
-  const [pulseProgress, setPulseProgress] = useState(null)
+  const pulseGroupRef = useRef()
+  const pulseProgressRef = useRef(null)
+  const [pulseActive, setPulseActive] = useState(false)
 
   const hoveredEdge = useGraphStore((state) => state.hoveredEdge)
   const setHoveredEdge = useGraphStore((state) => state.setHoveredEdge)
@@ -317,153 +402,108 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
   const isConnectedToSelected = selectedNode &&
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
-  // Determine opacity and thickness
+  // Determine opacity and base radius (tube will taper/swell from this)
   let opacity = 0.4
-  let radius = 0.08
+  let baseRadius = 0.08
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
-    radius = 0.18
+    baseRadius = 0.18
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.1
   }
 
-  // Start pulse on hover or when signaled from panel
+  // Organic curve: stable per edge, slight irregularity + asymmetry
+  const curve = useMemo(() => {
+    if (!sourcePos || !targetPos) return null
+    return createOrganicCurve(sourcePos, targetPos, edge.id)
+  }, [sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z, edge.id])
+
+  // Variable-radius tube geometry (taper at ends, swell in middle)
+  const tubeGeometry = useMemo(() => {
+    if (!curve) return null
+    const geom = createVariableRadiusTube(curve, baseRadius, 20, 6)
+    return geom
+  }, [curve, baseRadius])
+
+  // Hover hit area: same curve, larger radius tube (invisible)
+  const hitTubeGeometry = useMemo(() => {
+    if (!curve) return null
+    return createVariableRadiusTube(curve, 1.2, 12, 6)
+  }, [curve])
+
+  // Start pulse on hover or when signaled from panel (state only for show/hide)
   useEffect(() => {
     if (isHovered || isSignaled) {
-      setPulseProgress(0)
+      pulseProgressRef.current = 0
+      setPulseActive(true)
     } else {
-      setPulseProgress(null)
+      pulseProgressRef.current = null
+      setPulseActive(false)
     }
   }, [isHovered, isSignaled])
 
-  // Animate pulse
+  // Animate pulse along curve: update position via ref, no setState per frame
   useFrame((state, delta) => {
-    if (pulseProgress !== null) {
-      const newProgress = pulseProgress + delta * 0.8
-      if (newProgress >= 1) {
-        if (isSignaled) {
-          setPulseProgress(0)
-        } else {
-          setPulseProgress(null)
-        }
+    if (pulseProgressRef.current === null || !curve || !pulseGroupRef.current) return
+    const newProgress = pulseProgressRef.current + delta * 0.8
+    if (newProgress >= 1) {
+      if (isSignaled) {
+        pulseProgressRef.current = 0
       } else {
-        setPulseProgress(newProgress)
+        pulseProgressRef.current = null
+        setPulseActive(false)
       }
+    } else {
+      pulseProgressRef.current = newProgress
     }
+    const pos = curve.getPoint(Math.min(1, Math.max(0, pulseProgressRef.current ?? 0)))
+    pulseGroupRef.current.position.set(pos.x, pos.y, pos.z)
   })
 
-  // Calculate cylinder position and rotation
-  const cylinderProps = useMemo(() => {
-    if (!sourcePos || !targetPos) return null
-
-    const start = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
-    const end = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
-
-    // Midpoint for position
-    const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5)
-
-    // Length of the edge
-    const length = start.distanceTo(end)
-
-    // Direction and rotation
-    const direction = new THREE.Vector3().subVectors(end, start).normalize()
-
-    // Create quaternion to rotate cylinder from Y-axis to edge direction
-    const quaternion = new THREE.Quaternion()
-    const yAxis = new THREE.Vector3(0, 1, 0)
-    quaternion.setFromUnitVectors(yAxis, direction)
-
-    // Convert quaternion to euler
-    const euler = new THREE.Euler().setFromQuaternion(quaternion)
-
-    return {
-      position: [midpoint.x, midpoint.y, midpoint.z],
-      rotation: [euler.x, euler.y, euler.z],
-      length
-    }
-  }, [sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z])
-
-  if (!isVisible || !cylinderProps) return null
-
-  const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
-
-  // Calculate pulse position along the edge
-  const pulsePosition = useMemo(() => {
-    if (pulseProgress === null || !sourcePos || !targetPos) return null
-
-    const start = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
-    const end = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
-
-    // Interpolate position along the edge based on progress
-    const pos = new THREE.Vector3().lerpVectors(start, end, pulseProgress)
-    return [pos.x, pos.y, pos.z]
-  }, [pulseProgress, sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z])
+  if (!isVisible || !curve || !tubeGeometry) return null
 
   return (
     <group>
-      {/* Main edge cylinder */}
-      <mesh
-        position={cylinderProps.position}
-        rotation={cylinderProps.rotation}
-      >
-        <cylinderGeometry args={[radius, radius, cylinderProps.length, 8]} />
+      {/* Neural pathway tube: organic curve, variable thickness */}
+      <mesh geometry={tubeGeometry}>
         <meshBasicMaterial
           color="#595959"
           transparent
           opacity={opacity}
           depthWrite={false}
+          side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* Pulse effect - electrical pulse that travels along the edge */}
-      {pulseProgress !== null && pulsePosition && (
-        <group position={pulsePosition}>
-          {/* Outer glow */}
+      {/* Pulse: travels along the curved path (position updated in useFrame via ref) */}
+      {pulseActive && (
+        <group ref={pulseGroupRef}>
           <mesh>
             <sphereGeometry args={[0.8, 16, 16]} />
-            <meshBasicMaterial
-              color="#00e600"
-              transparent
-              opacity={0.3}
-              depthWrite={false}
-            />
+            <meshBasicMaterial color="#00e600" transparent opacity={0.3} depthWrite={false} />
           </mesh>
-          {/* Inner bright core */}
           <mesh>
             <sphereGeometry args={[0.4, 16, 16]} />
-            <meshBasicMaterial
-              color="#00e600"
-              transparent
-              opacity={0.9}
-              depthWrite={false}
-            />
+            <meshBasicMaterial color="#00e600" transparent opacity={0.9} depthWrite={false} />
           </mesh>
-          {/* Bright center */}
           <mesh>
             <sphereGeometry args={[0.2, 12, 12]} />
-            <meshBasicMaterial
-              color="#ffffff"
-              transparent
-              opacity={1}
-              depthWrite={false}
-            />
+            <meshBasicMaterial color="#ffffff" transparent opacity={1} depthWrite={false} />
           </mesh>
         </group>
       )}
 
-      {/* Invisible cylinder for hover detection */}
+      {/* Invisible tube for hover (follows same curve) */}
       <mesh
-        position={cylinderProps.position}
-        rotation={cylinderProps.rotation}
+        geometry={hitTubeGeometry}
         onPointerOver={(e) => {
           e.stopPropagation()
           setHoveredEdge(edge)
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <cylinderGeometry args={[1.5, 1.5, cylinderProps.length, 8]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
     </group>
   )

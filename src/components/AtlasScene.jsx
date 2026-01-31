@@ -196,21 +196,23 @@ function AtlasScene() {
   const controlsRef = useRef()
 
   return (
-    <div className="w-full h-full relative bg-white">
-      {/* 3D Canvas */}
-      <Suspense fallback={<LoadingFallback />}>
-        <Canvas
-          gl={{
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance'
-          }}
-          dpr={[1, 2]}
-          style={{ background: '#FFFFFF' }}
-        >
-          <SceneContent controlsRef={controlsRef} />
-        </Canvas>
-      </Suspense>
+    <div className="absolute inset-0 w-full h-full min-h-screen relative bg-white">
+      {/* 3D Canvas - explicit size so it has dimensions when view switches */}
+      <div className="absolute inset-0 w-full h-full">
+        <Suspense fallback={<LoadingFallback />}>
+          <Canvas
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: 'high-performance'
+            }}
+            dpr={[1, 2]}
+            style={{ background: '#FFFFFF', width: '100%', height: '100%', display: 'block' }}
+          >
+            <SceneContent controlsRef={controlsRef} />
+          </Canvas>
+        </Suspense>
+      </div>
 
       {/* UI Overlays */}
       <Title />
