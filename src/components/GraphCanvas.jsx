@@ -388,16 +388,34 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
   const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
 
-  // Calculate pulse position along the edge
-  const pulsePosition = useMemo(() => {
+  // Calculate pulse cylinder that grows from source to target
+  const pulseProps = useMemo(() => {
     if (pulseProgress === null || !sourcePos || !targetPos) return null
 
     const start = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
     const end = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
 
-    // Interpolate position along the edge based on progress
-    const pos = new THREE.Vector3().lerpVectors(start, end, pulseProgress)
-    return [pos.x, pos.y, pos.z]
+    // The pulse covers from start to current progress point
+    const currentEnd = new THREE.Vector3().lerpVectors(start, end, pulseProgress)
+    const pulseLength = start.distanceTo(currentEnd)
+
+    if (pulseLength < 0.1) return null
+
+    // Midpoint of the pulse section
+    const midpoint = new THREE.Vector3().addVectors(start, currentEnd).multiplyScalar(0.5)
+
+    // Use same rotation as main edge
+    const direction = new THREE.Vector3().subVectors(end, start).normalize()
+    const quaternion = new THREE.Quaternion()
+    const yAxis = new THREE.Vector3(0, 1, 0)
+    quaternion.setFromUnitVectors(yAxis, direction)
+    const euler = new THREE.Euler().setFromQuaternion(quaternion)
+
+    return {
+      position: [midpoint.x, midpoint.y, midpoint.z],
+      rotation: [euler.x, euler.y, euler.z],
+      length: pulseLength
+    }
   }, [pulseProgress, sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z])
 
   return (
@@ -416,22 +434,28 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         />
       </mesh>
 
-      {/* Pulse effect - electrical pulse that travels along the edge */}
-      {pulseProgress !== null && pulsePosition && (
-        <group position={pulsePosition}>
+      {/* Pulse effect - full edge glow that flows from source to target */}
+      {pulseProgress !== null && pulseProps && (
+        <>
           {/* Outer glow */}
-          <mesh>
-            <sphereGeometry args={[0.8, 16, 16]} />
+          <mesh
+            position={pulseProps.position}
+            rotation={pulseProps.rotation}
+          >
+            <cylinderGeometry args={[0.4, 0.4, pulseProps.length, 8]} />
             <meshBasicMaterial
               color="#00e600"
               transparent
-              opacity={0.3}
+              opacity={0.4}
               depthWrite={false}
             />
           </mesh>
           {/* Inner bright core */}
-          <mesh>
-            <sphereGeometry args={[0.4, 16, 16]} />
+          <mesh
+            position={pulseProps.position}
+            rotation={pulseProps.rotation}
+          >
+            <cylinderGeometry args={[0.2, 0.2, pulseProps.length, 8]} />
             <meshBasicMaterial
               color="#00e600"
               transparent
@@ -439,17 +463,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
               depthWrite={false}
             />
           </mesh>
-          {/* Bright center */}
-          <mesh>
-            <sphereGeometry args={[0.2, 12, 12]} />
-            <meshBasicMaterial
-              color="#ffffff"
-              transparent
-              opacity={1}
-              depthWrite={false}
-            />
-          </mesh>
-        </group>
+        </>
       )}
 
       {/* Invisible cylinder for hover detection */}
