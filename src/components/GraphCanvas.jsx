@@ -747,12 +747,10 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
 }
 
 // Draggable Cluster Hull - grab and drag to move all nodes in the cluster
-function DraggableClusterHull({ clusterKey, center, radius, count, alpha, clusterOffset, setActiveClusterKey }) {
+function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setActiveClusterKey }) {
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
-  const setHoveredCluster = useGraphStore((state) => state.setHoveredCluster)
-  const setMousePosition = useGraphStore((state) => state.setMousePosition)
 
   const [isHovered, setIsHovered] = useState(false)
   const draggingRef = useRef(false)
@@ -761,13 +759,6 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
   const dragPlaneRef = useRef(new THREE.Plane())
   const lastHitRef = useRef(new THREE.Vector3())
   const raycasterRef = useRef(new THREE.Raycaster())
-
-  // Apply cluster offset to center position
-  const offsetCenter = useMemo(() => ({
-    x: center.x + (clusterOffset?.x || 0),
-    y: center.y + (clusterOffset?.y || 0),
-    z: center.z + (clusterOffset?.z || 0),
-  }), [center, clusterOffset])
 
   const handlePointerDown = useCallback((e) => {
     if (e.button !== 0) return
@@ -783,7 +774,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
     if (controlsRef?.current) controlsRef.current.enabled = false
 
     // Create drag plane facing camera through cluster center
-    const clusterPos = new THREE.Vector3(offsetCenter.x, offsetCenter.y, offsetCenter.z)
+    const clusterPos = new THREE.Vector3(center.x, center.y, center.z)
     const normal = new THREE.Vector3().subVectors(camera.position, clusterPos).normalize()
     dragPlaneRef.current.setFromNormalAndCoplanarPoint(normal, clusterPos)
     lastHitRef.current.copy(clusterPos)
@@ -838,28 +829,21 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
     window.addEventListener('pointercancel', onUp)
-  }, [camera, gl, controlsRef, clusterKey, updateClusterOffset, offsetCenter])
+  }, [camera, gl, controlsRef, clusterKey, updateClusterOffset, center])
 
-  const handlePointerOver = useCallback((e) => {
+  const handlePointerOver = useCallback(() => {
     setIsHovered(true)
-    setHoveredCluster({ key: clusterKey, count })
-    setMousePosition({ x: e.clientX, y: e.clientY })
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'grab'
     }
-  }, [gl, clusterKey, count, setHoveredCluster, setMousePosition])
-
-  const handlePointerMove = useCallback((e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY })
-  }, [setMousePosition])
+  }, [gl])
 
   const handlePointerOut = useCallback(() => {
     setIsHovered(false)
-    setHoveredCluster(null)
     if (!draggingRef.current) {
       gl.domElement.style.cursor = 'default'
     }
-  }, [gl, setHoveredCluster])
+  }, [gl])
 
   const handleClick = useCallback((e) => {
     e.stopPropagation()
@@ -871,7 +855,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
   }, [clusterKey, setActiveClusterKey])
 
   return (
-    <group position={[offsetCenter.x, offsetCenter.y, offsetCenter.z]}>
+    <group position={[center.x, center.y, center.z]}>
       {/* Soft hull hint */}
       <mesh>
         <sphereGeometry args={[radius, 18, 18]} />
@@ -886,7 +870,6 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
       <mesh
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
-        onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
       >
@@ -976,12 +959,56 @@ function GraphCanvas() {
     return set
   }, [selectedNode?.id, neighborsById])
 
+  // Calculate actual cluster centroids and radii from resolved node positions
+  const actualClusterBounds = useMemo(() => {
+    const bounds = {}
+    Object.keys(clusterCenters || {}).forEach(key => {
+      const clusterNodes = nodes.filter(n => clusterKeyByNodeId?.[n.id] === key)
+      if (clusterNodes.length === 0) {
+        bounds[key] = { center: clusterCenters[key], radius: 20 }
+        return
+      }
+
+      // Calculate centroid from actual node positions
+      let sumX = 0, sumY = 0, sumZ = 0
+      clusterNodes.forEach(node => {
+        const pos = resolvedPositions[node.id]
+        if (pos) {
+          sumX += pos.x
+          sumY += pos.y
+          sumZ += pos.z
+        }
+      })
+      const center = {
+        x: sumX / clusterNodes.length,
+        y: sumY / clusterNodes.length,
+        z: sumZ / clusterNodes.length
+      }
+
+      // Calculate radius to encompass all nodes
+      let maxDist = 0
+      clusterNodes.forEach(node => {
+        const pos = resolvedPositions[node.id]
+        if (pos) {
+          const dx = pos.x - center.x
+          const dy = pos.y - center.y
+          const dz = pos.z - center.z
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+          if (dist > maxDist) maxDist = dist
+        }
+      })
+
+      // Add padding for node sizes
+      bounds[key] = { center, radius: maxDist + 8 }
+    })
+    return bounds
+  }, [clusterCenters, nodes, clusterKeyByNodeId, resolvedPositions])
+
   return (
     <group>
       {/* Cluster labels + soft hulls (click to isolate, drag to move) */}
-      {clusterCenters && Object.entries(clusterCenters).map(([key, center]) => {
+      {actualClusterBounds && Object.entries(actualClusterBounds).map(([key, { center, radius }]) => {
         const count = clusterSizes?.[key] ?? 0
-        const radius = 16 + Math.sqrt(count) * 3
         const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
         return (
           <DraggableClusterHull
@@ -991,7 +1018,6 @@ function GraphCanvas() {
             radius={radius}
             count={count}
             alpha={alpha}
-            clusterOffset={clusterOffsets?.[key]}
             setActiveClusterKey={setActiveClusterKey}
           />
         )
