@@ -326,6 +326,7 @@ function calculatePositions(nodes, edges) {
 
 // Single Node component with gradient shading
 function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
+  const groupRef = useRef()
   const meshRef = useRef()
   const materialRef = useRef()
   const outlineMaterialRef = useRef()
@@ -348,6 +349,8 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const dragPlaneRef = useRef(new THREE.Plane())
   const dragStartRef = useRef(new THREE.Vector3())
   const raycasterRef = useRef(new THREE.Raycaster())
+  // Store current position for drag calculations
+  const currentPosRef = useRef({ x: position.x, y: position.y, z: position.z })
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
   const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
@@ -366,6 +369,14 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const [currentEmissive, setCurrentEmissive] = useState(0)
 
   useFrame(() => {
+    // Update position imperatively (bypasses React reconciliation issues in production)
+    if (groupRef.current) {
+      groupRef.current.position.x = position.x
+      groupRef.current.position.y = position.y
+      groupRef.current.position.z = position.z
+      // Keep ref in sync for drag calculations
+      currentPosRef.current = { x: position.x, y: position.y, z: position.z }
+    }
     if (meshRef.current) {
       // Smooth scale transition
       const newScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.1)
@@ -429,8 +440,9 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
     // Disable orbit controls while dragging so the scene doesn't rotate
     if (controlsRef?.current) controlsRef.current.enabled = false
 
-    // Plane facing camera through the node position (screen-plane drag)
-    const nodePos = new THREE.Vector3(position.x, position.y, position.z)
+    // Plane facing camera through the node position (use ref for current position)
+    const pos = currentPosRef.current
+    const nodePos = new THREE.Vector3(pos.x, pos.y, pos.z)
     dragStartRef.current.copy(nodePos)
     const normal = new THREE.Vector3().subVectors(camera.position, nodePos).normalize()
     dragPlaneRef.current.setFromNormalAndCoplanarPoint(normal, nodePos)
@@ -489,7 +501,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   if (!isVisible) return null
 
   return (
-    <group position={[position.x, position.y, position.z]}>
+    <group ref={groupRef} position={[position.x, position.y, position.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
       <mesh scale={1.06}>
         <sphereGeometry args={[size, 32, 32]} />
