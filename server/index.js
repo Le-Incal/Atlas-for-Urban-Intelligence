@@ -130,7 +130,7 @@ async function start() {
   console.log(`Serving static from ${distDir}`)
 
   const app = createApp(distDir)
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     // eslint-disable-next-line no-console
     console.log(`Atlas server listening on :${PORT}`)
   })
