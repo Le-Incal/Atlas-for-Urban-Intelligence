@@ -216,8 +216,8 @@ function Node({ node, position, size, isVisible }) {
         <sphereGeometry args={[size, 48, 48]} />
         <meshStandardMaterial
           color={baseColor}
-          roughness={0.3}
-          metalness={0.1}
+          roughness={0.75}
+          metalness={0}
         />
       </mesh>
 
