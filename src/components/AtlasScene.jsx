@@ -255,6 +255,7 @@ function AtlasScene() {
   const controlsRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setActiveEdgeType = useGraphStore((state) => state.setActiveEdgeType)
+  const setCurrentView = useGraphStore((state) => state.setCurrentView)
   const setControlsRef = useGraphStore((state) => state.setControlsRef)
   const setNodeOverrides = useGraphStore((state) => state.setNodeOverrides)
 
@@ -323,6 +324,18 @@ function AtlasScene() {
       <LegendPanel />
       <NodeDetailPanel />
       <CursorTooltip />
+
+      {/* Index Toggle */}
+      <button
+        onClick={() => setCurrentView('index')}
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50
+                   px-5 py-2 rounded-full bg-white/90 backdrop-blur
+                   border border-gray-200 shadow-sm
+                   text-xs font-medium text-gray-600 hover:bg-white hover:border-gray-300
+                   transition-all"
+      >
+        View Index
+      </button>
     </div>
   )
 }
