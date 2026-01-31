@@ -491,18 +491,10 @@ function GraphCanvas() {
     return map
   }, [nodes])
 
-  // Click on empty space to deselect
-  const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const { camera } = useThree()
 
   return (
-    <group
-      onClick={(e) => {
-        if (e.object.type === 'Scene' || !e.object.parent) {
-          setSelectedNode(null)
-        }
-      }}
-    >
+    <group>
       {/* Render edges first (behind nodes) */}
       {edges.map(edge => {
         const sourceNode = nodeMap[edge.source]
