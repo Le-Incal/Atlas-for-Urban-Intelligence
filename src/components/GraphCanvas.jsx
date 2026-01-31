@@ -275,7 +275,7 @@ function Node({ node, position, size, isVisible }) {
           userSelect: 'none',
         }}
       >
-        <div className="text-[8px] font-bold text-black/70">
+        <div className="text-[8px] font-bold" style={{ color: '#00e600' }}>
           {node.label.charAt(0)}
         </div>
       </Html>
