@@ -44,7 +44,7 @@ function Title() {
 
 function Instructions() {
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
+    <div className="fixed top-20 left-6 z-50 text-left pointer-events-none">
       <p className="text-xs text-gray-400 font-mono">
         Drag to rotate · Scroll to zoom · Click nodes to explore
       </p>
@@ -68,18 +68,19 @@ function AtlasScene() {
           dpr={[1, 2]}
           style={{ background: '#FFFFFF' }}
         >
-          <PerspectiveCamera 
-            makeDefault 
-            position={[0, 0, 150]} 
+          <PerspectiveCamera
+            makeDefault
+            position={[0, 0, 220]}
             fov={50}
             near={0.1}
             far={1000}
           />
           
-          {/* Lighting */}
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[10, 10, 5]} intensity={0.5} />
-          <directionalLight position={[-10, -10, -5]} intensity={0.3} />
+          {/* Lighting - positioned for subtle gradient shading */}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[50, 80, 40]} intensity={0.8} color="#ffffff" />
+          <directionalLight position={[-30, -20, -30]} intensity={0.3} color="#e8e8ff" />
+          <directionalLight position={[0, -50, 20]} intensity={0.15} color="#fff5e8" />
           
           {/* Controls */}
           <OrbitControls

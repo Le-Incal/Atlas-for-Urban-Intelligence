@@ -17,11 +17,10 @@ const LAYER_COLORS = {
   6: '#B89A5A',
 }
 
-// Calculate node positions using a layered force-directed approach
+// Calculate node positions using an organic spherical approach
 function calculatePositions(nodes, edges) {
   const positions = {}
-  const layerHeight = 20 // Vertical spacing between layers
-  
+
   // Group nodes by layer
   const nodesByLayer = {}
   nodes.forEach(node => {
@@ -41,48 +40,68 @@ function calculatePositions(nodes, edges) {
     connectionCount[edge.target] = (connectionCount[edge.target] || 0) + 1
   })
 
-  // Position nodes in a layered layout with some randomization for organic feel
+  // Create a more organic spherical distribution
+  // Layers spiral around a central axis with varying radii
+  const totalLayers = 7
+  const baseRadius = 35
+
   Object.keys(nodesByLayer).forEach(layer => {
     const layerNodes = nodesByLayer[layer]
-    const layerY = (parseInt(layer) - 3) * layerHeight // Center around 0
-    
-    // Arrange nodes in a circular pattern within each layer
-    const radius = 25 + layerNodes.length * 2
+    const layerIndex = parseInt(layer)
+
+    // Vertical position with gentle curve (not flat layers)
+    const normalizedLayer = (layerIndex - 3) / 3 // -1 to 1
+    const layerY = normalizedLayer * 45
+
+    // Radius varies by layer - middle layers slightly larger
+    const layerRadius = baseRadius + Math.cos(normalizedLayer * Math.PI * 0.5) * 15
+
     layerNodes.forEach((node, i) => {
-      const angle = (i / layerNodes.length) * Math.PI * 2
-      const jitter = (Math.random() - 0.5) * 10
-      const radiusJitter = (Math.random() - 0.5) * 15
-      
+      // Distribute nodes in a spiral pattern
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5))
+      const angle = i * goldenAngle + layerIndex * 0.5
+
+      // Add organic variation
+      const radiusVariation = (Math.random() - 0.5) * 20
+      const heightVariation = (Math.random() - 0.5) * 15
+      const angleVariation = (Math.random() - 0.5) * 0.3
+
+      const r = layerRadius + radiusVariation
+      const finalAngle = angle + angleVariation
+
       positions[node.id] = {
-        x: Math.cos(angle) * (radius + radiusJitter) + jitter,
-        y: layerY + (Math.random() - 0.5) * 8,
-        z: Math.sin(angle) * (radius + radiusJitter) + jitter,
+        x: Math.cos(finalAngle) * r,
+        y: layerY + heightVariation,
+        z: Math.sin(finalAngle) * r,
         connections: connectionCount[node.id] || 1
       }
     })
   })
 
-  // Simple force simulation to spread out nodes
-  const iterations = 50
+  // Organic force simulation
+  const iterations = 80
   for (let iter = 0; iter < iterations; iter++) {
-    // Repulsion between nodes
+    const cooling = 1 - (iter / iterations) * 0.5 // Gradually reduce forces
+
+    // Soft repulsion between nodes
     nodes.forEach((nodeA, i) => {
       nodes.forEach((nodeB, j) => {
         if (i >= j) return
         const posA = positions[nodeA.id]
         const posB = positions[nodeB.id]
-        
+
         const dx = posB.x - posA.x
         const dy = posB.y - posA.y
         const dz = posB.z - posA.z
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
-        
-        if (dist < 15) {
-          const force = (15 - dist) * 0.1
+
+        // Softer repulsion threshold
+        if (dist < 18) {
+          const force = (18 - dist) * 0.08 * cooling
           const fx = (dx / dist) * force
-          const fy = (dy / dist) * force * 0.3 // Less vertical movement
+          const fy = (dy / dist) * force * 0.5 // Allow more vertical movement
           const fz = (dz / dist) * force
-          
+
           posA.x -= fx
           posA.y -= fy
           posA.z -= fz
@@ -93,23 +112,24 @@ function calculatePositions(nodes, edges) {
       })
     })
 
-    // Attraction along edges
+    // Gentle attraction along edges
     edges.forEach(edge => {
       const posA = positions[edge.source]
       const posB = positions[edge.target]
       if (!posA || !posB) return
-      
+
       const dx = posB.x - posA.x
       const dy = posB.y - posA.y
       const dz = posB.z - posA.z
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
-      
-      if (dist > 30) {
-        const force = (dist - 30) * 0.01
+
+      // Softer attraction
+      if (dist > 25) {
+        const force = (dist - 25) * 0.008 * cooling
         const fx = (dx / dist) * force
-        const fy = (dy / dist) * force * 0.2
+        const fy = (dy / dist) * force * 0.4
         const fz = (dz / dist) * force
-        
+
         posA.x += fx
         posA.y += fy
         posA.z += fz
@@ -118,28 +138,52 @@ function calculatePositions(nodes, edges) {
         posB.z -= fz
       }
     })
+
+    // Gentle pull toward center to keep cluster cohesive
+    nodes.forEach(node => {
+      const pos = positions[node.id]
+      const dist = Math.sqrt(pos.x * pos.x + pos.z * pos.z)
+      if (dist > 60) {
+        const pullForce = (dist - 60) * 0.01 * cooling
+        pos.x -= (pos.x / dist) * pullForce
+        pos.z -= (pos.z / dist) * pullForce
+      }
+    })
   }
 
   return { positions, connectionCount }
 }
 
-// Single Node component
+// Single Node component with gradient shading
 function Node({ node, position, size, isVisible }) {
   const meshRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setHoveredNode = useGraphStore((state) => state.setHoveredNode)
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
-  
+
   const isSelected = selectedNode?.id === node.id
   const isHovered = hoveredNode?.id === node.id
 
-  const color = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
-  
+  const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
+
+  // Create slightly lighter and darker versions for gradient effect
+  const colorLight = useMemo(() => {
+    const c = baseColor.clone()
+    c.offsetHSL(0, -0.05, 0.15) // Slightly lighter, less saturated
+    return c
+  }, [baseColor])
+
+  const colorDark = useMemo(() => {
+    const c = baseColor.clone()
+    c.offsetHSL(0, 0.05, -0.1) // Slightly darker, more saturated
+    return c
+  }, [baseColor])
+
   // Scale based on state
   const targetScale = isSelected ? 1.3 : isHovered ? 1.15 : 1
   const [currentScale, setCurrentScale] = useState(1)
-  
+
   useFrame(() => {
     if (meshRef.current) {
       // Smooth scale transition
@@ -169,16 +213,19 @@ function Node({ node, position, size, isVisible }) {
           document.body.style.cursor = 'default'
         }}
       >
-        <sphereGeometry args={[size, 32, 32]} />
-        <meshStandardMaterial 
-          color={color}
-          roughness={0.8}
-          metalness={0.1}
+        <sphereGeometry args={[size, 48, 48]} />
+        <meshPhysicalMaterial
+          color={baseColor}
+          roughness={0.6}
+          metalness={0.05}
+          clearcoat={0.1}
+          clearcoatRoughness={0.8}
+          envMapIntensity={0.3}
           transparent
           opacity={0.95}
         />
       </mesh>
-      
+
       {/* Label on hover */}
       {(isHovered || isSelected) && (
         <Html
@@ -198,33 +245,33 @@ function Node({ node, position, size, isVisible }) {
   )
 }
 
-// Edge component with pulse animation
+// Edge component with wave pulse animation
 function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
   const lineRef = useRef()
-  const pulseRef = useRef()
+  const pulseLineRef = useRef()
   const [pulseProgress, setPulseProgress] = useState(null)
-  
+
   const hoveredEdge = useGraphStore((state) => state.hoveredEdge)
   const setHoveredEdge = useGraphStore((state) => state.setHoveredEdge)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const selectedNode = useGraphStore((state) => state.selectedNode)
-  
+
   const isHovered = hoveredEdge?.id === edge.id
   const isTypeActive = activeEdgeType === edge.edgeType
-  const isConnectedToSelected = selectedNode && 
+  const isConnectedToSelected = selectedNode &&
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
-  
+
   // Determine opacity and thickness
   let opacity = 0.4 // Default
   let lineWidth = 1
-  
+
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
     lineWidth = 2
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.1 // Fade when something else is active
   }
-  
+
   // Start pulse on hover
   useEffect(() => {
     if (isHovered) {
@@ -233,60 +280,85 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
       setPulseProgress(null)
     }
   }, [isHovered])
-  
+
   // Animate pulse
   useFrame((state, delta) => {
     if (pulseProgress !== null && pulseProgress < 1) {
-      setPulseProgress(prev => Math.min(prev + delta * 0.5, 1))
+      setPulseProgress(prev => Math.min(prev + delta * 0.8, 1))
     }
   })
 
   if (!isVisible || !sourcePos || !targetPos) return null
 
-  const points = [
-    new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z),
-    new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
-  ]
-  
+  const startPoint = new THREE.Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
+  const endPoint = new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z)
+
+  const points = [startPoint, endPoint]
   const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-  
-  // Calculate pulse position
-  let pulsePosition = null
-  if (pulseProgress !== null && pulseProgress < 1) {
-    pulsePosition = new THREE.Vector3().lerpVectors(
-      points[0],
-      points[1],
-      pulseProgress
-    )
-  }
 
   // Source node color for pulse
   const sourceColor = LAYER_COLORS[sourceNode?.layer] || '#C8E66E'
+
+  // Create pulse wave segments
+  const pulseSegments = useMemo(() => {
+    if (pulseProgress === null) return null
+
+    const segments = []
+    const pulseWidth = 0.15 // Width of the pulse wave
+    const pulseCenter = pulseProgress
+
+    // Create multiple segments for the wave effect
+    const numSegments = 8
+    for (let i = 0; i < numSegments; i++) {
+      const segStart = i / numSegments
+      const segEnd = (i + 1) / numSegments
+
+      // Calculate if this segment is within the pulse wave
+      const segMid = (segStart + segEnd) / 2
+      const distFromPulse = Math.abs(segMid - pulseCenter)
+
+      if (distFromPulse < pulseWidth) {
+        // Calculate intensity based on distance from pulse center
+        const intensity = 1 - (distFromPulse / pulseWidth)
+        const segOpacity = intensity * (1 - pulseProgress * 0.5)
+
+        const p1 = new THREE.Vector3().lerpVectors(startPoint, endPoint, segStart)
+        const p2 = new THREE.Vector3().lerpVectors(startPoint, endPoint, segEnd)
+
+        segments.push({ p1, p2, opacity: segOpacity })
+      }
+    }
+
+    return segments
+  }, [pulseProgress, sourcePos, targetPos])
 
   return (
     <group>
       {/* Main edge line */}
       <line ref={lineRef} geometry={lineGeometry}>
-        <lineBasicMaterial 
-          color={isTypeActive || isConnectedToSelected ? '#000000' : '#000000'}
+        <lineBasicMaterial
+          color="#000000"
           transparent
           opacity={opacity}
           linewidth={lineWidth}
         />
       </line>
-      
-      {/* Pulse sphere */}
-      {pulsePosition && (
-        <mesh position={pulsePosition}>
-          <sphereGeometry args={[1.5, 16, 16]} />
-          <meshBasicMaterial 
-            color={sourceColor}
-            transparent
-            opacity={1 - pulseProgress}
-          />
-        </mesh>
-      )}
-      
+
+      {/* Pulse wave effect - glowing segments */}
+      {pulseSegments && pulseSegments.map((seg, i) => {
+        const segGeometry = new THREE.BufferGeometry().setFromPoints([seg.p1, seg.p2])
+        return (
+          <line key={i} geometry={segGeometry}>
+            <lineBasicMaterial
+              color={sourceColor}
+              transparent
+              opacity={seg.opacity}
+              linewidth={3}
+            />
+          </line>
+        )
+      })}
+
       {/* Invisible thicker line for easier hover detection */}
       <mesh
         onPointerOver={(e) => {
