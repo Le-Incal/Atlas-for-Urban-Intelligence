@@ -1,6 +1,5 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import useGraphStore from '../stores/graphStore'
 import nodesData from '../data/nodes.json'
@@ -160,6 +159,7 @@ function Node({ node, position, size, isVisible }) {
   const materialRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setHoveredNode = useGraphStore((state) => state.setHoveredNode)
+  const setMousePosition = useGraphStore((state) => state.setMousePosition)
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
 
@@ -200,7 +200,14 @@ function Node({ node, position, size, isVisible }) {
   const handlePointerOver = (e) => {
     e.stopPropagation()
     setHoveredNode(node)
+    setMousePosition({ x: e.clientX, y: e.clientY })
     document.body.style.cursor = 'pointer'
+  }
+
+  const handlePointerMove = (e) => {
+    if (hoveredNode?.id === node.id) {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
   }
 
   const handlePointerOut = (e) => {
@@ -243,6 +250,7 @@ function Node({ node, position, size, isVisible }) {
           setSelectedNode(isSelected ? null : node)
         }}
         onPointerOver={handlePointerOver}
+        onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
         onPointerLeave={handlePointerLeave}
         onPointerCancel={handlePointerLeave}
@@ -257,22 +265,6 @@ function Node({ node, position, size, isVisible }) {
           emissiveIntensity={0}
         />
       </mesh>
-
-      {/* Label on hover */}
-      {(isHovered || isSelected) && (
-        <Html
-          position={[0, size + 1.5, 0]}
-          center
-          style={{
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-        >
-          <div className="node-label whitespace-nowrap px-2 py-1 rounded bg-white/90 backdrop-blur-sm shadow-sm">
-            {node.label}
-          </div>
-        </Html>
-      )}
     </group>
   )
 }

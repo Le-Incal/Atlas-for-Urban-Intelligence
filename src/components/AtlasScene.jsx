@@ -53,6 +53,28 @@ function Instructions() {
   )
 }
 
+function CursorTooltip() {
+  const hoveredNode = useGraphStore((state) => state.hoveredNode)
+  const mousePosition = useGraphStore((state) => state.mousePosition)
+
+  if (!hoveredNode) return null
+
+  return (
+    <div
+      className="fixed z-[100] pointer-events-none"
+      style={{
+        left: mousePosition.x + 12,
+        top: mousePosition.y - 8,
+      }}
+    >
+      <div className="whitespace-nowrap px-1.5 py-0.5 rounded text-[10px] font-medium
+                      bg-white/95 backdrop-blur-sm shadow-sm border border-gray-200 text-gray-700">
+        {hoveredNode.label}
+      </div>
+    </div>
+  )
+}
+
 // Custom zoom component that zooms toward mouse position
 function ZoomToMouse({ controlsRef, minDistance = 30, maxDistance = 300 }) {
   const { camera, gl } = useThree()
@@ -175,6 +197,7 @@ function AtlasScene() {
       <Title />
       <LegendPanel />
       <NodeDetailPanel />
+      <CursorTooltip />
       <Instructions />
     </div>
   )
