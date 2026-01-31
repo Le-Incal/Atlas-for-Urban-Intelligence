@@ -270,6 +270,8 @@ function Node({ node, position, size, isVisible }) {
       {/* Node initial */}
       <Html
         center
+        occlude
+        zIndexRange={[0, 10]}
         style={{
           pointerEvents: 'none',
           userSelect: 'none',
@@ -380,31 +382,28 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
     return segments
   }, [pulseProgress, sourcePos, targetPos])
 
-  // Create curve for tube geometry
-  const curve = useMemo(() => new THREE.CatmullRomCurve3(points), [points])
+  // Create curve for tube geometry - use LineCurve3 for straight lines
+  const curve = useMemo(() => new THREE.LineCurve3(startPoint, endPoint), [startPoint, endPoint])
 
   return (
     <group>
       {/* Main edge - tube geometry for visible thickness */}
-      <mesh ref={lineRef}>
-        <tubeGeometry args={[curve, 64, tubeRadius, 8, false]} />
+      <mesh ref={lineRef} renderOrder={-1}>
+        <tubeGeometry args={[curve, 1, tubeRadius, 8, false]} />
         <meshBasicMaterial
           color="#595959"
           transparent
           opacity={opacity}
           depthWrite={false}
-          polygonOffset
-          polygonOffsetFactor={1}
-          polygonOffsetUnits={1}
         />
       </mesh>
 
       {/* Pulse wave effect - thicker glowing tube segments */}
       {pulseSegments && pulseSegments.map((seg, i) => {
-        const segCurve = new THREE.CatmullRomCurve3([seg.p1, seg.p2])
+        const segCurve = new THREE.LineCurve3(seg.p1, seg.p2)
         return (
-          <mesh key={i}>
-            <tubeGeometry args={[segCurve, 8, 0.4, 8, false]} />
+          <mesh key={i} renderOrder={0}>
+            <tubeGeometry args={[segCurve, 1, 0.4, 8, false]} />
             <meshBasicMaterial
               color={sourceColor}
               transparent
@@ -423,7 +422,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
         }}
         onPointerOut={() => setHoveredEdge(null)}
       >
-        <tubeGeometry args={[curve, 32, 1.5, 8, false]} />
+        <tubeGeometry args={[curve, 1, 1.5, 8, false]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
     </group>
