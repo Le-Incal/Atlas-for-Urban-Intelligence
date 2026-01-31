@@ -325,7 +325,8 @@ function calculatePositions(nodes, edges) {
 }
 
 // Single Node component with gradient shading
-function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
+// Receives basePosition (without cluster offset) and computes final position directly from store
+function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 }) {
   const groupRef = useRef()
   const meshRef = useRef()
   const materialRef = useRef()
@@ -337,6 +338,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
   const setNodeOverride = useGraphStore((state) => state.setNodeOverride)
   const controlsRef = useGraphStore((state) => state.controlsRef)
+  const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
   const { camera, gl } = useThree()
 
   const isSelected = selectedNode?.id === node.id
@@ -350,7 +352,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const dragStartRef = useRef(new THREE.Vector3())
   const raycasterRef = useRef(new THREE.Raycaster())
   // Store current position for drag calculations
-  const currentPosRef = useRef({ x: position.x, y: position.y, z: position.z })
+  const currentPosRef = useRef({ x: 0, y: 0, z: 0 })
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
   const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
@@ -369,13 +371,22 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const [currentEmissive, setCurrentEmissive] = useState(0)
 
   useFrame(() => {
-    // Update position imperatively (bypasses React reconciliation issues in production)
+    // Compute position directly from store state every frame (production-safe)
+    const state = useGraphStore.getState()
+    const offset = state.clusterOffsets?.[clusterKey] || { x: 0, y: 0, z: 0 }
+    const override = state.nodeOverrides?.[node.id]
+
+    // Priority: individual override > base + cluster offset
+    const finalX = override ? override.x : basePosition.x + offset.x
+    const finalY = override ? override.y : basePosition.y + offset.y
+    const finalZ = override ? override.z : basePosition.z + offset.z
+
     if (groupRef.current) {
-      groupRef.current.position.x = position.x
-      groupRef.current.position.y = position.y
-      groupRef.current.position.z = position.z
+      groupRef.current.position.x = finalX
+      groupRef.current.position.y = finalY
+      groupRef.current.position.z = finalZ
       // Keep ref in sync for drag calculations
-      currentPosRef.current = { x: position.x, y: position.y, z: position.z }
+      currentPosRef.current = { x: finalX, y: finalY, z: finalZ }
     }
     if (meshRef.current) {
       // Smooth scale transition
@@ -501,7 +512,7 @@ function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   if (!isVisible) return null
 
   return (
-    <group ref={groupRef} position={[position.x, position.y, position.z]}>
+    <group ref={groupRef} position={[basePosition.x, basePosition.y, basePosition.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
       <mesh scale={1.06}>
         <sphereGeometry args={[size, 32, 32]} />
@@ -1170,20 +1181,22 @@ function GraphCanvas() {
       
       {/* Render nodes */}
       {nodes.map(node => {
-        const pos = resolvedPositions[node.id]
+        const basePos = positions[node.id]
+        const clusterKey = clusterKeyByNodeId?.[node.id]
         const connections = connectionCount[node.id] || 1
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
         const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
-        const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
+        const inActiveCluster = !activeClusterKey || (clusterKey === activeClusterKey)
         const isVisible = visibleLayers[node.layer] && inActiveCluster
 
         return (
           <Node
             key={node.id}
             node={node}
-            position={pos}
+            basePosition={basePos}
+            clusterKey={clusterKey}
             size={size}
             isVisible={isVisible}
             focusAlpha={nodeFocusAlpha}
