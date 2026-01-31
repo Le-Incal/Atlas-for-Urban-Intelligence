@@ -232,6 +232,32 @@ function SceneContent({ controlsRef }) {
 function AtlasScene() {
   const controlsRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
+  const setControlsRef = useGraphStore((state) => state.setControlsRef)
+  const setNodeOverrides = useGraphStore((state) => state.setNodeOverrides)
+
+  useEffect(() => {
+    setControlsRef(controlsRef)
+    return () => setControlsRef(null)
+  }, [setControlsRef])
+
+  // Load persisted layout (if available)
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch('/api/layout')
+        if (!res.ok) return
+        const data = await res.json()
+        const positions = data?.positions
+        if (!cancelled && positions && typeof positions === 'object') {
+          setNodeOverrides(positions)
+        }
+      } catch {
+        // ignore (no backend in dev or first run)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [setNodeOverrides])
 
   return (
     <div className="absolute inset-0 w-full h-full min-h-screen relative bg-white">

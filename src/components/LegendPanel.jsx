@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 
@@ -27,6 +27,15 @@ function LegendPanel() {
   const toggleLayer = useGraphStore((state) => state.toggleLayer)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const setActiveEdgeType = useGraphStore((state) => state.setActiveEdgeType)
+  const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
+  const setEdgeVisibilityMode = useGraphStore((state) => state.setEdgeVisibilityMode)
+  const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
+  const clearActiveClusterKey = useGraphStore((state) => state.clearActiveClusterKey)
+  const clearNodeOverrides = useGraphStore((state) => state.clearNodeOverrides)
+  const currentLayoutPositions = useGraphStore((state) => state.currentLayoutPositions)
+
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState(null)
 
   return (
     <motion.div
@@ -67,6 +76,107 @@ function LegendPanel() {
               </span>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-gray-200 mb-6" />
+
+      {/* Visibility / Layout */}
+      <div className="mb-6">
+        <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">
+          Visibility
+        </h3>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setEdgeVisibilityMode('primary')}
+            className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors
+                        ${edgeVisibilityMode === 'primary'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
+          >
+            Primary
+          </button>
+          <button
+            onClick={() => setEdgeVisibilityMode('all')}
+            className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors
+                        ${edgeVisibilityMode === 'all'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
+          >
+            All
+          </button>
+        </div>
+
+        {activeClusterKey && (
+          <div className="mt-3 px-3 py-2 bg-gray-50 rounded-lg flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-[10px] font-mono text-gray-400 uppercase">Cluster</p>
+              <p className="text-xs text-gray-700 truncate">{activeClusterKey}</p>
+            </div>
+            <button
+              onClick={clearActiveClusterKey}
+              className="text-[10px] font-mono text-gray-500 hover:text-gray-700"
+            >
+              Clear
+            </button>
+          </div>
+        )}
+
+        <div className="mt-3 space-y-2">
+          <button
+            onClick={() => {
+              clearNodeOverrides()
+              setSaveError(null)
+            }}
+            className="w-full px-3 py-2 rounded-lg text-xs font-medium bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            Reset layout (local)
+          </button>
+
+          <button
+            disabled={saving}
+            onClick={async () => {
+              setSaveError(null)
+              const password = window.prompt('Admin password to save layout:')
+              if (!password) return
+              if (!currentLayoutPositions) {
+                setSaveError('Layout not ready yet.')
+                return
+              }
+              try {
+                setSaving(true)
+                const res = await fetch('/api/layout', {
+                  method: 'POST',
+                  headers: {
+                    'content-type': 'application/json',
+                    'x-atlas-admin-password': password,
+                  },
+                  body: JSON.stringify({ positions: currentLayoutPositions }),
+                })
+                if (!res.ok) {
+                  const msg = await res.text().catch(() => '')
+                  throw new Error(msg || `Save failed (${res.status})`)
+                }
+                // After save, clear local overrides so we rely on persisted layout
+                clearNodeOverrides()
+              } catch (e) {
+                setSaveError(e?.message || 'Save failed.')
+              } finally {
+                setSaving(false)
+              }
+            }}
+            className={`w-full px-3 py-2 rounded-lg text-xs font-medium transition-colors
+                        ${saving ? 'bg-gray-200 text-gray-500' : 'bg-gray-900 text-white hover:bg-gray-800'}`}
+          >
+            {saving ? 'Saving…' : 'Save layout (admin)'}
+          </button>
+
+          {saveError && (
+            <p className="text-[10px] text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+              {saveError}
+            </p>
+          )}
         </div>
       </div>
 
@@ -134,6 +244,9 @@ function LegendPanel() {
       <button
         onClick={() => {
           setActiveEdgeType(null)
+          setEdgeVisibilityMode('primary')
+          clearActiveClusterKey()
+          clearNodeOverrides()
           LAYERS.forEach(l => {
             if (!visibleLayers[l.id]) toggleLayer(l.id)
           })

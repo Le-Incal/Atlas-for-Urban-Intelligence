@@ -320,9 +320,20 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
   const setMousePosition = useGraphStore((state) => state.setMousePosition)
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
+  const setNodeOverride = useGraphStore((state) => state.setNodeOverride)
+  const controlsRef = useGraphStore((state) => state.controlsRef)
+  const { camera, gl } = useThree()
 
   const isSelected = selectedNode?.id === node.id
   const isHovered = hoveredNode?.id === node.id
+
+  // Drag state (manual arrangement)
+  const draggingRef = useRef(false)
+  const didDragRef = useRef(false)
+  const pointerIdRef = useRef(null)
+  const dragPlaneRef = useRef(new THREE.Plane())
+  const dragStartRef = useRef(new THREE.Vector3())
+  const raycasterRef = useRef(new THREE.Raycaster())
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
   const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
@@ -390,6 +401,70 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
     }
   }
 
+  const handlePointerDown = (e) => {
+    // Left button only
+    if (e.button !== 0) return
+    e.stopPropagation()
+
+    draggingRef.current = true
+    didDragRef.current = false
+    pointerIdRef.current = e.pointerId
+
+    document.body.style.cursor = 'grabbing'
+
+    // Disable orbit controls while dragging so the scene doesn't rotate
+    if (controlsRef?.current) controlsRef.current.enabled = false
+
+    // Plane facing camera through the node position (screen-plane drag)
+    const nodePos = new THREE.Vector3(position.x, position.y, position.z)
+    dragStartRef.current.copy(nodePos)
+    const normal = new THREE.Vector3().subVectors(camera.position, nodePos).normalize()
+    dragPlaneRef.current.setFromNormalAndCoplanarPoint(normal, nodePos)
+
+    // Capture pointer so we continue to receive move/up
+    if (gl?.domElement?.setPointerCapture) {
+      try { gl.domElement.setPointerCapture(e.pointerId) } catch {}
+    }
+
+    const onMove = (ev) => {
+      if (!draggingRef.current) return
+      if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
+
+      const rect = gl.domElement.getBoundingClientRect()
+      const ndc = new THREE.Vector2(
+        ((ev.clientX - rect.left) / rect.width) * 2 - 1,
+        -(((ev.clientY - rect.top) / rect.height) * 2 - 1)
+      )
+      raycasterRef.current.setFromCamera(ndc, camera)
+      const hit = new THREE.Vector3()
+      if (raycasterRef.current.ray.intersectPlane(dragPlaneRef.current, hit)) {
+        if (hit.distanceTo(dragStartRef.current) > 0.5) didDragRef.current = true
+        setNodeOverride(node.id, { x: hit.x, y: hit.y, z: hit.z })
+      }
+    }
+
+    const onUp = (ev) => {
+      if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
+      draggingRef.current = false
+      pointerIdRef.current = null
+
+      document.body.style.cursor = hoveredNode?.id === node.id ? 'pointer' : 'default'
+
+      if (controlsRef?.current) controlsRef.current.enabled = true
+      if (gl?.domElement?.releasePointerCapture) {
+        try { gl.domElement.releasePointerCapture(e.pointerId) } catch {}
+      }
+
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
+    }
+
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+  }
+
   // Create a darker version of the base color for the outline
   const outlineColor = useMemo(() => {
     const c = baseColor.clone()
@@ -429,8 +504,14 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
         ref={meshRef}
         onClick={(e) => {
           e.stopPropagation()
+          // Suppress click toggle if this was a drag
+          if (didDragRef.current) {
+            didDragRef.current = false
+            return
+          }
           setSelectedNode(isSelected ? null : node)
         }}
+        onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
@@ -619,12 +700,32 @@ function GraphCanvas() {
   const visibleLayers = useGraphStore((state) => state.visibleLayers)
   const selectedNode = useGraphStore((state) => state.selectedNode)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
+  const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
+  const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
+  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
+  const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
+  const setCurrentLayoutPositions = useGraphStore((state) => state.setCurrentLayoutPositions)
   
   // Calculate positions once
   const { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId } = useMemo(
     () => calculatePositions(nodes, edges),
     [nodes, edges]
   )
+
+  // Apply manual overrides (dragged nodes) on top of computed layout
+  const resolvedPositions = useMemo(() => {
+    const out = { ...positions }
+    Object.entries(nodeOverrides || {}).forEach(([id, p]) => {
+      const base = out[id] || { x: 0, y: 0, z: 0, connections: 0 }
+      out[id] = { ...base, x: p.x, y: p.y, z: p.z }
+    })
+    return out
+  }, [positions, nodeOverrides])
+
+  // Keep latest positions in store for \"Save layout\" (admin)
+  useEffect(() => {
+    setCurrentLayoutPositions(resolvedPositions)
+  }, [resolvedPositions, setCurrentLayoutPositions])
   
   // Create node lookup for edges
   const nodeMap = useMemo(() => {
@@ -659,6 +760,7 @@ function GraphCanvas() {
     const byCluster = {}
     nodes.forEach((n) => {
       const ck = clusterKeyByNodeId?.[n.id] || n?.clusters?.[0] || `layer-${n.layer}`
+      if (activeClusterKey && ck !== activeClusterKey) return
       if (!byCluster[ck]) byCluster[ck] = []
       byCluster[ck].push(n)
     })
@@ -671,14 +773,15 @@ function GraphCanvas() {
       list.forEach((x) => hubSet.add(x.id))
     })
     return hubSet
-  }, [nodes, connectionCount, clusterKeyByNodeId])
+  }, [nodes, connectionCount, clusterKeyByNodeId, activeClusterKey])
 
   return (
     <group>
-      {/* Cluster labels + soft hulls */}
+      {/* Cluster labels + soft hulls (click to isolate cluster) */}
       {clusterCenters && Object.entries(clusterCenters).map(([key, center]) => {
         const count = clusterSizes?.[key] ?? 0
         const radius = 16 + Math.sqrt(count) * 3
+        const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
         return (
           <group key={key} position={[center.x, center.y, center.z]}>
             {/* Soft hull hint */}
@@ -687,9 +790,21 @@ function GraphCanvas() {
               <meshBasicMaterial
                 color="#808080"
                 transparent
-                opacity={0.04}
+                opacity={0.04 * alpha}
                 depthWrite={false}
               />
+            </mesh>
+            {/* Click target */}
+            <mesh
+              onClick={(e) => {
+                e.stopPropagation()
+                setActiveClusterKey(key)
+              }}
+              onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+              onPointerOut={() => { document.body.style.cursor = 'default' }}
+            >
+              <sphereGeometry args={[radius + 6, 12, 12]} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
             <Billboard>
               <Text
@@ -698,10 +813,10 @@ function GraphCanvas() {
                 color="#1a1a1a"
                 anchorX="center"
                 anchorY="middle"
-                fillOpacity={0.9}
+                fillOpacity={0.9 * alpha}
                 outlineWidth={0.02}
                 outlineColor="#ffffff"
-                outlineOpacity={0.9}
+                outlineOpacity={0.9 * alpha}
               >
                 {key} ({count})
               </Text>
@@ -714,14 +829,29 @@ function GraphCanvas() {
       {edges.map(edge => {
         const sourceNode = nodeMap[edge.source]
         const targetNode = nodeMap[edge.target]
-        const sourcePos = positions[edge.source]
-        const targetPos = positions[edge.target]
+        const sourcePos = resolvedPositions[edge.source]
+        const targetPos = resolvedPositions[edge.target]
         
         const inVisibleLayers =
           visibleLayers[sourceNode?.layer] && 
           visibleLayers[targetNode?.layer]
 
-        let isVisible = inVisibleLayers
+        const inActiveCluster = !activeClusterKey || (
+          (clusterKeyByNodeId?.[edge.source] === activeClusterKey) &&
+          (clusterKeyByNodeId?.[edge.target] === activeClusterKey)
+        )
+
+        let isVisible = inVisibleLayers && inActiveCluster
+
+        // Progressive disclosure: primary-only by default (unless filtering/focusing)
+        if (
+          edgeVisibilityMode === 'primary' &&
+          !selectedNode &&
+          !activeEdgeType &&
+          !activeClusterKey
+        ) {
+          isVisible = isVisible && !!edge.isPrimary
+        }
 
         // Edge-type filter: hide non-matching for cleanliness
         if (activeEdgeType && edge.edgeType !== activeEdgeType) {
@@ -775,13 +905,14 @@ function GraphCanvas() {
       
       {/* Render nodes */}
       {nodes.map(node => {
-        const pos = positions[node.id]
+        const pos = resolvedPositions[node.id]
         const connections = connectionCount[node.id] || 1
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
         const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
-        const isVisible = visibleLayers[node.layer]
+        const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
+        const isVisible = visibleLayers[node.layer] && inActiveCluster
 
         const showLabel =
           (!!focusSet && focusSet.has(node.id)) ||
