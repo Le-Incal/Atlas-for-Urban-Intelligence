@@ -325,7 +325,7 @@ function calculatePositions(nodes, edges) {
 }
 
 // Single Node component with gradient shading
-// Receives basePosition (without cluster offset) and computes final position directly from store
+// Subscribes directly to clusterOffsets for guaranteed reactivity
 function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 }) {
   const groupRef = useRef()
   const meshRef = useRef()
@@ -339,10 +339,28 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   const setNodeOverride = useGraphStore((state) => state.setNodeOverride)
   const controlsRef = useGraphStore((state) => state.controlsRef)
   const nodeOverrides = useGraphStore((state) => state.nodeOverrides)
+  // Subscribe directly to this node's cluster offset for guaranteed reactivity
+  const clusterOffset = useGraphStore((state) => state.clusterOffsets?.[clusterKey])
+  const nodeOverride = useGraphStore((state) => state.nodeOverrides?.[node.id])
   const { camera, gl } = useThree()
 
   const isSelected = selectedNode?.id === node.id
   const isHovered = hoveredNode?.id === node.id
+
+  // Compute final position from base + offset (or override)
+  const finalPosition = useMemo(() => {
+    if (nodeOverride) {
+      return { x: nodeOverride.x, y: nodeOverride.y, z: nodeOverride.z }
+    }
+    const ox = clusterOffset?.x || 0
+    const oy = clusterOffset?.y || 0
+    const oz = clusterOffset?.z || 0
+    return {
+      x: basePosition.x + ox,
+      y: basePosition.y + oy,
+      z: basePosition.z + oz
+    }
+  }, [basePosition, clusterOffset, nodeOverride])
 
   // Drag state (manual arrangement)
   const draggingRef = useRef(false)
@@ -352,7 +370,12 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   const dragStartRef = useRef(new THREE.Vector3())
   const raycasterRef = useRef(new THREE.Raycaster())
   // Store current position for drag calculations
-  const currentPosRef = useRef({ x: 0, y: 0, z: 0 })
+  const currentPosRef = useRef({ x: finalPosition.x, y: finalPosition.y, z: finalPosition.z })
+
+  // Keep ref in sync
+  useEffect(() => {
+    currentPosRef.current = finalPosition
+  }, [finalPosition])
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
   const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
@@ -371,22 +394,11 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   const [currentEmissive, setCurrentEmissive] = useState(0)
 
   useFrame(() => {
-    // Compute position directly from store state every frame (production-safe)
-    const state = useGraphStore.getState()
-    const offset = state.clusterOffsets?.[clusterKey] || { x: 0, y: 0, z: 0 }
-    const override = state.nodeOverrides?.[node.id]
-
-    // Priority: individual override > base + cluster offset
-    const finalX = override ? override.x : basePosition.x + offset.x
-    const finalY = override ? override.y : basePosition.y + offset.y
-    const finalZ = override ? override.z : basePosition.z + offset.z
-
+    // Update position imperatively every frame
     if (groupRef.current) {
-      groupRef.current.position.x = finalX
-      groupRef.current.position.y = finalY
-      groupRef.current.position.z = finalZ
-      // Keep ref in sync for drag calculations
-      currentPosRef.current = { x: finalX, y: finalY, z: finalZ }
+      groupRef.current.position.x = finalPosition.x
+      groupRef.current.position.y = finalPosition.y
+      groupRef.current.position.z = finalPosition.z
     }
     if (meshRef.current) {
       // Smooth scale transition
@@ -512,7 +524,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
   if (!isVisible) return null
 
   return (
-    <group ref={groupRef} position={[basePosition.x, basePosition.y, basePosition.z]}>
+    <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
       <mesh scale={1.06}>
         <sphereGeometry args={[size, 32, 32]} />
