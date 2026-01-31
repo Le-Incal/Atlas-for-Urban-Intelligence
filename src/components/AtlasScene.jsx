@@ -65,55 +65,45 @@ function CursorTooltip() {
   )
 }
 
-// Custom trackpad handler for two-finger rotate + pinch zoom
+// Custom trackpad handler for two-finger rotate + pinch zoom (simultaneous)
 function TrackpadControls({ controlsRef }) {
   const { camera, gl } = useThree()
 
   const handleWheel = useCallback((event) => {
     if (!controlsRef.current) return
+    event.preventDefault()
 
-    // Pinch zoom (ctrlKey on Mac trackpad)
+    const rotateSpeed = 0.005
+    const zoomSpeed = 0.01
+
+    // Get current spherical coordinates
+    const offset = new THREE.Vector3().subVectors(camera.position, controlsRef.current.target)
+    const spherical = new THREE.Spherical().setFromVector3(offset)
+
+    // Always apply horizontal rotation from deltaX
+    spherical.theta -= event.deltaX * rotateSpeed
+
+    // If pinching (ctrlKey), deltaY is zoom; otherwise it's vertical rotation
     if (event.ctrlKey) {
-      event.preventDefault()
-      const zoomSpeed = 0.01
+      // Pinch zoom
       const delta = event.deltaY * zoomSpeed
-      const distance = camera.position.distanceTo(controlsRef.current.target)
-      const newDistance = distance * (1 + delta)
-
+      const newRadius = spherical.radius * (1 + delta)
       // Clamp distance
-      if (newDistance >= 30 && newDistance <= 300) {
-        const direction = new THREE.Vector3()
-          .subVectors(camera.position, controlsRef.current.target)
-          .normalize()
-        camera.position.copy(controlsRef.current.target)
-          .add(direction.multiplyScalar(newDistance))
+      if (newRadius >= 30 && newRadius <= 300) {
+        spherical.radius = newRadius
       }
     } else {
-      // Two-finger scroll = rotate
-      event.preventDefault()
-      const rotateSpeed = 0.005
-
-      // Horizontal scroll = rotate around Y axis (azimuth)
-      // Vertical scroll = rotate around X axis (polar)
-      const azimuthDelta = -event.deltaX * rotateSpeed
-      const polarDelta = -event.deltaY * rotateSpeed
-
-      // Get current spherical coordinates
-      const offset = new THREE.Vector3().subVectors(camera.position, controlsRef.current.target)
-      const spherical = new THREE.Spherical().setFromVector3(offset)
-
-      // Apply rotation
-      spherical.theta += azimuthDelta
-      spherical.phi += polarDelta
-
-      // Clamp phi to prevent flipping
-      spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi))
-
-      // Convert back to Cartesian
-      offset.setFromSpherical(spherical)
-      camera.position.copy(controlsRef.current.target).add(offset)
-      camera.lookAt(controlsRef.current.target)
+      // Vertical rotation
+      spherical.phi -= event.deltaY * rotateSpeed
     }
+
+    // Clamp phi to prevent flipping
+    spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi))
+
+    // Convert back to Cartesian and apply
+    offset.setFromSpherical(spherical)
+    camera.position.copy(controlsRef.current.target).add(offset)
+    camera.lookAt(controlsRef.current.target)
 
     controlsRef.current.update()
   }, [camera, controlsRef])
