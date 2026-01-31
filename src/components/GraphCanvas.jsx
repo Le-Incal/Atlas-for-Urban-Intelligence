@@ -284,18 +284,20 @@ function Node({ node, position, size, isVisible }) {
         />
       </mesh>
 
-      {/* Node initials - first letter of each word */}
-      <Html
-        center
-        style={{
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        <div className="text-[5px] font-bold" style={{ color: '#00e600' }}>
-          {node.label.split(' ').map(word => word.charAt(0)).join('')}
-        </div>
-      </Html>
+      {/* Node initials - only show when hovered to prevent overlap */}
+      {isHovered && (
+        <Html
+          center
+          style={{
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+        >
+          <div className="text-[5px] font-bold" style={{ color: '#00e600' }}>
+            {node.label.split(' ').map(word => word.charAt(0)).join('')}
+          </div>
+        </Html>
+      )}
     </group>
   )
 }
