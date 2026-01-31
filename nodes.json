@@ -1,0 +1,3098 @@
+[
+  {
+    "id": "l0-001",
+    "label": "Bedrock",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Geological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "The lithospheric substrate upon which all urban form rests. Determines foundation requirements and construction feasibility.",
+    "scale": 1.2
+  },
+  {
+    "id": "l0-002",
+    "label": "Soil Composition",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Geological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Clay, sand, gravel, and marl distribution affecting drainage, load-bearing capacity, and agricultural potential.",
+    "scale": 0.95
+  },
+  {
+    "id": "l0-003",
+    "label": "Fault Lines",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Geological",
+    "clusters": [
+      "structural-L0",
+      "risk-resilience"
+    ],
+    "description": "Tectonic fracture zones requiring seismic design standards and limiting certain development types.",
+    "scale": 1.1
+  },
+  {
+    "id": "l0-004",
+    "label": "Mines",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Geological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Extraction sites and subsurface voids affecting ground stability and creating brownfield conditions.",
+    "scale": 0.7
+  },
+  {
+    "id": "l0-005",
+    "label": "Topography",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Environmental",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Elevation data and terrain morphology shaping drainage patterns, views, and accessibility.",
+    "scale": 1.0
+  },
+  {
+    "id": "l0-006",
+    "label": "Slope Analysis",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Geological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Gradient calculations determining buildability, erosion risk, and infrastructure routing.",
+    "scale": 0.7
+  },
+  {
+    "id": "l0-007",
+    "label": "Water Table",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Hydrological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Subsurface aquifer levels affecting foundation design, basement feasibility, and contamination risk.",
+    "scale": 1.15
+  },
+  {
+    "id": "l0-008",
+    "label": "Wetlands",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Hydrological",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "NWI-designated areas with development restrictions and ecological buffer requirements.",
+    "scale": 1.0
+  },
+  {
+    "id": "l0-009",
+    "label": "Flood Zones",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Hydrological",
+    "clusters": [
+      "structural-L0",
+      "risk-resilience"
+    ],
+    "description": "FEMA-designated areas requiring insurance, elevation certificates, and resilient design.",
+    "scale": 1.35
+  },
+  {
+    "id": "l0-010",
+    "label": "Air Quality",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Atmospheric",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Atmospheric particulate and chemical composition affecting health outcomes and HVAC design.",
+    "scale": 1.2
+  },
+  {
+    "id": "l0-011",
+    "label": "Vegetation",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Environmental",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Plant cover distribution affecting microclimate, carbon sequestration, and habitat connectivity.",
+    "scale": 0.9
+  },
+  {
+    "id": "l0-012",
+    "label": "Natural Habitats",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Environmental",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Protected ecosystems requiring environmental review and mitigation measures.",
+    "scale": 1.0
+  },
+  {
+    "id": "l0-013",
+    "label": "Ecological Systems",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Environmental",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Interconnected biotic communities and their metabolic cycles within urban boundaries.",
+    "scale": 1.1
+  },
+  {
+    "id": "l0-014",
+    "label": "Wildfire Risk",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Risk",
+    "clusters": [
+      "structural-L0",
+      "risk-resilience"
+    ],
+    "description": "FEMA-designated fire hazard severity zones affecting insurance, defensible space, and materials.",
+    "scale": 1.3
+  },
+  {
+    "id": "l0-015",
+    "label": "Strong Wind Risk",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Atmospheric",
+    "clusters": [
+      "structural-L0",
+      "risk-resilience"
+    ],
+    "description": "FEMA wind exposure zones affecting structural design loads and fenestration requirements.",
+    "scale": 1.0
+  },
+  {
+    "id": "l0-016",
+    "label": "Earthquake Risk",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Risk",
+    "clusters": [
+      "structural-L0",
+      "risk-resilience"
+    ],
+    "description": "Seismic hazard zones determining structural system requirements and retrofit priorities.",
+    "scale": 1.3
+  },
+  {
+    "id": "l0-017",
+    "label": "Raw Materials",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0",
+      "metabolic-flow"
+    ],
+    "description": "Extractable resources (aggregate, timber, minerals) within or near urban boundaries.",
+    "scale": 1.05
+  },
+  {
+    "id": "l0-018",
+    "label": "Agricultural Land",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Productive soil classified for farming, often protected from urban conversion.",
+    "scale": 1.0
+  },
+  {
+    "id": "l0-019",
+    "label": "Solar Potential",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0",
+      "metabolic-flow"
+    ],
+    "description": "Insolation values determining photovoltaic viability and passive design strategies.",
+    "scale": 1.1
+  },
+  {
+    "id": "l0-020",
+    "label": "Energy Grid",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0",
+      "metabolic-flow"
+    ],
+    "description": "Electrical transmission and distribution network capacity and connection points.",
+    "scale": 2.0
+  },
+  {
+    "id": "l0-021",
+    "label": "Heat Islands",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Atmospheric",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Urban thermal anomalies affecting cooling loads, health, and vegetation stress.",
+    "scale": 1.05
+  },
+  {
+    "id": "l0-022",
+    "label": "Wind Corridors",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Atmospheric",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Natural ventilation paths affecting air quality, comfort, and wind energy potential.",
+    "scale": 0.9
+  },
+  {
+    "id": "l0-023",
+    "label": "Carbon Sinks",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0"
+    ],
+    "description": "Areas with net carbon sequestration capacity (forests, wetlands, soils).",
+    "scale": 1.1
+  },
+  {
+    "id": "l0-024",
+    "label": "Material Reservoirs",
+    "layer": 0,
+    "layerName": "Bio-Physical Foundation",
+    "color": "#2E2F2C",
+    "nodeType": "Resource",
+    "clusters": [
+      "structural-L0",
+      "metabolic-flow"
+    ],
+    "description": "Stockpiles and flows of construction materials (sand, steel, timber, concrete).",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-001",
+    "label": "Parcels",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1",
+      "capital-value"
+    ],
+    "description": "Legal land divisions with unique identifiers forming the atomic unit of property rights.",
+    "scale": 2.0
+  },
+  {
+    "id": "l1-002",
+    "label": "Site Addresses",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Geocoded location identifiers linking parcels to postal and emergency systems.",
+    "scale": 0.85
+  },
+  {
+    "id": "l1-003",
+    "label": "Site Conditions",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Physical state assessments including contamination, demolition needs, and utility access.",
+    "scale": 0.95
+  },
+  {
+    "id": "l1-004",
+    "label": "Lot Coverage",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Percentage of parcel area occupied by structures, determining open space compliance.",
+    "scale": 0.95
+  },
+  {
+    "id": "l1-005",
+    "label": "Boundaries",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Legal and physical demarcations defining ownership edges and easements.",
+    "scale": 0.9
+  },
+  {
+    "id": "l1-006",
+    "label": "Basemap",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Physical Asset",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Authoritative geographic reference layer for spatial registration of all other data.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-007",
+    "label": "Building Footprints",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Ground-level outlines of structures defining lot coverage and floor plate geometry.",
+    "scale": 1.3
+  },
+  {
+    "id": "l1-008",
+    "label": "Building Height",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Vertical dimension of structures measured to various datum points per code.",
+    "scale": 1.25
+  },
+  {
+    "id": "l1-009",
+    "label": "Structures",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Physical improvements on land including buildings, walls, and permanent installations.",
+    "scale": 1.7
+  },
+  {
+    "id": "l1-010",
+    "label": "Density Measurement",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Physical Asset",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Calculated intensity of development (units/acre, FAR achieved, people/hectare).",
+    "scale": 1.2
+  },
+  {
+    "id": "l1-011",
+    "label": "Single Family Residential",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Detached dwelling units on individual lots with yard setbacks.",
+    "scale": 1.05
+  },
+  {
+    "id": "l1-012",
+    "label": "Multifamily Residential",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Attached dwelling units in buildings with shared common areas.",
+    "scale": 1.1
+  },
+  {
+    "id": "l1-013",
+    "label": "Commercial Real Estate",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1",
+      "capital-value"
+    ],
+    "description": "Properties used for business operations, retail, and services.",
+    "scale": 1.15
+  },
+  {
+    "id": "l1-014",
+    "label": "Industrial Assets",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Manufacturing, warehousing, and production facilities.",
+    "scale": 1.1
+  },
+  {
+    "id": "l1-015",
+    "label": "Retail Assets",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Consumer-facing commercial spaces for goods exchange.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-016",
+    "label": "Office Buildings",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Professional workspace structures with varying class ratings.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-017",
+    "label": "Mixed Use Development",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Properties combining residential, commercial, and/or industrial functions.",
+    "scale": 1.1
+  },
+  {
+    "id": "l1-018",
+    "label": "Hospitality Assets",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Real Estate",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Hotels, motels, and short-term accommodation facilities.",
+    "scale": 0.9
+  },
+  {
+    "id": "l1-019",
+    "label": "Civic Buildings",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Government, institutional, and public service structures.",
+    "scale": 1.05
+  },
+  {
+    "id": "l1-020",
+    "label": "Secure Sites",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Restricted-access facilities (data centers, utilities, defense).",
+    "scale": 0.85
+  },
+  {
+    "id": "l1-021",
+    "label": "Open Space",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Parks, plazas, and undeveloped land preserved for public or ecological use.",
+    "scale": 1.15
+  },
+  {
+    "id": "l1-022",
+    "label": "Transmission Lines",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L1",
+      "metabolic-flow"
+    ],
+    "description": "High-voltage electrical corridors with easement and clearance requirements.",
+    "scale": 1.1
+  },
+  {
+    "id": "l1-023",
+    "label": "Waste Management",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Solid waste collection, transfer, and disposal infrastructure.",
+    "scale": 0.95
+  },
+  {
+    "id": "l1-024",
+    "label": "Parking Infrastructure",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Surface lots, structures, and on-street spaces for vehicle storage.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-025",
+    "label": "Streets",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Public rights-of-way for vehicular and pedestrian circulation.",
+    "scale": 1.4
+  },
+  {
+    "id": "l1-026",
+    "label": "Right of Way",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Physical Asset",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Legal corridors for transportation and utility infrastructure.",
+    "scale": 1.1
+  },
+  {
+    "id": "l1-027",
+    "label": "Transit Networks",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Fixed-route public transportation infrastructure (rail, bus, ferry).",
+    "scale": 1.35
+  },
+  {
+    "id": "l1-028",
+    "label": "Smelters",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Manufacturing",
+    "clusters": [
+      "structural-L1",
+      "metabolic-flow"
+    ],
+    "description": "Metal processing facilities with environmental and zoning implications.",
+    "scale": 0.65
+  },
+  {
+    "id": "l1-029",
+    "label": "Refiners",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Manufacturing",
+    "clusters": [
+      "structural-L1",
+      "metabolic-flow"
+    ],
+    "description": "Petroleum and chemical processing plants with buffer requirements.",
+    "scale": 0.65
+  },
+  {
+    "id": "l1-030",
+    "label": "Component Manufacturers",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Manufacturing",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Facilities producing parts for assembly into finished goods.",
+    "scale": 0.8
+  },
+  {
+    "id": "l1-031",
+    "label": "Assemblers",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Manufacturing",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Final product manufacturing facilities combining components.",
+    "scale": 0.8
+  },
+  {
+    "id": "l1-032",
+    "label": "Distributors",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Manufacturing",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Warehousing and logistics facilities for goods movement.",
+    "scale": 0.85
+  },
+  {
+    "id": "l1-033",
+    "label": "Shipping Infrastructure",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Ports, rail yards, and intermodal transfer facilities.",
+    "scale": 1.05
+  },
+  {
+    "id": "l1-034",
+    "label": "Curb Cuts",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Physical Asset",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Vehicular access points from streets to parcels, regulated by code.",
+    "scale": 0.6
+  },
+  {
+    "id": "l1-035",
+    "label": "Vacant Lots",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Land",
+    "clusters": [
+      "structural-L1",
+      "capital-value"
+    ],
+    "description": "Unimproved parcels available for development or interim use.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-036",
+    "label": "Historic Districts",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Designated areas with design review and preservation requirements.",
+    "scale": 1.05
+  },
+  {
+    "id": "l1-037",
+    "label": "Utility Corridors",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Easements for water, sewer, gas, and telecommunications infrastructure.",
+    "scale": 1.0
+  },
+  {
+    "id": "l1-038",
+    "label": "Stormwater Infrastructure",
+    "layer": 1,
+    "layerName": "Observable Reality",
+    "color": "#4A5A63",
+    "nodeType": "Building",
+    "clusters": [
+      "structural-L1"
+    ],
+    "description": "Drainage systems, retention basins, and green infrastructure.",
+    "scale": 1.0
+  },
+  {
+    "id": "l2-001",
+    "label": "Technical Infrastructure",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Network",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Physical backbone of digital systems including fiber, towers, and data centers.",
+    "scale": 1.25
+  },
+  {
+    "id": "l2-002",
+    "label": "Internet Infrastructure",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Network",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Global network connectivity points and local access nodes.",
+    "scale": 1.15
+  },
+  {
+    "id": "l2-003",
+    "label": "IoT Devices",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Sensor",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Internet-connected sensors, controllers, and edge devices distributed across the city.",
+    "scale": 1.2
+  },
+  {
+    "id": "l2-004",
+    "label": "Microchips",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Compute",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Processing units embedded in urban systems from traffic lights to smart meters.",
+    "scale": 0.65
+  },
+  {
+    "id": "l2-005",
+    "label": "Telecommunications",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Network",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Voice, data, and video transmission networks (cellular, landline, satellite).",
+    "scale": 1.1
+  },
+  {
+    "id": "l2-006",
+    "label": "Network Infrastructure",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Network",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Routers, switches, and cabling forming the digital nervous pathways.",
+    "scale": 1.1
+  },
+  {
+    "id": "l2-007",
+    "label": "Environmental Sensors",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Sensor",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Devices measuring air quality, noise, temperature, and environmental conditions.",
+    "scale": 1.2
+  },
+  {
+    "id": "l2-008",
+    "label": "Urban Sensing Network",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Network",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Distributed sensor mesh providing real-time urban condition awareness.",
+    "scale": 1.15
+  },
+  {
+    "id": "l2-009",
+    "label": "Eye-Tracking Systems",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Sensor",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Visual attention monitoring for retail, safety, and user experience research.",
+    "scale": 0.55
+  },
+  {
+    "id": "l2-010",
+    "label": "Live Streams",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Sensor",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Real-time video and data feeds from cameras and monitoring systems.",
+    "scale": 1.05
+  },
+  {
+    "id": "l2-011",
+    "label": "Real-Time Systems",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Compute",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Low-latency computing infrastructure for time-critical urban operations.",
+    "scale": 1.0
+  },
+  {
+    "id": "l2-012",
+    "label": "Urban Actuators",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Actuator",
+    "clusters": [
+      "structural-L2",
+      "metabolic-flow"
+    ],
+    "description": "Controllable devices that physically modify urban conditions (gates, valves, signals).",
+    "scale": 1.15
+  },
+  {
+    "id": "l2-013",
+    "label": "Smart Home Technologies",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Smart System",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Connected residential systems for comfort, security, and energy management.",
+    "scale": 0.95
+  },
+  {
+    "id": "l2-014",
+    "label": "Robotics",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Embodied AI",
+    "clusters": [
+      "structural-L2",
+      "synthetic-labor"
+    ],
+    "description": "Autonomous and semi-autonomous machines performing urban tasks.",
+    "scale": 1.25
+  },
+  {
+    "id": "l2-015",
+    "label": "Embodied AI",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Embodied AI",
+    "clusters": [
+      "structural-L2",
+      "synthetic-labor"
+    ],
+    "description": "AI systems with physical presence capable of sensing and acting in the environment.",
+    "scale": 1.5
+  },
+  {
+    "id": "l2-016",
+    "label": "Autonomous Vehicles",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Embodied AI",
+    "clusters": [
+      "structural-L2",
+      "synthetic-labor"
+    ],
+    "description": "Self-driving cars, trucks, and shuttles navigating urban streets.",
+    "scale": 1.45
+  },
+  {
+    "id": "l2-017",
+    "label": "Drones",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Embodied AI",
+    "clusters": [
+      "structural-L2",
+      "synthetic-labor"
+    ],
+    "description": "Unmanned aerial vehicles for delivery, inspection, and surveillance.",
+    "scale": 1.2
+  },
+  {
+    "id": "l2-018",
+    "label": "Edge Compute Nodes",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Compute",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Distributed processing units reducing latency for local AI inference.",
+    "scale": 0.95
+  },
+  {
+    "id": "l2-019",
+    "label": "Traffic Signals",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Actuator",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Networked intersection control systems managing vehicle and pedestrian flow.",
+    "scale": 1.3
+  },
+  {
+    "id": "l2-020",
+    "label": "Smart Meters",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Sensor",
+    "clusters": [
+      "structural-L2",
+      "metabolic-flow"
+    ],
+    "description": "Connected utility meters enabling real-time consumption monitoring.",
+    "scale": 1.2
+  },
+  {
+    "id": "l2-021",
+    "label": "Charging Stations",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Actuator",
+    "clusters": [
+      "structural-L2",
+      "metabolic-flow"
+    ],
+    "description": "Electric vehicle charging infrastructure with grid integration.",
+    "scale": 1.05
+  },
+  {
+    "id": "l2-022",
+    "label": "Building Management Systems",
+    "layer": 2,
+    "layerName": "Cyber-Physical",
+    "color": "#4F7A74",
+    "nodeType": "Actuator",
+    "clusters": [
+      "structural-L2"
+    ],
+    "description": "Integrated controls for HVAC, lighting, security, and energy in structures.",
+    "scale": 1.15
+  },
+  {
+    "id": "l3-001",
+    "label": "Setbacks",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Required distances between structures and property lines or other features.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-002",
+    "label": "Floor Area Ratio",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Maximum buildable area expressed as ratio of floor area to lot area.",
+    "scale": 1.1
+  },
+  {
+    "id": "l3-003",
+    "label": "Zoning Regulations",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Codified rules governing land use, density, and building form by district.",
+    "scale": 1.7
+  },
+  {
+    "id": "l3-004",
+    "label": "Detailed Controls",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Information System",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Fine-grained design standards for materials, fenestration, and articulation.",
+    "scale": 0.95
+  },
+  {
+    "id": "l3-005",
+    "label": "Height Limits",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Maximum vertical dimensions for structures by zone or overlay.",
+    "scale": 1.05
+  },
+  {
+    "id": "l3-006",
+    "label": "Parking Requirements",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Mandated vehicle storage ratios tied to use type and intensity.",
+    "scale": 0.95
+  },
+  {
+    "id": "l3-007",
+    "label": "System of Record",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Authoritative data source for a given domain (e.g., parcel boundaries).",
+    "scale": 1.25
+  },
+  {
+    "id": "l3-008",
+    "label": "Master Data",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Core reference entities (parcels, addresses, owners) used across systems.",
+    "scale": 1.15
+  },
+  {
+    "id": "l3-009",
+    "label": "Golden Record",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Single source of truth created by reconciling multiple data sources.",
+    "scale": 1.1
+  },
+  {
+    "id": "l3-010",
+    "label": "Metadata",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Data about data: schemas, lineage, quality scores, and access controls.",
+    "scale": 0.85
+  },
+  {
+    "id": "l3-011",
+    "label": "Data Layers",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Thematic geospatial datasets stacked for analysis (e.g., zoning, flood, transit).",
+    "scale": 1.25
+  },
+  {
+    "id": "l3-012",
+    "label": "Transactional Data",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Records of events and exchanges (sales, permits, violations).",
+    "scale": 1.2
+  },
+  {
+    "id": "l3-013",
+    "label": "Interaction Logs",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Information System",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Recorded user and system actions for audit and analysis.",
+    "scale": 0.85
+  },
+  {
+    "id": "l3-014",
+    "label": "Vector Stores",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Embedding databases enabling semantic search and retrieval.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-015",
+    "label": "Structured Database",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Relational data stores with defined schemas and query languages.",
+    "scale": 1.1
+  },
+  {
+    "id": "l3-016",
+    "label": "Semantic Database",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Graph databases storing meaning and relationships between entities.",
+    "scale": 1.15
+  },
+  {
+    "id": "l3-017",
+    "label": "Knowledge Graph",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Knowledge",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Network of entities and relationships forming machine-readable knowledge.",
+    "scale": 1.6
+  },
+  {
+    "id": "l3-018",
+    "label": "Data Processing",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Pipelines transforming raw data into analysis-ready formats.",
+    "scale": 1.1
+  },
+  {
+    "id": "l3-019",
+    "label": "Datamining",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Pattern discovery techniques extracting insights from large datasets.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-020",
+    "label": "Data Preparation",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Cleaning, normalization, and feature engineering for model training.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-021",
+    "label": "Data Retrieval",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Systems for querying and fetching relevant data from storage.",
+    "scale": 0.95
+  },
+  {
+    "id": "l3-022",
+    "label": "Document Processing",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Processing",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Extraction and structuring of information from unstructured documents.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-023",
+    "label": "Document Generation",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Processing",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Automated creation of reports, permits, and legal documents.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-024",
+    "label": "Speech to Text",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Information System",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Transcription systems converting audio to written text.",
+    "scale": 0.65
+  },
+  {
+    "id": "l3-025",
+    "label": "Natural Language Processing",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Processing",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "AI systems understanding and generating human language.",
+    "scale": 1.15
+  },
+  {
+    "id": "l3-026",
+    "label": "Cloud Infrastructure",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Remote computing resources (compute, storage, networking) on demand.",
+    "scale": 1.15
+  },
+  {
+    "id": "l3-027",
+    "label": "Data Lake",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Centralized repository for raw data in native formats.",
+    "scale": 1.05
+  },
+  {
+    "id": "l3-028",
+    "label": "Data Storage",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Data",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Persistent media for structured, semi-structured, and unstructured data.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-029",
+    "label": "Backend Resources",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Server-side computing and database systems supporting applications.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-030",
+    "label": "Middleware",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Software connecting applications, data, and users across systems.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-031",
+    "label": "API Layer",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Programmatic interfaces enabling system-to-system communication.",
+    "scale": 1.05
+  },
+  {
+    "id": "l3-032",
+    "label": "Microservices",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Modular software components performing discrete functions.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-033",
+    "label": "Compute Clusters",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Networked processors for parallel and distributed computing.",
+    "scale": 0.95
+  },
+  {
+    "id": "l3-034",
+    "label": "Machine Learning",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Algorithms that learn patterns from data to make predictions.",
+    "scale": 1.3
+  },
+  {
+    "id": "l3-035",
+    "label": "LLM Models",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Large language models for text understanding and generation.",
+    "scale": 1.4
+  },
+  {
+    "id": "l3-036",
+    "label": "Model Customization",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Fine-tuning and adaptation of AI models for specific domains.",
+    "scale": 0.85
+  },
+  {
+    "id": "l3-037",
+    "label": "Reinforcement Learning",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "AI training through reward signals and environmental feedback.",
+    "scale": 0.95
+  },
+  {
+    "id": "l3-038",
+    "label": "GraphRAG",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Retrieval-augmented generation using knowledge graph context.",
+    "scale": 1.1
+  },
+  {
+    "id": "l3-039",
+    "label": "Prompt Engineering",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "AI/ML",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Crafting inputs to elicit optimal AI model outputs.",
+    "scale": 0.65
+  },
+  {
+    "id": "l3-040",
+    "label": "Rules Engine",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Knowledge",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "System executing business logic and conditional workflows.",
+    "scale": 1.0
+  },
+  {
+    "id": "l3-041",
+    "label": "Business Rules",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Knowledge",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "Encoded organizational policies and decision criteria.",
+    "scale": 0.9
+  },
+  {
+    "id": "l3-042",
+    "label": "Application Layer",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Infrastructure",
+    "clusters": [
+      "structural-L3"
+    ],
+    "description": "User-facing software providing specific functionality.",
+    "scale": 1.05
+  },
+  {
+    "id": "l3-043",
+    "label": "Constraint Objects",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3",
+      "capital-value"
+    ],
+    "description": "Computable representations of regulatory limits bound to parcels.",
+    "scale": 1.35
+  },
+  {
+    "id": "l3-044",
+    "label": "Void Markers",
+    "layer": 3,
+    "layerName": "Logic/Knowledge",
+    "color": "#5A5F8C",
+    "nodeType": "Regulatory",
+    "clusters": [
+      "structural-L3",
+      "synthetic-labor"
+    ],
+    "description": "Flags indicating regulatory gaps where no code exists for new conditions.",
+    "scale": 1.1
+  },
+  {
+    "id": "l4-001",
+    "label": "Market Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Core Agent",
+    "clusters": [
+      "structural-L4",
+      "capital-value"
+    ],
+    "description": "Synthetic actor optimizing for financial returns and investment viability.",
+    "scale": 1.85
+  },
+  {
+    "id": "l4-002",
+    "label": "Policy Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Core Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor optimizing for regulatory compliance and public benefit.",
+    "scale": 1.8
+  },
+  {
+    "id": "l4-003",
+    "label": "Climate Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Core Agent",
+    "clusters": [
+      "structural-L4",
+      "risk-resilience"
+    ],
+    "description": "Synthetic actor optimizing for environmental sustainability and resilience.",
+    "scale": 1.8
+  },
+  {
+    "id": "l4-004",
+    "label": "Infrastructure Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Core Agent",
+    "clusters": [
+      "structural-L4",
+      "synthetic-labor",
+      "metabolic-flow"
+    ],
+    "description": "Synthetic actor optimizing for system capacity and service delivery.",
+    "scale": 1.8
+  },
+  {
+    "id": "l4-005",
+    "label": "Community Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Core Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor representing neighborhood interests and social cohesion.",
+    "scale": 1.8
+  },
+  {
+    "id": "l4-006",
+    "label": "Health AI Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Specialized Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor optimizing for public health outcomes and wellness.",
+    "scale": 1.5
+  },
+  {
+    "id": "l4-007",
+    "label": "Safety AI Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Specialized Agent",
+    "clusters": [
+      "structural-L4",
+      "risk-resilience"
+    ],
+    "description": "Synthetic actor optimizing for crime prevention and emergency response.",
+    "scale": 1.5
+  },
+  {
+    "id": "l4-008",
+    "label": "Municipal AI Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Specialized Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor optimizing for city operations and service efficiency.",
+    "scale": 1.5
+  },
+  {
+    "id": "l4-009",
+    "label": "Traffic AI Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Specialized Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor optimizing for mobility flow and congestion reduction.",
+    "scale": 1.45
+  },
+  {
+    "id": "l4-010",
+    "label": "Equity Agent",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Specialized Agent",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Synthetic actor optimizing for fair distribution of benefits and burdens.",
+    "scale": 1.55
+  },
+  {
+    "id": "l4-011",
+    "label": "Agentic Architecture",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Architecture",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "System design patterns for autonomous AI decision-making.",
+    "scale": 1.3
+  },
+  {
+    "id": "l4-012",
+    "label": "Agent Orchestration",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Architecture",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Coordination layer managing multi-agent workflows and conflicts.",
+    "scale": 1.4
+  },
+  {
+    "id": "l4-013",
+    "label": "Multi-Agent Coordination",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Architecture",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Protocols for agents to negotiate, defer, and reach consensus.",
+    "scale": 1.35
+  },
+  {
+    "id": "l4-014",
+    "label": "Task Executor",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Architecture",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Runtime environment executing agent-generated action plans.",
+    "scale": 1.1
+  },
+  {
+    "id": "l4-015",
+    "label": "Copilot Systems",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Generator",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Human-in-the-loop AI assistants augmenting professional judgment.",
+    "scale": 1.15
+  },
+  {
+    "id": "l4-016",
+    "label": "Action Generators",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Generator",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "AI systems producing executable plans and interventions.",
+    "scale": 1.3
+  },
+  {
+    "id": "l4-017",
+    "label": "Content Generators",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Generator",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "AI systems producing text, images, and media outputs.",
+    "scale": 1.1
+  },
+  {
+    "id": "l4-018",
+    "label": "Decision Making Systems",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Decision",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "AI frameworks for evaluating options and selecting actions.",
+    "scale": 1.4
+  },
+  {
+    "id": "l4-019",
+    "label": "Sensemaking",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Decision",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "AI processes interpreting ambiguous situations and forming narratives.",
+    "scale": 1.35
+  },
+  {
+    "id": "l4-020",
+    "label": "Probability Cones",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Decision",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Visualization of uncertain future states as branching scenarios.",
+    "scale": 1.05
+  },
+  {
+    "id": "l4-021",
+    "label": "Consensus Artifacts",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Decision",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Documented agreements between agents on contested decisions.",
+    "scale": 1.0
+  },
+  {
+    "id": "l4-022",
+    "label": "Scenario Fields",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Decision",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Spatial representations of competing urban futures.",
+    "scale": 1.0
+  },
+  {
+    "id": "l4-023",
+    "label": "Human-AI Interactions",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Interaction",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "Interfaces and protocols for human-agent collaboration.",
+    "scale": 1.15
+  },
+  {
+    "id": "l4-024",
+    "label": "Synthetic Ecology",
+    "layer": 4,
+    "layerName": "Agentic Intelligence",
+    "color": "#7A6A9E",
+    "nodeType": "Interaction",
+    "clusters": [
+      "structural-L4"
+    ],
+    "description": "The emergent system of interacting AI agents and their behaviors.",
+    "scale": 1.2
+  },
+  {
+    "id": "l5-001",
+    "label": "Population",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Total count of residents within a geographic boundary.",
+    "scale": 1.3
+  },
+  {
+    "id": "l5-002",
+    "label": "Total Households",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Count of occupied housing units as economic and social units.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-003",
+    "label": "Generational Cohorts",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Age-based population segments (Boomers, Gen-X, Millennials, Gen-Z, Alpha).",
+    "scale": 0.9
+  },
+  {
+    "id": "l5-004",
+    "label": "Age Distribution",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Population breakdown by age ranges affecting service demand.",
+    "scale": 0.9
+  },
+  {
+    "id": "l5-005",
+    "label": "Income Distribution",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Spread of household incomes indicating affordability constraints.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-006",
+    "label": "Household Income",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Aggregate earnings per housing unit driving purchasing power.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-007",
+    "label": "Gross Rent",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Monthly rental costs including utilities in a market area.",
+    "scale": 1.05
+  },
+  {
+    "id": "l5-008",
+    "label": "Home Value",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "capital-value"
+    ],
+    "description": "Assessed or market value of residential properties.",
+    "scale": 1.05
+  },
+  {
+    "id": "l5-009",
+    "label": "Real Estate Market",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "capital-value"
+    ],
+    "description": "Aggregate conditions of property transactions and pricing.",
+    "scale": 1.25
+  },
+  {
+    "id": "l5-010",
+    "label": "Market Intelligence",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "capital-value"
+    ],
+    "description": "Data and analysis informing investment and development decisions.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-011",
+    "label": "Market Potential",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "capital-value"
+    ],
+    "description": "Estimated demand for goods, services, or development types.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-012",
+    "label": "Development Economics",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "capital-value"
+    ],
+    "description": "Financial feasibility analysis for real estate projects.",
+    "scale": 1.2
+  },
+  {
+    "id": "l5-013",
+    "label": "Employment Status",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Labor force participation and joblessness rates.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-014",
+    "label": "Human Users",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Individual people interacting with urban systems and services.",
+    "scale": 1.2
+  },
+  {
+    "id": "l5-015",
+    "label": "Stakeholders",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Parties with interests affected by urban decisions.",
+    "scale": 1.55
+  },
+  {
+    "id": "l5-016",
+    "label": "Human Operators",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "People managing and maintaining urban systems.",
+    "scale": 1.0
+  },
+  {
+    "id": "l5-017",
+    "label": "Analytics Users",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Professionals consuming urban data for decision-making.",
+    "scale": 0.9
+  },
+  {
+    "id": "l5-018",
+    "label": "Civil Societies",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Non-governmental organizations advocating for community interests.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-019",
+    "label": "Neighborhood",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Local geographic community with shared identity and services.",
+    "scale": 1.05
+  },
+  {
+    "id": "l5-020",
+    "label": "Village",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Small settlement with limited urban services.",
+    "scale": 0.7
+  },
+  {
+    "id": "l5-021",
+    "label": "Town",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Intermediate settlement with basic urban amenities.",
+    "scale": 0.75
+  },
+  {
+    "id": "l5-022",
+    "label": "City Scale",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Full urban settlement with comprehensive services and governance.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-023",
+    "label": "County Scale",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Regional administrative unit encompassing multiple municipalities.",
+    "scale": 0.95
+  },
+  {
+    "id": "l5-024",
+    "label": "State Scale",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Subnational jurisdiction with legislative and regulatory authority.",
+    "scale": 0.95
+  },
+  {
+    "id": "l5-025",
+    "label": "National Scale",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Scale",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Sovereign state with supreme authority over territory.",
+    "scale": 1.0
+  },
+  {
+    "id": "l5-026",
+    "label": "Social Values",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Collectively held beliefs influencing behavior and policy preferences.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-027",
+    "label": "Cultural Dimensions",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Culture",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Measurable aspects of culture (individualism, power distance, etc.).",
+    "scale": 0.95
+  },
+  {
+    "id": "l5-028",
+    "label": "Cultural Landscape",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Culture",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Physical manifestation of cultural practices in the built environment.",
+    "scale": 1.0
+  },
+  {
+    "id": "l5-029",
+    "label": "Public Attitudes",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Culture",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Surveyed opinions on policies, technologies, and changes.",
+    "scale": 1.2
+  },
+  {
+    "id": "l5-030",
+    "label": "Public Engagement",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Demographics",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Processes for citizen participation in planning and governance.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-031",
+    "label": "Advocacy Groups",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Organizations mobilizing around specific issues or constituencies.",
+    "scale": 1.05
+  },
+  {
+    "id": "l5-032",
+    "label": "Ethical Oversight",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Culture",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Bodies and processes ensuring AI and urban systems align with values.",
+    "scale": 1.1
+  },
+  {
+    "id": "l5-033",
+    "label": "User Experience",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Quality of interaction between people and urban systems.",
+    "scale": 1.05
+  },
+  {
+    "id": "l5-034",
+    "label": "Social Friction Index",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Composite measure of community resistance to change.",
+    "scale": 1.6
+  },
+  {
+    "id": "l5-035",
+    "label": "Historical Shocks",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5",
+      "risk-resilience"
+    ],
+    "description": "Past traumatic events (crashes, disasters, displacement) affecting present attitudes.",
+    "scale": 1.35
+  },
+  {
+    "id": "l5-036",
+    "label": "Fear Index",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5",
+      "risk-resilience"
+    ],
+    "description": "Measurement of anxiety about future risks (job loss, climate, crime).",
+    "scale": 1.2
+  },
+  {
+    "id": "l5-037",
+    "label": "Displacement Risk",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5",
+      "synthetic-labor"
+    ],
+    "description": "Probability of residents being forced to relocate due to market or policy changes.",
+    "scale": 1.3
+  },
+  {
+    "id": "l5-038",
+    "label": "Economic Memory",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Collective recall of past economic cycles affecting current behavior.",
+    "scale": 1.15
+  },
+  {
+    "id": "l5-039",
+    "label": "Gentrification Pressure",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Forces driving neighborhood demographic and economic change.",
+    "scale": 1.25
+  },
+  {
+    "id": "l5-040",
+    "label": "Tenant Associations",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Stakeholder",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Organized renter groups advocating for housing stability.",
+    "scale": 0.9
+  },
+  {
+    "id": "l5-041",
+    "label": "Labor Markets",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Market",
+    "clusters": [
+      "structural-L5",
+      "synthetic-labor"
+    ],
+    "description": "Supply and demand dynamics for workers by sector and skill.",
+    "scale": 1.35
+  },
+  {
+    "id": "l5-042",
+    "label": "Community Benefits",
+    "layer": 5,
+    "layerName": "Socio-Economic",
+    "color": "#9B6A5F",
+    "nodeType": "Memory",
+    "clusters": [
+      "structural-L5"
+    ],
+    "description": "Negotiated public goods from development (jobs, housing, infrastructure).",
+    "scale": 1.1
+  },
+  {
+    "id": "l6-001",
+    "label": "Established Law",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Enacted statutes and ordinances with binding legal force.",
+    "scale": 1.35
+  },
+  {
+    "id": "l6-002",
+    "label": "Tort Law",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Legal framework for civil wrongs and liability claims.",
+    "scale": 0.95
+  },
+  {
+    "id": "l6-003",
+    "label": "Legislation",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Proposed and enacted laws from legislative bodies.",
+    "scale": 1.2
+  },
+  {
+    "id": "l6-004",
+    "label": "Compliance",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "State of conformity with applicable rules and standards.",
+    "scale": 1.25
+  },
+  {
+    "id": "l6-005",
+    "label": "Enforcement",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Actions to ensure adherence to laws and regulations.",
+    "scale": 1.15
+  },
+  {
+    "id": "l6-006",
+    "label": "Litigation Risk",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Probability and potential impact of legal challenges.",
+    "scale": 0.95
+  },
+  {
+    "id": "l6-007",
+    "label": "Rights and Interests",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Law",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Legal entitlements and claims attached to property or persons.",
+    "scale": 1.1
+  },
+  {
+    "id": "l6-008",
+    "label": "Permissions",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Governance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Granted authorizations to perform specific actions (permits, licenses).",
+    "scale": 1.15
+  },
+  {
+    "id": "l6-009",
+    "label": "Governance Systems",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Structures and processes for collective decision-making.",
+    "scale": 1.7
+  },
+  {
+    "id": "l6-010",
+    "label": "Neo-Governance",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Emerging forms of governance incorporating AI and networked actors.",
+    "scale": 1.15
+  },
+  {
+    "id": "l6-011",
+    "label": "Regulatory Governance",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Rule-based oversight of specific sectors or activities.",
+    "scale": 1.2
+  },
+  {
+    "id": "l6-012",
+    "label": "AI Regulatory Authority",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Bodies with jurisdiction over artificial intelligence systems.",
+    "scale": 1.15
+  },
+  {
+    "id": "l6-013",
+    "label": "International Organizations",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Multilateral bodies coordinating cross-border policy (UN, WTO).",
+    "scale": 0.95
+  },
+  {
+    "id": "l6-014",
+    "label": "Supranational Bodies",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Institutions with authority above nation-states (EU).",
+    "scale": 0.9
+  },
+  {
+    "id": "l6-015",
+    "label": "Urban Planning",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Professional practice of guiding city development and land use.",
+    "scale": 1.4
+  },
+  {
+    "id": "l6-016",
+    "label": "Spatial Planning",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Coordination of land use across regional and metropolitan scales.",
+    "scale": 1.1
+  },
+  {
+    "id": "l6-017",
+    "label": "Land-Use Planning",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Process of designating permitted activities for parcels.",
+    "scale": 1.15
+  },
+  {
+    "id": "l6-018",
+    "label": "Zoning Districts",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Geographic areas with uniform land use and development rules.",
+    "scale": 1.2
+  },
+  {
+    "id": "l6-019",
+    "label": "Zoning Overlays",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Additional regulations applied over base zoning (historic, flood, TOD).",
+    "scale": 1.05
+  },
+  {
+    "id": "l6-020",
+    "label": "Land Use",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Actual or permitted activity occurring on a parcel.",
+    "scale": 1.1
+  },
+  {
+    "id": "l6-021",
+    "label": "Density Bonuses",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Planning",
+    "clusters": [
+      "structural-L6",
+      "capital-value"
+    ],
+    "description": "Allowed increases in development intensity in exchange for public benefits.",
+    "scale": 1.0
+  },
+  {
+    "id": "l6-022",
+    "label": "Public Finance",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Finance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Government revenue and expenditure affecting urban investment.",
+    "scale": 1.25
+  },
+  {
+    "id": "l6-023",
+    "label": "Taxation",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Finance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Compulsory contributions funding public services and infrastructure.",
+    "scale": 1.05
+  },
+  {
+    "id": "l6-024",
+    "label": "Public Access",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Finance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Rights of citizens to use public spaces and information.",
+    "scale": 1.0
+  },
+  {
+    "id": "l6-025",
+    "label": "Public Records",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Finance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Government documents available for citizen inspection.",
+    "scale": 0.95
+  },
+  {
+    "id": "l6-026",
+    "label": "Assessor Data",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Finance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Official property valuations for taxation purposes.",
+    "scale": 1.0
+  },
+  {
+    "id": "l6-027",
+    "label": "Qualified Census Tracts",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Designated areas eligible for specific federal programs.",
+    "scale": 0.55
+  },
+  {
+    "id": "l6-028",
+    "label": "Opportunity Zones",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L6",
+      "capital-value"
+    ],
+    "description": "HUD-designated areas with tax incentives for investment.",
+    "scale": 0.6
+  },
+  {
+    "id": "l6-029",
+    "label": "Difficult Development Areas",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "HUD zones with higher tax credit allocations.",
+    "scale": 0.55
+  },
+  {
+    "id": "l6-030",
+    "label": "School Districts",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Geographic boundaries for public education governance.",
+    "scale": 0.85
+  },
+  {
+    "id": "l6-031",
+    "label": "Jurisdictions",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Designation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Territorial boundaries of governmental authority.",
+    "scale": 1.35
+  },
+  {
+    "id": "l6-032",
+    "label": "Ethical Framework",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "AI Governance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Principles guiding AI and urban decision-making.",
+    "scale": 1.1
+  },
+  {
+    "id": "l6-033",
+    "label": "Guardrails",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "AI Governance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Safety constraints preventing harmful AI actions.",
+    "scale": 1.05
+  },
+  {
+    "id": "l6-034",
+    "label": "Transparency",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "AI Governance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Requirements for disclosure of decisions and processes.",
+    "scale": 1.0
+  },
+  {
+    "id": "l6-035",
+    "label": "Accountability",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "AI Governance",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Mechanisms for assigning responsibility for outcomes.",
+    "scale": 1.0
+  },
+  {
+    "id": "l6-036",
+    "label": "Social Regulations",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Regulation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Rules governing behavior and interactions among people.",
+    "scale": 0.95
+  },
+  {
+    "id": "l6-037",
+    "label": "Environmental Regulations",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Regulation",
+    "clusters": [
+      "structural-L6",
+      "risk-resilience"
+    ],
+    "description": "Rules protecting natural systems and limiting pollution.",
+    "scale": 1.4
+  },
+  {
+    "id": "l6-038",
+    "label": "Policy-as-Code",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Regulation",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Machine-readable and executable regulatory logic.",
+    "scale": 1.3
+  },
+  {
+    "id": "l6-039",
+    "label": "Contested Regime",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Regime",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Governance model prioritizing pluralism and litigation.",
+    "scale": 1.05
+  },
+  {
+    "id": "l6-040",
+    "label": "Directed Regime",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Regime",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Governance model prioritizing state-led coordination and efficiency.",
+    "scale": 1.05
+  },
+  {
+    "id": "l6-041",
+    "label": "Legacy Governance",
+    "layer": 6,
+    "layerName": "Governance",
+    "color": "#B89A5A",
+    "nodeType": "Authority",
+    "clusters": [
+      "structural-L6"
+    ],
+    "description": "Historical institutional arrangements persisting into present.",
+    "scale": 0.9
+  }
+]

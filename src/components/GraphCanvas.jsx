@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
+import { Text, Billboard } from '@react-three/drei'
 import * as THREE from 'three'
 import useGraphStore from '../stores/graphStore'
 import nodesData from '../data/nodes.json'
@@ -284,20 +284,19 @@ function Node({ node, position, size, isVisible }) {
         />
       </mesh>
 
-      {/* Node initials - only show when hovered to prevent overlap */}
-      {isHovered && (
-        <Html
-          center
-          style={{
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
+      {/* Node initials - 3D text that properly occludes */}
+      <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+        <Text
+          position={[0, 0, size + 0.5]}
+          fontSize={size * 0.5}
+          color="#00e600"
+          anchorX="center"
+          anchorY="middle"
+          fontWeight="bold"
         >
-          <div className="text-[5px] font-bold" style={{ color: '#00e600' }}>
-            {node.label.split(' ').map(word => word.charAt(0)).join('')}
-          </div>
-        </Html>
-      )}
+          {node.label.split(' ').map(word => word.charAt(0)).join('')}
+        </Text>
+      </Billboard>
     </group>
   )
 }

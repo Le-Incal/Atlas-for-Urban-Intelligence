@@ -82,9 +82,10 @@ function SceneContent({ controlsRef }) {
       <directionalLight position={[-60, -30, -40]} intensity={0.6} color="#ffffff" />
       <directionalLight position={[-40, 20, 60]} intensity={0.4} color="#ffffff" />
 
-      {/* Controls - fluid trackpad support */}
+      {/* Controls - fluid trackpad/touch support */}
       <OrbitControls
         ref={controlsRef}
+        makeDefault
         enablePan={true}
         enableZoom={true}
         enableRotate={true}
@@ -100,6 +101,10 @@ function SceneContent({ controlsRef }) {
           LEFT: THREE.MOUSE.ROTATE,
           MIDDLE: THREE.MOUSE.DOLLY,
           RIGHT: THREE.MOUSE.PAN
+        }}
+        touches={{
+          ONE: THREE.TOUCH.ROTATE,
+          TWO: THREE.TOUCH.DOLLY_ROTATE
         }}
       />
 
