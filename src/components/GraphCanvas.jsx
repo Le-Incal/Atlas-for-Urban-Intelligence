@@ -522,7 +522,8 @@ function GraphCanvas() {
       {nodes.map(node => {
         const pos = positions[node.id]
         const connections = connectionCount[node.id] || 1
-        const size = 1.5 + Math.min(connections * 0.3, 3) // Size based on connectivity
+        const baseSize = 1.5 + Math.min(connections * 0.3, 3)
+        const size = baseSize * (node.scale ?? 1.0)
         
         return (
           <Node

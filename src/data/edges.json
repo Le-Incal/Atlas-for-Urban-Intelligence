@@ -1,903 +1,5572 @@
-{
-  "edges": [
-    {
-      "id": "e-001",
-      "source": "l0-energy-grid",
-      "target": "l2-iot-sensors",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Electrical power flows from the grid to distributed sensors, enabling continuous environmental monitoring across the urban fabric."
-    },
-    {
-      "id": "e-002",
-      "source": "l0-energy-grid",
-      "target": "l2-actuators",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Actuators draw power to translate digital commands into physical motion—opening valves, switching signals, adjusting facades."
-    },
-    {
-      "id": "e-003",
-      "source": "l0-energy-grid",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Mobile robots consume significant metabolic load for locomotion and computation. Fleet scaling directly stresses grid capacity."
-    },
-    {
-      "id": "e-004",
-      "source": "l0-energy-grid",
-      "target": "l2-embodied-ai-drones",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Aerial drones require charging infrastructure distributed across the city, creating new demands on the electrical distribution network."
-    },
-    {
-      "id": "e-005",
-      "source": "l0-energy-grid",
-      "target": "l2-edge-nodes",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Edge compute nodes draw continuous power for low-latency inference, concentrating thermal and electrical loads at network periphery."
-    },
-    {
-      "id": "e-006",
-      "source": "l0-energy-grid",
-      "target": "l2-autonomous-vehicles",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": true,
-      "direction": "L0 → L2",
-      "description": "Electric autonomous vehicles require charging infrastructure that reshapes grid demand curves and distribution topology."
-    },
-    {
-      "id": "e-007",
-      "source": "l0-solar-potential",
-      "target": "l2-iot-sensors",
-      "edgeType": "E",
-      "edgeTypeName": "Energy",
-      "isPrimary": false,
-      "direction": "L0 → L2",
-      "description": "Solar-powered sensors can operate off-grid, extending monitoring into areas without electrical infrastructure."
-    },
-
-    {
-      "id": "m-001",
-      "source": "l5-historical-shocks",
-      "target": "l4-market-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Market crashes, foreclosure waves, and speculative bubbles persist in institutional memory, forcing the Market Agent to discount aggressive growth scenarios."
-    },
-    {
-      "id": "m-002",
-      "source": "l5-historical-shocks",
-      "target": "l4-climate-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Past disasters—floods, fires, storms—shape the Climate Agent's risk calibration, ensuring hazard models reflect lived experience."
-    },
-    {
-      "id": "m-003",
-      "source": "l5-historical-shocks",
-      "target": "l4-community-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Displacement events, redlining legacies, and broken promises create community trauma that the Community Agent must weight in feasibility assessments."
-    },
-    {
-      "id": "m-004",
-      "source": "l5-social-friction-index",
-      "target": "l4-policy-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "High social friction signals that regulatory approval will face organized opposition, forcing the Policy Agent to recommend mitigation measures."
-    },
-    {
-      "id": "m-005",
-      "source": "l5-social-friction-index",
-      "target": "l4-community-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "The Community Agent directly consumes friction data to advocate for stakeholder interests in council deliberations."
-    },
-    {
-      "id": "m-006",
-      "source": "l5-economic-memory",
-      "target": "l4-market-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Past rent curves, absorption rates, and investment returns create the baseline expectations against which the Market Agent evaluates new opportunities."
-    },
-    {
-      "id": "m-007",
-      "source": "l5-fear-preparation-index",
-      "target": "l4-market-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "High fear dampens investor appetite and lengthens approval timelines; high preparation signals adaptive capacity that de-risks investment."
-    },
-    {
-      "id": "m-008",
-      "source": "l5-fear-preparation-index",
-      "target": "l4-climate-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Community preparedness levels inform the Climate Agent's assessment of resilience—whether populations can adapt to projected hazards."
-    },
-    {
-      "id": "m-009",
-      "source": "l5-displacement-risk",
-      "target": "l4-community-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Displacement risk is the Community Agent's primary concern, forcing trade-offs between growth and protection into explicit council debate."
-    },
-    {
-      "id": "m-010",
-      "source": "l3-void-markers",
-      "target": "l4-policy-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": false,
-      "direction": "L3 → L4",
-      "description": "Regulatory voids create uncertainty that the Policy Agent must flag—where law is silent, risk is unquantifiable."
-    },
-
-    {
-      "id": "d-001",
-      "source": "l2-iot-sensors",
-      "target": "l3-knowledge-graphs",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L3",
-      "description": "Raw sensor telemetry flows into knowledge graphs where it becomes structured 'City Facts'—semantic entities with typed relationships."
-    },
-    {
-      "id": "d-002",
-      "source": "l2-iot-sensors",
-      "target": "l3-constraint-objects",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L3",
-      "description": "Environmental readings trigger dynamic constraint updates—air quality data may activate temporary use restrictions."
-    },
-    {
-      "id": "d-003",
-      "source": "l2-embodied-ai-robots",
-      "target": "l3-knowledge-graphs",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L3",
-      "description": "Mobile robots continuously update spatial knowledge: obstacle locations, traversability conditions, and occupancy patterns."
-    },
-    {
-      "id": "d-004",
-      "source": "l2-embodied-ai-drones",
-      "target": "l3-knowledge-graphs",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L3",
-      "description": "Aerial surveillance generates high-resolution imagery that feeds building footprint extraction and change detection algorithms."
-    },
-    {
-      "id": "d-005",
-      "source": "l2-autonomous-vehicles",
-      "target": "l3-knowledge-graphs",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L3",
-      "description": "AV fleets generate massive traffic flow data, revealing actual mobility patterns that may diverge from planning assumptions."
-    },
-    {
-      "id": "d-006",
-      "source": "l1-parcels",
-      "target": "l5-stakeholders",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L1 → L5",
-      "description": "Parcel ownership records connect physical assets to human stakeholders, enabling equity impact analysis."
-    },
-    {
-      "id": "d-007",
-      "source": "l1-parcels",
-      "target": "l5-market-potential",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": false,
-      "direction": "L1 → L5",
-      "description": "Parcel characteristics—size, frontage, access—feed market potential calculations for development feasibility."
-    },
-    {
-      "id": "d-008",
-      "source": "l4-consensus-artifacts",
-      "target": "l6-jurisdictions",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": false,
-      "direction": "L4 → L6",
-      "description": "Agent deliberation outputs flow to governance structures as decision support, informing policy adjustments."
-    },
-
-    {
-      "id": "c-001",
-      "source": "l3-zoning-codes",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "Zoning codes bind to parcels, defining the envelope of permissible development—the primary shape-maker of urban form."
-    },
-    {
-      "id": "c-002",
-      "source": "l3-far-limits",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "FAR limits cap buildable area, directly determining economic yield and shaping the massing of every structure."
-    },
-    {
-      "id": "c-003",
-      "source": "l3-setbacks",
-      "target": "l1-building-footprints",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "Setback requirements carve the building footprint from the parcel boundary, creating the negative space of streets and yards."
-    },
-    {
-      "id": "c-004",
-      "source": "l3-height-limits",
-      "target": "l1-building-footprints",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "Height limits define the vertical envelope, capping the extrusion of footprints into habitable volume."
-    },
-    {
-      "id": "c-005",
-      "source": "l3-entitlements",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "Approved entitlements modify base zoning constraints, unlocking additional development capacity on specific parcels."
-    },
-    {
-      "id": "c-006",
-      "source": "l3-environmental-review",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L3 → L1",
-      "description": "Environmental review requirements constrain development timelines and may mandate mitigations that alter project feasibility."
-    },
-    {
-      "id": "c-007",
-      "source": "l0-bedrock",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L0 → L1",
-      "description": "Geological conditions constrain foundation design, limiting tower heights and deep basement feasibility on specific parcels."
-    },
-    {
-      "id": "c-008",
-      "source": "l0-water-tables",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L0 → L1",
-      "description": "High water tables preclude below-grade construction without expensive dewatering, constraining parking and basement space."
-    },
-    {
-      "id": "c-009",
-      "source": "l0-hydrography",
-      "target": "l1-parcels",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L0 → L1",
-      "description": "Flood zone designations trigger insurance requirements and elevation mandates that fundamentally alter development economics."
-    },
-    {
-      "id": "c-010",
-      "source": "l1-rights-of-way",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L1 → L2",
-      "description": "Rights-of-way define legal corridors for robot movement; sidewalk widths and curb conditions constrain fleet operations."
-    },
-    {
-      "id": "c-011",
-      "source": "l1-rights-of-way",
-      "target": "l2-autonomous-vehicles",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L1 → L2",
-      "description": "Street geometry, lane widths, and intersection configurations constrain AV operational envelopes and route planning."
-    },
-    {
-      "id": "c-012",
-      "source": "l3-void-markers",
-      "target": "l1-spatial-mode-contest",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": false,
-      "direction": "L3 → L1",
-      "description": "Regulatory voids around robot operations leave contested spaces ungoverned, creating friction without clear resolution mechanisms."
-    },
-
-    {
-      "id": "i-001",
-      "source": "l6-regime-contested",
-      "target": "l4-policy-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "Contested regimes instruct the Policy Agent to prioritize procedural legitimacy, stakeholder engagement, and litigation risk avoidance."
-    },
-    {
-      "id": "i-002",
-      "source": "l6-regime-directed",
-      "target": "l4-policy-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "Directed regimes instruct the Policy Agent to prioritize efficiency, rapid permitting, and strategic alignment with state objectives."
-    },
-    {
-      "id": "i-003",
-      "source": "l6-regime-contested",
-      "target": "l4-community-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "Under contested governance, the Community Agent's voice carries greater weight in council deliberations."
-    },
-    {
-      "id": "i-004",
-      "source": "l6-regime-directed",
-      "target": "l4-market-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "Directed regimes may privilege Market Agent recommendations when growth targets align with state development priorities."
-    },
-    {
-      "id": "i-005",
-      "source": "l6-policy-as-code",
-      "target": "l3-constraint-objects",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L3",
-      "description": "Policy-as-Code translates legislative intent into executable constraint objects, automating compliance verification."
-    },
-    {
-      "id": "i-006",
-      "source": "l6-policy-as-code",
-      "target": "l3-zoning-codes",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L3",
-      "description": "Digital zoning codes derive from policy-as-code implementations, making regulatory text machine-interpretable."
-    },
-    {
-      "id": "i-007",
-      "source": "l6-jurisdictions",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "Jurisdictional boundaries determine which infrastructure capacity constraints the Infrastructure Agent must consider."
-    },
-    {
-      "id": "i-008",
-      "source": "l6-international-organizations",
-      "target": "l4-climate-agent",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L6 → L4",
-      "description": "International climate commitments and sustainability frameworks shape the Climate Agent's optimization targets."
-    },
-    {
-      "id": "i-009",
-      "source": "l5-stakeholders",
-      "target": "l6-regime-contested",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": true,
-      "direction": "L5 → L6",
-      "description": "Stakeholder mobilization—voting, lobbying, litigation—shapes contested governance outcomes and policy priorities."
-    },
-    {
-      "id": "i-010",
-      "source": "l4-market-agent",
-      "target": "l3-entitlements",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": false,
-      "direction": "L4 → L3",
-      "description": "The Market Agent advocates for entitlement modifications that would improve project feasibility."
-    },
-    {
-      "id": "i-011",
-      "source": "l2-embodied-ai-robots",
-      "target": "l5-stakeholders",
-      "edgeType": "I",
-      "edgeTypeName": "Intent",
-      "isPrimary": false,
-      "direction": "L2 → L5",
-      "description": "Robot presence in neighborhoods creates lived experience that shapes stakeholder attitudes toward synthetic actors."
-    },
-
-    {
-      "id": "v-001",
-      "source": "l0-hydrography",
-      "target": "l4-climate-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L0 → L4",
-      "description": "Actual flood events validate or refute the Climate Agent's risk models, forcing recalibration of probability assessments."
-    },
-    {
-      "id": "v-002",
-      "source": "l0-climate-cycles",
-      "target": "l4-climate-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L0 → L4",
-      "description": "Observed temperature trends, precipitation patterns, and extreme events validate climate projections used in feasibility analysis."
-    },
-    {
-      "id": "v-003",
-      "source": "l1-parcels",
-      "target": "l4-market-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L1 → L4",
-      "description": "Transaction records and development outcomes validate the Market Agent's feasibility predictions."
-    },
-    {
-      "id": "v-004",
-      "source": "l1-parcels",
-      "target": "l4-policy-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L1 → L4",
-      "description": "Permit approvals and denials validate the Policy Agent's compliance assessments and timeline predictions."
-    },
-    {
-      "id": "v-005",
-      "source": "l1-infrastructure-networks",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L1 → L4",
-      "description": "Actual utility loads and service failures validate the Infrastructure Agent's capacity models."
-    },
-    {
-      "id": "v-006",
-      "source": "l2-iot-sensors",
-      "target": "l4-climate-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L2 → L4",
-      "description": "Real-time environmental readings provide ground truth that validates or contradicts model predictions."
-    },
-    {
-      "id": "v-007",
-      "source": "l2-iot-sensors",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L2 → L4",
-      "description": "Traffic counters, utility meters, and infrastructure monitors provide validation data for capacity models."
-    },
-    {
-      "id": "v-008",
-      "source": "l3-void-markers",
-      "target": "l6-jurisdictions",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L3 → L6",
-      "description": "Identified regulatory gaps signal to jurisdictions where law is failing to address emerging conditions."
-    },
-    {
-      "id": "v-009",
-      "source": "l4-consensus-artifacts",
-      "target": "l6-regime-contested",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": false,
-      "direction": "L4 → L6",
-      "description": "Agent deliberation outcomes provide feedback on whether contested governance processes achieve legitimate decisions."
-    },
-    {
-      "id": "v-010",
-      "source": "l1-transit-networks",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": false,
-      "direction": "L1 → L4",
-      "description": "Ridership data and service performance validate the Infrastructure Agent's transit accessibility assumptions."
-    },
-
-    {
-      "id": "r-001",
-      "source": "l4-infrastructure-agent",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "The Infrastructure Agent provides path planning intelligence to mobile robots, enabling navigation through complex urban environments."
-    },
-    {
-      "id": "r-002",
-      "source": "l4-community-agent",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "The Community Agent provides ethical constraints to robots: where to slow down, which areas to avoid, how to minimize disruption."
-    },
-    {
-      "id": "r-003",
-      "source": "l4-policy-agent",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "The Policy Agent translates regulatory requirements into operational constraints for robotic fleets."
-    },
-    {
-      "id": "r-004",
-      "source": "l4-infrastructure-agent",
-      "target": "l2-embodied-ai-drones",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "Drone flight paths are planned with infrastructure capacity awareness—avoiding restricted airspace, coordinating with traffic management."
-    },
-    {
-      "id": "r-005",
-      "source": "l4-policy-agent",
-      "target": "l2-embodied-ai-drones",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "FAA regulations, local ordinances, and privacy rules flow through the Policy Agent to constrain drone operations."
-    },
-    {
-      "id": "r-006",
-      "source": "l4-infrastructure-agent",
-      "target": "l2-autonomous-vehicles",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": true,
-      "direction": "L4 → L2",
-      "description": "AV routing optimizes for system-level traffic flow based on Infrastructure Agent's capacity models."
-    },
-    {
-      "id": "r-007",
-      "source": "l4-climate-agent",
-      "target": "l2-autonomous-vehicles",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": false,
-      "direction": "L4 → L2",
-      "description": "The Climate Agent influences AV behavior during extreme weather events—rerouting for flood avoidance, reducing speeds in heat waves."
-    },
-    {
-      "id": "r-008",
-      "source": "l4-market-agent",
-      "target": "l2-actuators",
-      "edgeType": "R",
-      "edgeTypeName": "Reasoning",
-      "isPrimary": false,
-      "direction": "L4 → L2",
-      "description": "Building actuators respond to energy market signals, adjusting HVAC and lighting based on price optimization logic."
-    },
-
-    {
-      "id": "cross-001",
-      "source": "l4-market-agent",
-      "target": "l4-community-agent",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L4 ↔ L4",
-      "description": "Agents exchange data during council deliberations—the Market Agent's feasibility numbers inform the Community Agent's displacement analysis."
-    },
-    {
-      "id": "cross-002",
-      "source": "l4-climate-agent",
-      "target": "l4-market-agent",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L4 ↔ L4",
-      "description": "Climate risk assessments directly impact financial feasibility—the Climate Agent's outputs feed Market Agent's risk adjustments."
-    },
-    {
-      "id": "cross-003",
-      "source": "l4-policy-agent",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L4 ↔ L4",
-      "description": "Regulatory timelines and approval probabilities inform infrastructure investment decisions across the agent council."
-    },
-    {
-      "id": "cross-004",
-      "source": "l4-community-agent",
-      "target": "l4-policy-agent",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L4 ↔ L4",
-      "description": "Stakeholder concerns identified by the Community Agent shape the Policy Agent's assessment of political feasibility."
-    },
-    {
-      "id": "cross-005",
-      "source": "l4-infrastructure-agent",
-      "target": "l4-climate-agent",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L4 ↔ L4",
-      "description": "Infrastructure capacity limits affect climate adaptation options—the two agents must coordinate on resilience strategies."
-    },
-
-    {
-      "id": "cluster-risk-001",
-      "source": "l0-hydrography",
-      "target": "l3-zoning-codes",
-      "edgeType": "C",
-      "edgeTypeName": "Constraint",
-      "isPrimary": true,
-      "direction": "L0 → L3",
-      "description": "Flood zone boundaries directly inform zoning overlays that restrict development in hazardous areas."
-    },
-    {
-      "id": "cluster-risk-002",
-      "source": "l5-social-friction-index",
-      "target": "l4-climate-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": false,
-      "direction": "L5 → L4",
-      "description": "Community resistance to adaptation measures (managed retreat, elevation requirements) shapes climate response feasibility."
-    },
-    {
-      "id": "cluster-capital-001",
-      "source": "l5-market-potential",
-      "target": "l4-market-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L4",
-      "description": "Market demand data directly informs the Market Agent's absorption assumptions and pricing models."
-    },
-    {
-      "id": "cluster-capital-002",
-      "source": "l3-entitlements",
-      "target": "l4-market-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L3 → L4",
-      "description": "Existing entitlements validate development potential—approved rights are bankable assets for feasibility analysis."
-    },
-    {
-      "id": "cluster-synth-001",
-      "source": "l3-void-markers",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L3 → L4",
-      "description": "Regulatory gaps around synthetic labor create uncertainty that the Infrastructure Agent must factor into deployment scenarios."
-    },
-    {
-      "id": "cluster-synth-002",
-      "source": "l5-stakeholders",
-      "target": "l2-embodied-ai-robots",
-      "edgeType": "M",
-      "edgeTypeName": "Memory",
-      "isPrimary": true,
-      "direction": "L5 → L2",
-      "description": "Past negative encounters with robots create stakeholder memory that affects acceptance of expanded synthetic labor."
-    },
-    {
-      "id": "cluster-metab-001",
-      "source": "l0-material-reservoirs",
-      "target": "l4-infrastructure-agent",
-      "edgeType": "V",
-      "edgeTypeName": "Validation",
-      "isPrimary": true,
-      "direction": "L0 → L4",
-      "description": "Material availability constrains the Infrastructure Agent's recommendations—can't build with resources that don't exist."
-    },
-    {
-      "id": "cluster-metab-002",
-      "source": "l2-actuators",
-      "target": "l1-infrastructure-networks",
-      "edgeType": "D",
-      "edgeTypeName": "Data",
-      "isPrimary": true,
-      "direction": "L2 → L1",
-      "description": "Smart actuators report infrastructure status—valve positions, pump rates, load levels—maintaining the digital twin of physical systems."
-    }
-  ],
-  "edgeTypes": {
-    "E": {
-      "name": "Energy",
-      "currency": "Metabolic Load / Joules",
-      "color": "#FACC15",
-      "description": "Physical power required to run the city. Flows from grid to robots/sensors."
-    },
-    "M": {
-      "name": "Memory",
-      "currency": "Historical Weight / Trauma",
-      "color": "#EC4899",
-      "description": "The systemic brake. Carries weight of past shocks forcing agents to reject risky scenarios."
-    },
-    "D": {
-      "name": "Data",
-      "currency": "Information / Telemetry",
-      "color": "#3B82F6",
-      "description": "Raw observations flowing up to be translated into City Facts."
-    },
-    "C": {
-      "name": "Constraint",
-      "currency": "Regulatory Limit / Geometry",
-      "color": "#EF4444",
-      "description": "The shape maker. Transmits rules that physically mold buildings and parcels."
-    },
-    "I": {
-      "name": "Intent",
-      "currency": "Goal / Bias / Will",
-      "color": "#8B5CF6",
-      "description": "Represents motivation. Tells agents what to optimize for."
-    },
-    "V": {
-      "name": "Validation",
-      "currency": "Truth / Confidence",
-      "color": "#10B981",
-      "description": "The reality check. Compares agent predictions against actual sensor readings."
-    },
-    "R": {
-      "name": "Reasoning",
-      "currency": "Intelligence-as-Infrastructure",
-      "color": "#F97316",
-      "description": "Brain-to-body connection. Robots subscribe to access high-level ethical and navigational logic."
-    }
+[
+  {
+    "id": "e-E-001",
+    "source": "l0-020",
+    "target": "l2-001",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Technical Infrastructure"
   },
-  "clusters": {
-    "structural-L0": {
-      "name": "Metabolic Cluster",
-      "layer": 0,
-      "description": "The base of the graph, grounding all other connections in planetary reality."
-    },
-    "structural-L1": {
-      "name": "Identity Cluster",
-      "layer": 1,
-      "description": "The central spine to which all regulatory and physical data snaps."
-    },
-    "structural-L2": {
-      "name": "Nervous System Cluster",
-      "layer": 2,
-      "description": "The bridge connecting physical ground to digital logic."
-    },
-    "structural-L3": {
-      "name": "Logic Cluster",
-      "layer": 3,
-      "description": "A dense web of rules hovering above the physical city."
-    },
-    "structural-L4": {
-      "name": "Agency Cluster",
-      "layer": 4,
-      "description": "The brain of the graph, radiating intent edges downward."
-    },
-    "structural-L5": {
-      "name": "Memory Cluster",
-      "layer": 5,
-      "description": "The conscience, wrapping around agents to constrain them."
-    },
-    "structural-L6": {
-      "name": "Governance Cluster",
-      "layer": 6,
-      "description": "The canopy—highest level of abstraction and authority."
-    },
-    "risk-resilience": {
-      "name": "Risk & Resilience",
-      "thematic": true,
-      "description": "Nodes that co-occur when describing safety, insurance, and climate adaptation."
-    },
-    "capital-value": {
-      "name": "Capital & Value",
-      "thematic": true,
-      "description": "Nodes that define the financial viability of the city."
-    },
-    "synthetic-labor": {
-      "name": "Synthetic Labor",
-      "thematic": true,
-      "description": "Nodes describing conflict and integration of new robotic workers."
-    },
-    "metabolic-flow": {
-      "name": "Metabolic Flow",
-      "thematic": true,
-      "description": "Nodes mapping the physical consumption of resources."
-    }
+  {
+    "id": "e-E-002",
+    "source": "l0-020",
+    "target": "l2-002",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Internet Infrastructure"
+  },
+  {
+    "id": "e-E-003",
+    "source": "l0-020",
+    "target": "l2-003",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers IoT Devices"
+  },
+  {
+    "id": "e-E-004",
+    "source": "l0-020",
+    "target": "l2-004",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Microchips"
+  },
+  {
+    "id": "e-E-005",
+    "source": "l0-020",
+    "target": "l2-005",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Telecommunications"
+  },
+  {
+    "id": "e-E-006",
+    "source": "l0-020",
+    "target": "l2-006",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Network Infrastructure"
+  },
+  {
+    "id": "e-E-007",
+    "source": "l0-020",
+    "target": "l2-007",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Environmental Sensors"
+  },
+  {
+    "id": "e-E-008",
+    "source": "l0-020",
+    "target": "l2-011",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Real-Time Systems"
+  },
+  {
+    "id": "e-E-009",
+    "source": "l0-020",
+    "target": "l2-012",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Urban Actuators"
+  },
+  {
+    "id": "e-E-010",
+    "source": "l0-020",
+    "target": "l2-014",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Robotics"
+  },
+  {
+    "id": "e-E-011",
+    "source": "l0-020",
+    "target": "l2-015",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Embodied AI"
+  },
+  {
+    "id": "e-E-012",
+    "source": "l0-020",
+    "target": "l2-016",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Autonomous Vehicles"
+  },
+  {
+    "id": "e-E-013",
+    "source": "l0-020",
+    "target": "l2-017",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Drones"
+  },
+  {
+    "id": "e-E-014",
+    "source": "l0-020",
+    "target": "l2-018",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Edge Compute Nodes"
+  },
+  {
+    "id": "e-E-015",
+    "source": "l0-020",
+    "target": "l2-019",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Traffic Signals"
+  },
+  {
+    "id": "e-E-016",
+    "source": "l0-020",
+    "target": "l2-020",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Smart Meters"
+  },
+  {
+    "id": "e-E-017",
+    "source": "l0-020",
+    "target": "l2-021",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Charging Stations"
+  },
+  {
+    "id": "e-E-018",
+    "source": "l0-020",
+    "target": "l2-022",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Energy Grid powers Building Management Systems"
+  },
+  {
+    "id": "e-E-019",
+    "source": "l0-019",
+    "target": "l2-021",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Solar Potential feeds Charging Stations"
+  },
+  {
+    "id": "e-E-020",
+    "source": "l0-019",
+    "target": "l2-022",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Solar Potential feeds Building Management Systems"
+  },
+  {
+    "id": "e-E-021",
+    "source": "l0-022",
+    "target": "l2-022",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L2",
+    "description": "Wind Corridors inform Building Management Systems"
+  },
+  {
+    "id": "e-E-022",
+    "source": "l2-020",
+    "target": "l0-020",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L2 → L0",
+    "description": "Smart Meters report back to Energy Grid"
+  },
+  {
+    "id": "e-E-023",
+    "source": "l2-021",
+    "target": "l0-020",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L2 → L0",
+    "description": "Charging Stations draw from Energy Grid"
+  },
+  {
+    "id": "e-E-024",
+    "source": "l1-022",
+    "target": "l2-001",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L1 → L2",
+    "description": "Transmission Lines deliver to Technical Infrastructure"
+  },
+  {
+    "id": "e-E-025",
+    "source": "l1-022",
+    "target": "l0-020",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L1 → L0",
+    "description": "Transmission Lines connect to Energy Grid"
+  },
+  {
+    "id": "e-E-026",
+    "source": "l0-020",
+    "target": "l3-026",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Energy Grid powers Cloud Infrastructure"
+  },
+  {
+    "id": "e-E-027",
+    "source": "l0-020",
+    "target": "l3-028",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Energy Grid powers Data Storage"
+  },
+  {
+    "id": "e-E-028",
+    "source": "l0-020",
+    "target": "l3-029",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Energy Grid powers Backend Resources"
+  },
+  {
+    "id": "e-E-029",
+    "source": "l0-020",
+    "target": "l3-033",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Energy Grid powers Compute Clusters"
+  },
+  {
+    "id": "e-E-030",
+    "source": "l0-024",
+    "target": "l1-028",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Material Reservoirs supply Smelters"
+  },
+  {
+    "id": "e-E-031",
+    "source": "l0-024",
+    "target": "l1-029",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Material Reservoirs supply Refiners"
+  },
+  {
+    "id": "e-E-032",
+    "source": "l0-017",
+    "target": "l0-024",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L0",
+    "description": "Raw Materials flow to Material Reservoirs"
+  },
+  {
+    "id": "e-E-033",
+    "source": "l0-017",
+    "target": "l0-004",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L0",
+    "description": "Raw Materials extracted from Mines"
+  },
+  {
+    "id": "e-E-034",
+    "source": "l0-018",
+    "target": "l5-041",
+    "edgeType": "E",
+    "edgeTypeName": "Energy",
+    "isPrimary": true,
+    "direction": "L0 → L5",
+    "description": "Agricultural Land provides farm employment"
+  },
+  {
+    "id": "e-M-001",
+    "source": "l5-034",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Friction Index brakes Market Agent"
+  },
+  {
+    "id": "e-M-002",
+    "source": "l5-034",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Friction Index brakes Policy Agent"
+  },
+  {
+    "id": "e-M-003",
+    "source": "l5-034",
+    "target": "l4-003",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Friction Index brakes Climate Agent"
+  },
+  {
+    "id": "e-M-004",
+    "source": "l5-034",
+    "target": "l4-004",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Friction Index brakes Infrastructure Agent"
+  },
+  {
+    "id": "e-M-005",
+    "source": "l5-034",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Friction Index brakes Community Agent"
+  },
+  {
+    "id": "e-M-006",
+    "source": "l5-035",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Historical Shocks inform Market Agent"
+  },
+  {
+    "id": "e-M-007",
+    "source": "l5-035",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Historical Shocks inform Policy Agent"
+  },
+  {
+    "id": "e-M-008",
+    "source": "l5-035",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Historical Shocks inform Community Agent"
+  },
+  {
+    "id": "e-M-009",
+    "source": "l5-035",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Historical Shocks inform Equity Agent"
+  },
+  {
+    "id": "e-M-010",
+    "source": "l5-036",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Fear Index constrains Market Agent"
+  },
+  {
+    "id": "e-M-011",
+    "source": "l5-036",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Fear Index constrains Community Agent"
+  },
+  {
+    "id": "e-M-012",
+    "source": "l5-036",
+    "target": "l4-006",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Fear Index informs Health AI Agent"
+  },
+  {
+    "id": "e-M-013",
+    "source": "l5-036",
+    "target": "l4-007",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Fear Index informs Safety AI Agent"
+  },
+  {
+    "id": "e-M-014",
+    "source": "l5-037",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Displacement Risk constrains Market Agent"
+  },
+  {
+    "id": "e-M-015",
+    "source": "l5-037",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Displacement Risk informs Community Agent"
+  },
+  {
+    "id": "e-M-016",
+    "source": "l5-037",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Displacement Risk informs Equity Agent"
+  },
+  {
+    "id": "e-M-017",
+    "source": "l5-038",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Economic Memory informs Market Agent"
+  },
+  {
+    "id": "e-M-018",
+    "source": "l5-038",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Economic Memory informs Policy Agent"
+  },
+  {
+    "id": "e-M-019",
+    "source": "l5-038",
+    "target": "l0-017",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Economic Memory of commodity cycles affects Raw Materials"
+  },
+  {
+    "id": "e-M-020",
+    "source": "l5-039",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Gentrification Pressure informs Market Agent"
+  },
+  {
+    "id": "e-M-021",
+    "source": "l5-039",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Gentrification Pressure informs Community Agent"
+  },
+  {
+    "id": "e-M-022",
+    "source": "l5-039",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Gentrification Pressure informs Equity Agent"
+  },
+  {
+    "id": "e-M-023",
+    "source": "l5-026",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Values inform Policy Agent"
+  },
+  {
+    "id": "e-M-024",
+    "source": "l5-026",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Social Values inform Community Agent"
+  },
+  {
+    "id": "e-M-025",
+    "source": "l5-029",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Public Attitudes inform Policy Agent"
+  },
+  {
+    "id": "e-M-026",
+    "source": "l5-029",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Public Attitudes inform Community Agent"
+  },
+  {
+    "id": "e-M-027",
+    "source": "l5-029",
+    "target": "l4-008",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Public Attitudes inform Municipal AI Agent"
+  },
+  {
+    "id": "e-M-028",
+    "source": "l5-029",
+    "target": "l2-016",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Public Attitudes shape acceptance of Autonomous Vehicles"
+  },
+  {
+    "id": "e-M-029",
+    "source": "l5-029",
+    "target": "l2-017",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Public Attitudes shape acceptance of Drones"
+  },
+  {
+    "id": "e-M-030",
+    "source": "l5-040",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Tenant Associations inform Community Agent"
+  },
+  {
+    "id": "e-M-031",
+    "source": "l5-040",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Tenant Associations inform Equity Agent"
+  },
+  {
+    "id": "e-M-032",
+    "source": "l5-041",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Labor Markets inform Market Agent"
+  },
+  {
+    "id": "e-M-033",
+    "source": "l5-041",
+    "target": "l4-004",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Labor Markets inform Infrastructure Agent"
+  },
+  {
+    "id": "e-M-034",
+    "source": "l5-041",
+    "target": "l4-008",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Labor Markets inform Municipal AI Agent"
+  },
+  {
+    "id": "e-M-035",
+    "source": "l5-041",
+    "target": "l2-014",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Labor Markets fear automation from Robotics"
+  },
+  {
+    "id": "e-M-036",
+    "source": "l3-044",
+    "target": "l4-001",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Void Markers create uncertainty for Market Agent"
+  },
+  {
+    "id": "e-M-037",
+    "source": "l3-044",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Void Markers create uncertainty for Policy Agent"
+  },
+  {
+    "id": "e-M-038",
+    "source": "l3-044",
+    "target": "l4-004",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Void Markers create uncertainty for Infrastructure Agent"
+  },
+  {
+    "id": "e-M-039",
+    "source": "l2-015",
+    "target": "l5-034",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L2 → L5",
+    "description": "Embodied AI creates friction events in Social Friction Index"
+  },
+  {
+    "id": "e-M-040",
+    "source": "l2-016",
+    "target": "l5-034",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L2 → L5",
+    "description": "Autonomous Vehicles create friction events"
+  },
+  {
+    "id": "e-M-041",
+    "source": "l2-017",
+    "target": "l5-034",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L2 → L5",
+    "description": "Drones create friction events"
+  },
+  {
+    "id": "e-M-042",
+    "source": "l5-027",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Cultural Dimensions inform Community Agent"
+  },
+  {
+    "id": "e-M-043",
+    "source": "l5-027",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Cultural Dimensions inform Policy Agent"
+  },
+  {
+    "id": "e-M-044",
+    "source": "l5-033",
+    "target": "l4-023",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "User Experience informs Human-AI Interactions"
+  },
+  {
+    "id": "e-M-045",
+    "source": "l5-031",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Advocacy Groups inform Community Agent"
+  },
+  {
+    "id": "e-M-046",
+    "source": "l5-031",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Advocacy Groups inform Equity Agent"
+  },
+  {
+    "id": "e-M-047",
+    "source": "l5-018",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Civil Societies inform Community Agent"
+  },
+  {
+    "id": "e-M-048",
+    "source": "l5-018",
+    "target": "l4-002",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Civil Societies inform Policy Agent"
+  },
+  {
+    "id": "e-M-049",
+    "source": "l5-015",
+    "target": "l4-012",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Stakeholders inform Agent Orchestration"
+  },
+  {
+    "id": "e-M-050",
+    "source": "l5-015",
+    "target": "l2-014",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Stakeholders fear labor displacement from Robotics"
+  },
+  {
+    "id": "e-M-051",
+    "source": "l5-015",
+    "target": "l2-016",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Stakeholders have adoption anxiety about AVs"
+  },
+  {
+    "id": "e-M-052",
+    "source": "l5-032",
+    "target": "l4-011",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Ethical Oversight informs Agentic Architecture"
+  },
+  {
+    "id": "e-M-053",
+    "source": "l5-032",
+    "target": "l4-013",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Ethical Oversight informs Multi-Agent Coordination"
+  },
+  {
+    "id": "e-M-054",
+    "source": "l0-009",
+    "target": "l5-035",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L0 → L5",
+    "description": "Flood Zones create Historical Shocks"
+  },
+  {
+    "id": "e-M-055",
+    "source": "l0-014",
+    "target": "l5-035",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L0 → L5",
+    "description": "Wildfire Risk creates Historical Shocks"
+  },
+  {
+    "id": "e-M-056",
+    "source": "l0-016",
+    "target": "l5-035",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L0 → L5",
+    "description": "Earthquake Risk creates Historical Shocks"
+  },
+  {
+    "id": "e-M-057",
+    "source": "l5-028",
+    "target": "l4-005",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Cultural Landscape informs Community Agent"
+  },
+  {
+    "id": "e-M-058",
+    "source": "l5-042",
+    "target": "l4-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Community Benefits inform Equity Agent"
+  },
+  {
+    "id": "e-M-059",
+    "source": "l5-039",
+    "target": "l0-012",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Gentrification Pressure threatens Natural Habitats"
+  },
+  {
+    "id": "e-M-060",
+    "source": "l5-039",
+    "target": "l1-012",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Gentrification Pressure on Multifamily Residential"
+  },
+  {
+    "id": "e-M-061",
+    "source": "l5-041",
+    "target": "l0-004",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Labor Markets depend on Mines employment"
+  },
+  {
+    "id": "e-M-062",
+    "source": "l5-041",
+    "target": "l0-018",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Labor Markets depend on Agricultural Land"
+  },
+  {
+    "id": "e-M-063",
+    "source": "l5-001",
+    "target": "l0-010",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Population density affects Air Quality"
+  },
+  {
+    "id": "e-M-064",
+    "source": "l5-001",
+    "target": "l0-007",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Population growth strains Water Table"
+  },
+  {
+    "id": "e-M-065",
+    "source": "l5-015",
+    "target": "l0-013",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Stakeholders advocate for Ecological Systems"
+  },
+  {
+    "id": "e-M-066",
+    "source": "l5-015",
+    "target": "l1-021",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Stakeholders advocate for Open Space"
+  },
+  {
+    "id": "e-M-067",
+    "source": "l5-015",
+    "target": "l1-036",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Stakeholders advocate for Historic Districts"
+  },
+  {
+    "id": "e-M-068",
+    "source": "l5-038",
+    "target": "l5-035",
+    "edgeType": "M",
+    "edgeTypeName": "Memory",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Economic Memory compounds Historical Shocks"
+  },
+  {
+    "id": "e-D-001",
+    "source": "l2-007",
+    "target": "l3-007",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Environmental Sensors feed System of Record"
+  },
+  {
+    "id": "e-D-002",
+    "source": "l2-007",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Environmental Sensors feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-003",
+    "source": "l2-008",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Urban Sensing Network feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-004",
+    "source": "l2-008",
+    "target": "l3-027",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Urban Sensing Network feeds Data Lake"
+  },
+  {
+    "id": "e-D-005",
+    "source": "l2-010",
+    "target": "l3-027",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Live Streams feed Data Lake"
+  },
+  {
+    "id": "e-D-006",
+    "source": "l2-010",
+    "target": "l3-018",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Live Streams feed Data Processing"
+  },
+  {
+    "id": "e-D-007",
+    "source": "l2-010",
+    "target": "l3-024",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Live Streams provide audio for Speech to Text"
+  },
+  {
+    "id": "e-D-008",
+    "source": "l2-020",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Smart Meters generate Transactional Data"
+  },
+  {
+    "id": "e-D-009",
+    "source": "l2-020",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Smart Meters feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-010",
+    "source": "l2-019",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Traffic Signals generate Transactional Data"
+  },
+  {
+    "id": "e-D-011",
+    "source": "l2-019",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Traffic Signals feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-012",
+    "source": "l2-022",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Building Management Systems generate Transactional Data"
+  },
+  {
+    "id": "e-D-013",
+    "source": "l2-015",
+    "target": "l3-013",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Embodied AI generates Interaction Logs"
+  },
+  {
+    "id": "e-D-014",
+    "source": "l2-016",
+    "target": "l3-013",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Autonomous Vehicles generate Interaction Logs"
+  },
+  {
+    "id": "e-D-015",
+    "source": "l2-017",
+    "target": "l3-013",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Drones generate Interaction Logs"
+  },
+  {
+    "id": "e-D-016",
+    "source": "l2-003",
+    "target": "l3-027",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "IoT Devices feed Data Lake"
+  },
+  {
+    "id": "e-D-017",
+    "source": "l2-009",
+    "target": "l3-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Eye-Tracking Systems feed Datamining"
+  },
+  {
+    "id": "e-D-018",
+    "source": "l2-013",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Smart Home Technologies generate Transactional Data"
+  },
+  {
+    "id": "e-D-019",
+    "source": "l2-005",
+    "target": "l2-006",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L2",
+    "description": "Telecommunications feeds Network Infrastructure"
+  },
+  {
+    "id": "e-D-020",
+    "source": "l2-006",
+    "target": "l3-026",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L2 → L3",
+    "description": "Network Infrastructure connects to Cloud Infrastructure"
+  },
+  {
+    "id": "e-D-021",
+    "source": "l1-001",
+    "target": "l3-007",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Parcels feed System of Record"
+  },
+  {
+    "id": "e-D-022",
+    "source": "l1-001",
+    "target": "l3-008",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Parcels feed Master Data"
+  },
+  {
+    "id": "e-D-023",
+    "source": "l1-001",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Parcels feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-024",
+    "source": "l1-002",
+    "target": "l3-008",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Site Addresses feed Master Data"
+  },
+  {
+    "id": "e-D-025",
+    "source": "l1-003",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Site Conditions feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-026",
+    "source": "l1-003",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Site Conditions inform Market Agent feasibility"
+  },
+  {
+    "id": "e-D-027",
+    "source": "l1-004",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Lot Coverage feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-028",
+    "source": "l1-004",
+    "target": "l4-002",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Lot Coverage validates Policy Agent"
+  },
+  {
+    "id": "e-D-029",
+    "source": "l1-006",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Basemap feeds Data Layers"
+  },
+  {
+    "id": "e-D-030",
+    "source": "l1-007",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Building Footprints feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-031",
+    "source": "l1-008",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Building Height feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-032",
+    "source": "l1-010",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Density Measurement feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-033",
+    "source": "l1-001",
+    "target": "l5-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Parcels inform Stakeholders (ownership)"
+  },
+  {
+    "id": "e-D-034",
+    "source": "l1-011",
+    "target": "l5-002",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Single Family Residential informs Total Households"
+  },
+  {
+    "id": "e-D-035",
+    "source": "l1-012",
+    "target": "l5-002",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Multifamily Residential informs Total Households"
+  },
+  {
+    "id": "e-D-036",
+    "source": "l1-015",
+    "target": "l5-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Retail Assets inform Market Potential"
+  },
+  {
+    "id": "e-D-037",
+    "source": "l1-016",
+    "target": "l5-013",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Office Buildings inform Employment Status"
+  },
+  {
+    "id": "e-D-038",
+    "source": "l1-018",
+    "target": "l5-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Hospitality Assets inform Market Potential (tourism)"
+  },
+  {
+    "id": "e-D-039",
+    "source": "l1-019",
+    "target": "l5-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Civic Buildings serve Stakeholders"
+  },
+  {
+    "id": "e-D-040",
+    "source": "l1-020",
+    "target": "l4-007",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Secure Sites inform Safety AI Agent"
+  },
+  {
+    "id": "e-D-041",
+    "source": "l1-021",
+    "target": "l5-028",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Open Space informs Cultural Landscape"
+  },
+  {
+    "id": "e-D-042",
+    "source": "l1-035",
+    "target": "l5-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Vacant Lots inform Market Potential"
+  },
+  {
+    "id": "e-D-043",
+    "source": "l1-035",
+    "target": "l6-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L6",
+    "description": "Vacant Lots inform Urban Planning"
+  },
+  {
+    "id": "e-D-044",
+    "source": "l1-036",
+    "target": "l5-028",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L5",
+    "description": "Historic Districts inform Cultural Landscape"
+  },
+  {
+    "id": "e-D-045",
+    "source": "l1-030",
+    "target": "l1-031",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Component Manufacturers supply Assemblers"
+  },
+  {
+    "id": "e-D-046",
+    "source": "l1-031",
+    "target": "l1-032",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Assemblers ship to Distributors"
+  },
+  {
+    "id": "e-D-047",
+    "source": "l1-032",
+    "target": "l1-033",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Distributors use Shipping Infrastructure"
+  },
+  {
+    "id": "e-D-048",
+    "source": "l0-005",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Topography feeds Data Layers"
+  },
+  {
+    "id": "e-D-049",
+    "source": "l0-009",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Flood Zones feed Data Layers"
+  },
+  {
+    "id": "e-D-050",
+    "source": "l0-007",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Water Table feeds Data Layers"
+  },
+  {
+    "id": "e-D-051",
+    "source": "l0-010",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Air Quality feeds Data Layers"
+  },
+  {
+    "id": "e-D-052",
+    "source": "l0-011",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Vegetation feeds Data Layers"
+  },
+  {
+    "id": "e-D-053",
+    "source": "l0-014",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Wildfire Risk feeds Data Layers"
+  },
+  {
+    "id": "e-D-054",
+    "source": "l0-016",
+    "target": "l3-011",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Earthquake Risk feeds Data Layers"
+  },
+  {
+    "id": "e-D-055",
+    "source": "l0-013",
+    "target": "l4-003",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Ecological Systems validate Climate Agent"
+  },
+  {
+    "id": "e-D-056",
+    "source": "l3-017",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Knowledge Graph enables Sensemaking"
+  },
+  {
+    "id": "e-D-057",
+    "source": "l3-014",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Vector Stores enable Sensemaking"
+  },
+  {
+    "id": "e-D-058",
+    "source": "l3-016",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Semantic Database enables Sensemaking"
+  },
+  {
+    "id": "e-D-059",
+    "source": "l3-019",
+    "target": "l4-018",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Datamining informs Decision Making Systems"
+  },
+  {
+    "id": "e-D-060",
+    "source": "l3-038",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "GraphRAG enables Sensemaking"
+  },
+  {
+    "id": "e-D-061",
+    "source": "l3-035",
+    "target": "l4-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "LLM Models power Content Generators"
+  },
+  {
+    "id": "e-D-062",
+    "source": "l3-035",
+    "target": "l4-016",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "LLM Models power Action Generators"
+  },
+  {
+    "id": "e-D-063",
+    "source": "l3-034",
+    "target": "l4-018",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Machine Learning informs Decision Making Systems"
+  },
+  {
+    "id": "e-D-064",
+    "source": "l3-025",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Natural Language Processing enables Sensemaking"
+  },
+  {
+    "id": "e-D-065",
+    "source": "l3-010",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Metadata describes Knowledge Graph"
+  },
+  {
+    "id": "e-D-066",
+    "source": "l3-010",
+    "target": "l4-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Metadata enables Sensemaking"
+  },
+  {
+    "id": "e-D-067",
+    "source": "l3-007",
+    "target": "l3-010",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "System of Record generates Metadata"
+  },
+  {
+    "id": "e-D-068",
+    "source": "l3-017",
+    "target": "l3-016",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Knowledge Graph stored in Semantic Database"
+  },
+  {
+    "id": "e-D-069",
+    "source": "l3-016",
+    "target": "l3-038",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Semantic Database enables GraphRAG"
+  },
+  {
+    "id": "e-D-070",
+    "source": "l3-018",
+    "target": "l3-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Processing stores to Structured Database"
+  },
+  {
+    "id": "e-D-071",
+    "source": "l3-018",
+    "target": "l3-020",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Processing feeds Data Preparation"
+  },
+  {
+    "id": "e-D-072",
+    "source": "l3-020",
+    "target": "l3-034",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Preparation feeds Machine Learning"
+  },
+  {
+    "id": "e-D-073",
+    "source": "l3-020",
+    "target": "l3-036",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Preparation feeds Model Customization"
+  },
+  {
+    "id": "e-D-074",
+    "source": "l3-015",
+    "target": "l3-021",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Structured Database enables Data Retrieval"
+  },
+  {
+    "id": "e-D-075",
+    "source": "l3-014",
+    "target": "l3-021",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Vector Stores enable Data Retrieval"
+  },
+  {
+    "id": "e-D-076",
+    "source": "l3-021",
+    "target": "l3-038",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Retrieval feeds GraphRAG"
+  },
+  {
+    "id": "e-D-077",
+    "source": "l3-022",
+    "target": "l3-025",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Document Processing feeds NLP"
+  },
+  {
+    "id": "e-D-078",
+    "source": "l3-022",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Document Processing extracts to Knowledge Graph"
+  },
+  {
+    "id": "e-D-079",
+    "source": "l3-024",
+    "target": "l3-025",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Speech to Text feeds NLP"
+  },
+  {
+    "id": "e-D-080",
+    "source": "l3-024",
+    "target": "l3-013",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Speech to Text creates Interaction Logs"
+  },
+  {
+    "id": "e-D-081",
+    "source": "l3-027",
+    "target": "l3-028",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Data Lake uses Data Storage"
+  },
+  {
+    "id": "e-D-082",
+    "source": "l3-015",
+    "target": "l3-028",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Structured Database uses Data Storage"
+  },
+  {
+    "id": "e-D-083",
+    "source": "l3-029",
+    "target": "l3-031",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Backend Resources serve API Layer"
+  },
+  {
+    "id": "e-D-084",
+    "source": "l3-029",
+    "target": "l3-030",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Backend Resources connect via Middleware"
+  },
+  {
+    "id": "e-D-085",
+    "source": "l3-030",
+    "target": "l3-042",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Middleware serves Application Layer"
+  },
+  {
+    "id": "e-D-086",
+    "source": "l3-031",
+    "target": "l3-042",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "API Layer serves Application Layer"
+  },
+  {
+    "id": "e-D-087",
+    "source": "l3-026",
+    "target": "l3-032",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Cloud Infrastructure hosts Microservices"
+  },
+  {
+    "id": "e-D-088",
+    "source": "l3-032",
+    "target": "l3-031",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Microservices expose APIs"
+  },
+  {
+    "id": "e-D-089",
+    "source": "l3-036",
+    "target": "l3-035",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Model Customization fine-tunes LLM Models"
+  },
+  {
+    "id": "e-D-090",
+    "source": "l4-020",
+    "target": "l6-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Probability Cones inform Urban Planning"
+  },
+  {
+    "id": "e-D-091",
+    "source": "l4-021",
+    "target": "l6-009",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Consensus Artifacts inform Governance Systems"
+  },
+  {
+    "id": "e-D-092",
+    "source": "l4-022",
+    "target": "l6-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Scenario Fields inform Urban Planning"
+  },
+  {
+    "id": "e-D-093",
+    "source": "l4-018",
+    "target": "l6-009",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Decision Making Systems inform Governance Systems"
+  },
+  {
+    "id": "e-D-094",
+    "source": "l4-012",
+    "target": "l4-024",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Agent Orchestration creates Synthetic Ecology"
+  },
+  {
+    "id": "e-D-095",
+    "source": "l4-013",
+    "target": "l4-024",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Multi-Agent Coordination creates Synthetic Ecology"
+  },
+  {
+    "id": "e-D-096",
+    "source": "l4-024",
+    "target": "l6-010",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Synthetic Ecology informs Neo-Governance"
+  },
+  {
+    "id": "e-D-097",
+    "source": "l6-025",
+    "target": "l3-007",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Public Records feed System of Record"
+  },
+  {
+    "id": "e-D-098",
+    "source": "l6-025",
+    "target": "l3-022",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Public Records processed by Document Processing"
+  },
+  {
+    "id": "e-D-099",
+    "source": "l6-026",
+    "target": "l3-008",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Assessor Data feeds Master Data"
+  },
+  {
+    "id": "e-D-100",
+    "source": "l6-026",
+    "target": "l5-008",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Assessor Data informs Home Value"
+  },
+  {
+    "id": "e-D-101",
+    "source": "l5-001",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Population feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-102",
+    "source": "l5-002",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Total Households feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-103",
+    "source": "l5-005",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Income Distribution feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-104",
+    "source": "l5-006",
+    "target": "l3-015",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Household Income feeds Structured Database"
+  },
+  {
+    "id": "e-D-105",
+    "source": "l5-006",
+    "target": "l5-005",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Household Income aggregates to Income Distribution"
+  },
+  {
+    "id": "e-D-106",
+    "source": "l5-006",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Household Income informs Market Agent"
+  },
+  {
+    "id": "e-D-107",
+    "source": "l5-007",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Gross Rent feeds Transactional Data"
+  },
+  {
+    "id": "e-D-108",
+    "source": "l5-007",
+    "target": "l5-009",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Gross Rent indicates Real Estate Market"
+  },
+  {
+    "id": "e-D-109",
+    "source": "l5-007",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Gross Rent informs Market Agent"
+  },
+  {
+    "id": "e-D-110",
+    "source": "l5-009",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Real Estate Market informs Market Agent"
+  },
+  {
+    "id": "e-D-111",
+    "source": "l5-009",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Real Estate Market feeds Transactional Data"
+  },
+  {
+    "id": "e-D-112",
+    "source": "l5-010",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Market Intelligence informs Market Agent"
+  },
+  {
+    "id": "e-D-113",
+    "source": "l5-010",
+    "target": "l3-018",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Market Intelligence uses Data Processing"
+  },
+  {
+    "id": "e-D-114",
+    "source": "l5-010",
+    "target": "l3-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Market Intelligence uses Datamining"
+  },
+  {
+    "id": "e-D-115",
+    "source": "l5-011",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Market Potential informs Market Agent"
+  },
+  {
+    "id": "e-D-116",
+    "source": "l5-012",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Development Economics informs Market Agent"
+  },
+  {
+    "id": "e-D-117",
+    "source": "l5-012",
+    "target": "l0-004",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Development Economics values Mines"
+  },
+  {
+    "id": "e-D-118",
+    "source": "l5-013",
+    "target": "l4-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Employment Status informs Market Agent"
+  },
+  {
+    "id": "e-D-119",
+    "source": "l5-013",
+    "target": "l4-008",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Employment Status informs Municipal AI Agent"
+  },
+  {
+    "id": "e-D-120",
+    "source": "l5-013",
+    "target": "l3-012",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Employment Status feeds Transactional Data"
+  },
+  {
+    "id": "e-D-121",
+    "source": "l5-013",
+    "target": "l0-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L0",
+    "description": "Employment Status reflects Raw Materials extraction jobs"
+  },
+  {
+    "id": "e-D-122",
+    "source": "l5-020",
+    "target": "l5-019",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Village contains Neighborhoods"
+  },
+  {
+    "id": "e-D-123",
+    "source": "l5-020",
+    "target": "l5-001",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Village has Population"
+  },
+  {
+    "id": "e-D-124",
+    "source": "l5-021",
+    "target": "l5-022",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Town grows into City Scale"
+  },
+  {
+    "id": "e-D-125",
+    "source": "l5-022",
+    "target": "l5-023",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "City Scale within County Scale"
+  },
+  {
+    "id": "e-D-126",
+    "source": "l5-023",
+    "target": "l5-024",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "County Scale within State Scale"
+  },
+  {
+    "id": "e-D-127",
+    "source": "l5-024",
+    "target": "l5-025",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "State Scale within National Scale"
+  },
+  {
+    "id": "e-D-128",
+    "source": "l1-027",
+    "target": "l6-022",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L1 → L6",
+    "description": "Transit Networks ridership informs Public Finance"
+  },
+  {
+    "id": "e-C-001",
+    "source": "l3-001",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Setbacks constrain Parcels"
+  },
+  {
+    "id": "e-C-002",
+    "source": "l3-001",
+    "target": "l1-007",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Setbacks constrain Building Footprints"
+  },
+  {
+    "id": "e-C-003",
+    "source": "l3-002",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Floor Area Ratio constrains Parcels"
+  },
+  {
+    "id": "e-C-004",
+    "source": "l3-002",
+    "target": "l1-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Floor Area Ratio constrains Lot Coverage"
+  },
+  {
+    "id": "e-C-005",
+    "source": "l3-002",
+    "target": "l1-010",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Floor Area Ratio constrains Density Measurement"
+  },
+  {
+    "id": "e-C-006",
+    "source": "l3-003",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Parcels"
+  },
+  {
+    "id": "e-C-007",
+    "source": "l3-003",
+    "target": "l1-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Lot Coverage"
+  },
+  {
+    "id": "e-C-008",
+    "source": "l3-003",
+    "target": "l1-011",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Single Family Residential"
+  },
+  {
+    "id": "e-C-009",
+    "source": "l3-003",
+    "target": "l1-012",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Multifamily Residential"
+  },
+  {
+    "id": "e-C-010",
+    "source": "l3-003",
+    "target": "l1-013",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Commercial Real Estate"
+  },
+  {
+    "id": "e-C-011",
+    "source": "l3-003",
+    "target": "l1-014",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Industrial Assets"
+  },
+  {
+    "id": "e-C-012",
+    "source": "l3-003",
+    "target": "l1-015",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Retail Assets"
+  },
+  {
+    "id": "e-C-013",
+    "source": "l3-003",
+    "target": "l1-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Office Buildings"
+  },
+  {
+    "id": "e-C-014",
+    "source": "l3-003",
+    "target": "l1-017",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Mixed Use Development"
+  },
+  {
+    "id": "e-C-015",
+    "source": "l3-003",
+    "target": "l1-018",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Hospitality Assets"
+  },
+  {
+    "id": "e-C-016",
+    "source": "l3-003",
+    "target": "l1-020",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Secure Sites"
+  },
+  {
+    "id": "e-C-017",
+    "source": "l3-003",
+    "target": "l1-030",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Zoning Regulations constrain Component Manufacturers"
+  },
+  {
+    "id": "e-C-018",
+    "source": "l3-004",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Detailed Controls constrain Structures"
+  },
+  {
+    "id": "e-C-019",
+    "source": "l3-005",
+    "target": "l1-008",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Height Limits constrain Building Height"
+  },
+  {
+    "id": "e-C-020",
+    "source": "l3-005",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Height Limits constrain Structures"
+  },
+  {
+    "id": "e-C-021",
+    "source": "l3-006",
+    "target": "l1-024",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Parking Requirements constrain Parking Infrastructure"
+  },
+  {
+    "id": "e-C-022",
+    "source": "l3-006",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Parking Requirements constrain Parcels"
+  },
+  {
+    "id": "e-C-023",
+    "source": "l3-043",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Constraint Objects constrain Parcels"
+  },
+  {
+    "id": "e-C-024",
+    "source": "l3-043",
+    "target": "l1-003",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Constraint Objects constrain Site Conditions"
+  },
+  {
+    "id": "e-C-025",
+    "source": "l3-043",
+    "target": "l1-007",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Constraint Objects constrain Building Footprints"
+  },
+  {
+    "id": "e-C-026",
+    "source": "l3-043",
+    "target": "l1-008",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L1",
+    "description": "Constraint Objects constrain Building Height"
+  },
+  {
+    "id": "e-C-027",
+    "source": "l0-001",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Bedrock constrains Structures (foundation)"
+  },
+  {
+    "id": "e-C-028",
+    "source": "l0-002",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Soil Composition constrains Structures"
+  },
+  {
+    "id": "e-C-029",
+    "source": "l0-003",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Fault Lines constrain Parcels"
+  },
+  {
+    "id": "e-C-030",
+    "source": "l0-003",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Fault Lines constrain Structures"
+  },
+  {
+    "id": "e-C-031",
+    "source": "l0-006",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Slope Analysis constrains Parcels"
+  },
+  {
+    "id": "e-C-032",
+    "source": "l0-007",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Water Table constrains Structures"
+  },
+  {
+    "id": "e-C-033",
+    "source": "l0-008",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Wetlands constrain Parcels"
+  },
+  {
+    "id": "e-C-034",
+    "source": "l0-009",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Flood Zones constrain Parcels"
+  },
+  {
+    "id": "e-C-035",
+    "source": "l0-009",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Flood Zones constrain Structures"
+  },
+  {
+    "id": "e-C-036",
+    "source": "l0-012",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Natural Habitats constrain Parcels"
+  },
+  {
+    "id": "e-C-037",
+    "source": "l0-014",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Wildfire Risk constrains Parcels"
+  },
+  {
+    "id": "e-C-038",
+    "source": "l0-014",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Wildfire Risk constrains Structures"
+  },
+  {
+    "id": "e-C-039",
+    "source": "l0-015",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Strong Wind Risk constrains Structures"
+  },
+  {
+    "id": "e-C-040",
+    "source": "l0-016",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Earthquake Risk constrains Structures"
+  },
+  {
+    "id": "e-C-041",
+    "source": "l0-018",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L0 → L1",
+    "description": "Agricultural Land constrains Parcels"
+  },
+  {
+    "id": "e-C-042",
+    "source": "l1-005",
+    "target": "l1-007",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Boundaries constrain Building Footprints"
+  },
+  {
+    "id": "e-C-043",
+    "source": "l1-026",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Right of Way constrains Parcels"
+  },
+  {
+    "id": "e-C-044",
+    "source": "l1-026",
+    "target": "l2-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L2",
+    "description": "Right of Way constrains Autonomous Vehicles"
+  },
+  {
+    "id": "e-C-045",
+    "source": "l1-025",
+    "target": "l2-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L2",
+    "description": "Streets constrain Autonomous Vehicles"
+  },
+  {
+    "id": "e-C-046",
+    "source": "l1-025",
+    "target": "l2-014",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L2",
+    "description": "Streets constrain Robotics"
+  },
+  {
+    "id": "e-C-047",
+    "source": "l1-034",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Curb Cuts constrain Parcels"
+  },
+  {
+    "id": "e-C-048",
+    "source": "l1-036",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Historic Districts constrain Structures"
+  },
+  {
+    "id": "e-C-049",
+    "source": "l1-036",
+    "target": "l3-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L3",
+    "description": "Historic Districts inform Detailed Controls"
+  },
+  {
+    "id": "e-C-050",
+    "source": "l1-037",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Utility Corridors constrain Parcels"
+  },
+  {
+    "id": "e-C-051",
+    "source": "l1-022",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Transmission Lines constrain Parcels (easements)"
+  },
+  {
+    "id": "e-C-052",
+    "source": "l1-038",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L1",
+    "description": "Stormwater Infrastructure constrains Parcels"
+  },
+  {
+    "id": "e-C-053",
+    "source": "l6-018",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Zoning Districts constrain Parcels"
+  },
+  {
+    "id": "e-C-054",
+    "source": "l6-019",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Zoning Overlays constrain Parcels"
+  },
+  {
+    "id": "e-C-055",
+    "source": "l6-020",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Land Use constrains Parcels"
+  },
+  {
+    "id": "e-C-056",
+    "source": "l6-021",
+    "target": "l1-010",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Density Bonuses modify Density Measurement"
+  },
+  {
+    "id": "e-C-057",
+    "source": "l6-027",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Qualified Census Tracts designate Parcels"
+  },
+  {
+    "id": "e-C-058",
+    "source": "l6-028",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Opportunity Zones designate Parcels"
+  },
+  {
+    "id": "e-C-059",
+    "source": "l6-029",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Difficult Development Areas designate Parcels"
+  },
+  {
+    "id": "e-C-060",
+    "source": "l6-030",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "School Districts overlay Parcels"
+  },
+  {
+    "id": "e-C-061",
+    "source": "l6-031",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Jurisdictions bound Parcels"
+  },
+  {
+    "id": "e-C-062",
+    "source": "l6-031",
+    "target": "l0-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Jurisdictions regulate Mines"
+  },
+  {
+    "id": "e-C-063",
+    "source": "l6-031",
+    "target": "l5-020",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound Villages"
+  },
+  {
+    "id": "e-C-064",
+    "source": "l6-031",
+    "target": "l5-021",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound Towns"
+  },
+  {
+    "id": "e-C-065",
+    "source": "l6-031",
+    "target": "l5-022",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound Cities"
+  },
+  {
+    "id": "e-C-066",
+    "source": "l6-031",
+    "target": "l5-023",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound Counties"
+  },
+  {
+    "id": "e-C-067",
+    "source": "l6-031",
+    "target": "l5-024",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound States"
+  },
+  {
+    "id": "e-C-068",
+    "source": "l6-031",
+    "target": "l5-025",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Jurisdictions bound Nations"
+  },
+  {
+    "id": "e-C-069",
+    "source": "l6-037",
+    "target": "l1-014",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Environmental Regulations constrain Industrial Assets"
+  },
+  {
+    "id": "e-C-070",
+    "source": "l6-037",
+    "target": "l1-023",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Environmental Regulations constrain Waste Management"
+  },
+  {
+    "id": "e-C-071",
+    "source": "l6-037",
+    "target": "l1-028",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Environmental Regulations constrain Smelters"
+  },
+  {
+    "id": "e-C-072",
+    "source": "l6-037",
+    "target": "l1-029",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Environmental Regulations constrain Refiners"
+  },
+  {
+    "id": "e-C-073",
+    "source": "l6-037",
+    "target": "l0-010",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Environmental Regulations protect Air Quality"
+  },
+  {
+    "id": "e-C-074",
+    "source": "l6-037",
+    "target": "l0-008",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Environmental Regulations protect Wetlands"
+  },
+  {
+    "id": "e-C-075",
+    "source": "l6-037",
+    "target": "l0-012",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Environmental Regulations protect Natural Habitats"
+  },
+  {
+    "id": "e-C-076",
+    "source": "l6-037",
+    "target": "l0-013",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Environmental Regulations protect Ecological Systems"
+  },
+  {
+    "id": "e-C-077",
+    "source": "l6-037",
+    "target": "l0-023",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Environmental Regulations protect Carbon Sinks"
+  },
+  {
+    "id": "e-C-078",
+    "source": "l6-001",
+    "target": "l0-017",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Established Law governs Raw Materials extraction"
+  },
+  {
+    "id": "e-C-079",
+    "source": "l6-003",
+    "target": "l0-018",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Legislation protects Agricultural Land"
+  },
+  {
+    "id": "e-C-080",
+    "source": "l6-011",
+    "target": "l0-007",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Regulatory Governance manages Water Table rights"
+  },
+  {
+    "id": "e-C-081",
+    "source": "l6-004",
+    "target": "l0-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Compliance required for Mines"
+  },
+  {
+    "id": "e-C-082",
+    "source": "l6-032",
+    "target": "l4-011",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Ethical Framework constrains Agentic Architecture"
+  },
+  {
+    "id": "e-C-083",
+    "source": "l6-033",
+    "target": "l4-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Guardrails constrain Action Generators"
+  },
+  {
+    "id": "e-C-084",
+    "source": "l6-033",
+    "target": "l4-018",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Guardrails constrain Decision Making Systems"
+  },
+  {
+    "id": "e-C-085",
+    "source": "l6-004",
+    "target": "l1-009",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Compliance constrains Structures"
+  },
+  {
+    "id": "e-C-086",
+    "source": "l6-008",
+    "target": "l1-001",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Permissions enable Parcels (development)"
+  },
+  {
+    "id": "e-C-087",
+    "source": "l6-008",
+    "target": "l1-020",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Permissions (security clearance) for Secure Sites"
+  },
+  {
+    "id": "e-C-088",
+    "source": "l6-008",
+    "target": "l2-017",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Permissions (flight permits) for Drones"
+  },
+  {
+    "id": "e-C-089",
+    "source": "l3-044",
+    "target": "l4-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Void Markers constrain Action Generators"
+  },
+  {
+    "id": "e-C-090",
+    "source": "l6-012",
+    "target": "l4-011",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "AI Regulatory Authority constrains Agentic Architecture"
+  },
+  {
+    "id": "e-C-091",
+    "source": "l6-012",
+    "target": "l2-015",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "AI Regulatory Authority constrains Embodied AI"
+  },
+  {
+    "id": "e-C-092",
+    "source": "l6-012",
+    "target": "l2-016",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "AI Regulatory Authority constrains Autonomous Vehicles"
+  },
+  {
+    "id": "e-C-093",
+    "source": "l6-012",
+    "target": "l2-017",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "AI Regulatory Authority constrains Drones"
+  },
+  {
+    "id": "e-C-094",
+    "source": "l6-011",
+    "target": "l2-005",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Regulatory Governance regulates Telecommunications"
+  },
+  {
+    "id": "e-C-095",
+    "source": "l6-011",
+    "target": "l2-006",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Regulatory Governance regulates Network Infrastructure"
+  },
+  {
+    "id": "e-C-096",
+    "source": "l6-001",
+    "target": "l2-003",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Established Law (privacy) constrains IoT Devices"
+  },
+  {
+    "id": "e-C-097",
+    "source": "l6-001",
+    "target": "l2-010",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Established Law (surveillance) constrains Live Streams"
+  },
+  {
+    "id": "e-C-098",
+    "source": "l6-001",
+    "target": "l2-020",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Established Law (data privacy) constrains Smart Meters"
+  },
+  {
+    "id": "e-C-099",
+    "source": "l6-004",
+    "target": "l2-022",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Compliance (building codes) for Building Management Systems"
+  },
+  {
+    "id": "e-C-100",
+    "source": "l1-009",
+    "target": "l6-004",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L6",
+    "description": "Structures must achieve Compliance"
+  },
+  {
+    "id": "e-C-101",
+    "source": "l1-014",
+    "target": "l6-037",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L1 → L6",
+    "description": "Industrial Assets must comply with Environmental Regulations"
+  },
+  {
+    "id": "e-C-102",
+    "source": "l6-001",
+    "target": "l6-024",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Established Law creates Public Access rights"
+  },
+  {
+    "id": "e-C-103",
+    "source": "l6-024",
+    "target": "l6-025",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Public Access enables Public Records"
+  },
+  {
+    "id": "e-C-104",
+    "source": "l6-024",
+    "target": "l1-021",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Public Access rights to Open Space"
+  },
+  {
+    "id": "e-C-105",
+    "source": "l5-020",
+    "target": "l5-021",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L5 → L5",
+    "description": "Village scale nested in Town scale"
+  },
+  {
+    "id": "e-C-106",
+    "source": "l6-013",
+    "target": "l5-025",
+    "edgeType": "C",
+    "edgeTypeName": "Constraint",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "International Organizations govern National Scale"
+  },
+  {
+    "id": "e-I-001",
+    "source": "l6-009",
+    "target": "l4-001",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Governance Systems direct Market Agent"
+  },
+  {
+    "id": "e-I-002",
+    "source": "l6-009",
+    "target": "l4-002",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Governance Systems direct Policy Agent"
+  },
+  {
+    "id": "e-I-003",
+    "source": "l6-009",
+    "target": "l4-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Governance Systems direct Climate Agent"
+  },
+  {
+    "id": "e-I-004",
+    "source": "l6-009",
+    "target": "l4-004",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Governance Systems direct Infrastructure Agent"
+  },
+  {
+    "id": "e-I-005",
+    "source": "l6-009",
+    "target": "l4-005",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Governance Systems direct Community Agent"
+  },
+  {
+    "id": "e-I-006",
+    "source": "l6-009",
+    "target": "l1-019",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Governance Systems housed in Civic Buildings"
+  },
+  {
+    "id": "e-I-007",
+    "source": "l6-010",
+    "target": "l4-011",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Neo-Governance shapes Agentic Architecture"
+  },
+  {
+    "id": "e-I-008",
+    "source": "l6-010",
+    "target": "l4-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Neo-Governance shapes Agent Orchestration"
+  },
+  {
+    "id": "e-I-009",
+    "source": "l6-011",
+    "target": "l4-002",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Regulatory Governance directs Policy Agent"
+  },
+  {
+    "id": "e-I-010",
+    "source": "l6-011",
+    "target": "l4-008",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Regulatory Governance directs Municipal AI Agent"
+  },
+  {
+    "id": "e-I-011",
+    "source": "l6-015",
+    "target": "l4-002",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Urban Planning directs Policy Agent"
+  },
+  {
+    "id": "e-I-012",
+    "source": "l6-015",
+    "target": "l4-004",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Urban Planning directs Infrastructure Agent"
+  },
+  {
+    "id": "e-I-013",
+    "source": "l6-015",
+    "target": "l1-021",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Urban Planning plans Open Space"
+  },
+  {
+    "id": "e-I-014",
+    "source": "l6-016",
+    "target": "l4-004",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Spatial Planning directs Infrastructure Agent"
+  },
+  {
+    "id": "e-I-015",
+    "source": "l6-017",
+    "target": "l4-002",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Land-Use Planning directs Policy Agent"
+  },
+  {
+    "id": "e-I-016",
+    "source": "l6-038",
+    "target": "l3-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Policy-as-Code updates Zoning Regulations"
+  },
+  {
+    "id": "e-I-017",
+    "source": "l6-038",
+    "target": "l3-043",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Policy-as-Code creates Constraint Objects"
+  },
+  {
+    "id": "e-I-018",
+    "source": "l6-038",
+    "target": "l4-014",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Policy-as-Code directs Task Executor"
+  },
+  {
+    "id": "e-I-019",
+    "source": "l6-001",
+    "target": "l3-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Established Law informs Zoning Regulations"
+  },
+  {
+    "id": "e-I-020",
+    "source": "l6-001",
+    "target": "l6-004",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Established Law requires Compliance"
+  },
+  {
+    "id": "e-I-021",
+    "source": "l6-003",
+    "target": "l3-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L3",
+    "description": "Legislation creates Zoning Regulations"
+  },
+  {
+    "id": "e-I-022",
+    "source": "l6-003",
+    "target": "l6-038",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Legislation becomes Policy-as-Code"
+  },
+  {
+    "id": "e-I-023",
+    "source": "l6-039",
+    "target": "l4-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Contested Regime shapes Agent Orchestration"
+  },
+  {
+    "id": "e-I-024",
+    "source": "l6-040",
+    "target": "l4-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Directed Regime shapes Agent Orchestration"
+  },
+  {
+    "id": "e-I-025",
+    "source": "l6-039",
+    "target": "l4-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Contested Regime shapes Multi-Agent Coordination"
+  },
+  {
+    "id": "e-I-026",
+    "source": "l6-040",
+    "target": "l4-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Directed Regime shapes Multi-Agent Coordination"
+  },
+  {
+    "id": "e-I-027",
+    "source": "l5-015",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Stakeholders pressure Governance Systems"
+  },
+  {
+    "id": "e-I-028",
+    "source": "l5-018",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Civil Societies pressure Governance Systems"
+  },
+  {
+    "id": "e-I-029",
+    "source": "l5-030",
+    "target": "l6-015",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Public Engagement shapes Urban Planning"
+  },
+  {
+    "id": "e-I-030",
+    "source": "l5-031",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Advocacy Groups pressure Governance Systems"
+  },
+  {
+    "id": "e-I-031",
+    "source": "l5-040",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Tenant Associations pressure Governance Systems"
+  },
+  {
+    "id": "e-I-032",
+    "source": "l5-011",
+    "target": "l1-035",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Market Potential drives demand for Vacant Lots"
+  },
+  {
+    "id": "e-I-033",
+    "source": "l5-011",
+    "target": "l1-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Market Potential drives demand for Commercial Real Estate"
+  },
+  {
+    "id": "e-I-034",
+    "source": "l5-001",
+    "target": "l1-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Population drives demand for Multifamily Residential"
+  },
+  {
+    "id": "e-I-035",
+    "source": "l5-041",
+    "target": "l1-014",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Industrial Assets"
+  },
+  {
+    "id": "e-I-036",
+    "source": "l5-041",
+    "target": "l1-015",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Retail Assets employment"
+  },
+  {
+    "id": "e-I-037",
+    "source": "l5-041",
+    "target": "l1-016",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Office Buildings employment"
+  },
+  {
+    "id": "e-I-038",
+    "source": "l5-041",
+    "target": "l1-018",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Hospitality Assets employment"
+  },
+  {
+    "id": "e-I-039",
+    "source": "l5-041",
+    "target": "l1-030",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Component Manufacturers"
+  },
+  {
+    "id": "e-I-040",
+    "source": "l5-041",
+    "target": "l1-031",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Assemblers"
+  },
+  {
+    "id": "e-I-041",
+    "source": "l5-041",
+    "target": "l1-032",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Labor Markets drive Distributors"
+  },
+  {
+    "id": "e-I-042",
+    "source": "l4-001",
+    "target": "l3-043",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L3",
+    "description": "Market Agent proposes Constraint Objects changes"
+  },
+  {
+    "id": "e-I-043",
+    "source": "l4-002",
+    "target": "l3-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L3",
+    "description": "Policy Agent updates Zoning Regulations"
+  },
+  {
+    "id": "e-I-044",
+    "source": "l4-002",
+    "target": "l6-038",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Policy Agent creates Policy-as-Code"
+  },
+  {
+    "id": "e-I-045",
+    "source": "l4-003",
+    "target": "l6-037",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Climate Agent proposes Environmental Regulations"
+  },
+  {
+    "id": "e-I-046",
+    "source": "l4-003",
+    "target": "l0-023",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L0",
+    "description": "Climate Agent recommends preserving Carbon Sinks"
+  },
+  {
+    "id": "e-I-047",
+    "source": "l4-003",
+    "target": "l0-021",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L0",
+    "description": "Climate Agent recommends mitigating Heat Islands"
+  },
+  {
+    "id": "e-I-048",
+    "source": "l4-004",
+    "target": "l0-020",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L0",
+    "description": "Infrastructure Agent plans Energy Grid expansion"
+  },
+  {
+    "id": "e-I-049",
+    "source": "l4-004",
+    "target": "l0-007",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L0",
+    "description": "Infrastructure Agent plans Water Table infrastructure"
+  },
+  {
+    "id": "e-I-050",
+    "source": "l4-004",
+    "target": "l1-027",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L1",
+    "description": "Infrastructure Agent plans Transit Networks"
+  },
+  {
+    "id": "e-I-051",
+    "source": "l4-004",
+    "target": "l1-033",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L1",
+    "description": "Infrastructure Agent plans Shipping Infrastructure"
+  },
+  {
+    "id": "e-I-052",
+    "source": "l4-004",
+    "target": "l1-037",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L1",
+    "description": "Infrastructure Agent plans Utility Corridors"
+  },
+  {
+    "id": "e-I-053",
+    "source": "l4-005",
+    "target": "l5-042",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L5",
+    "description": "Community Agent negotiates Community Benefits"
+  },
+  {
+    "id": "e-I-054",
+    "source": "l4-008",
+    "target": "l6-022",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Municipal AI Agent informs Public Finance"
+  },
+  {
+    "id": "e-I-055",
+    "source": "l4-008",
+    "target": "l1-023",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L1",
+    "description": "Municipal AI Agent manages Waste Management"
+  },
+  {
+    "id": "e-I-056",
+    "source": "l4-009",
+    "target": "l2-019",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Traffic AI Agent controls Traffic Signals"
+  },
+  {
+    "id": "e-I-057",
+    "source": "l4-009",
+    "target": "l1-024",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L1",
+    "description": "Traffic AI Agent plans Parking Infrastructure"
+  },
+  {
+    "id": "e-I-058",
+    "source": "l4-006",
+    "target": "l6-036",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Health AI Agent proposes Social Regulations"
+  },
+  {
+    "id": "e-I-059",
+    "source": "l4-007",
+    "target": "l6-005",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Safety AI Agent triggers Enforcement"
+  },
+  {
+    "id": "e-I-060",
+    "source": "l2-015",
+    "target": "l1-025",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L2 → L1",
+    "description": "Embodied AI intends movement on Streets"
+  },
+  {
+    "id": "e-I-061",
+    "source": "l2-016",
+    "target": "l1-025",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L2 → L1",
+    "description": "Autonomous Vehicles intend movement on Streets"
+  },
+  {
+    "id": "e-I-062",
+    "source": "l2-017",
+    "target": "l0-022",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L2 → L0",
+    "description": "Drones intend movement through Wind Corridors"
+  },
+  {
+    "id": "e-I-063",
+    "source": "l2-014",
+    "target": "l1-025",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L2 → L1",
+    "description": "Robotics intend movement on Streets"
+  },
+  {
+    "id": "e-I-064",
+    "source": "l4-016",
+    "target": "l2-015",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Action Generators direct Embodied AI"
+  },
+  {
+    "id": "e-I-065",
+    "source": "l4-016",
+    "target": "l2-016",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Action Generators direct Autonomous Vehicles"
+  },
+  {
+    "id": "e-I-066",
+    "source": "l4-016",
+    "target": "l2-017",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Action Generators direct Drones"
+  },
+  {
+    "id": "e-I-067",
+    "source": "l4-016",
+    "target": "l2-014",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Action Generators direct Robotics"
+  },
+  {
+    "id": "e-I-068",
+    "source": "l4-017",
+    "target": "l3-023",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L3",
+    "description": "Content Generators create Document Generation"
+  },
+  {
+    "id": "e-I-069",
+    "source": "l6-022",
+    "target": "l1-019",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Public Finance funds Civic Buildings"
+  },
+  {
+    "id": "e-I-070",
+    "source": "l6-022",
+    "target": "l1-027",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Public Finance funds Transit Networks"
+  },
+  {
+    "id": "e-I-071",
+    "source": "l6-022",
+    "target": "l1-033",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Public Finance funds Shipping Infrastructure"
+  },
+  {
+    "id": "e-I-072",
+    "source": "l6-022",
+    "target": "l1-038",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Public Finance funds Stormwater Infrastructure"
+  },
+  {
+    "id": "e-I-073",
+    "source": "l6-022",
+    "target": "l0-018",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L0",
+    "description": "Public Finance subsidizes Agricultural Land"
+  },
+  {
+    "id": "e-I-074",
+    "source": "l6-023",
+    "target": "l5-015",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "Taxation affects Stakeholders"
+  },
+  {
+    "id": "e-I-075",
+    "source": "l6-021",
+    "target": "l4-001",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Density Bonuses incentivize Market Agent"
+  },
+  {
+    "id": "e-I-076",
+    "source": "l6-028",
+    "target": "l4-001",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Opportunity Zones incentivize Market Agent"
+  },
+  {
+    "id": "e-I-077",
+    "source": "l4-010",
+    "target": "l6-021",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Equity Agent proposes Density Bonuses"
+  },
+  {
+    "id": "e-I-078",
+    "source": "l4-010",
+    "target": "l5-042",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L5",
+    "description": "Equity Agent negotiates Community Benefits"
+  },
+  {
+    "id": "e-I-079",
+    "source": "l6-013",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "International Organizations shape Governance Systems"
+  },
+  {
+    "id": "e-I-080",
+    "source": "l6-013",
+    "target": "l5-025",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L5",
+    "description": "International Organizations involve National Scale"
+  },
+  {
+    "id": "e-I-081",
+    "source": "l6-014",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Supranational Bodies shape Governance Systems"
+  },
+  {
+    "id": "e-I-082",
+    "source": "l6-041",
+    "target": "l6-009",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Legacy Governance persists in Governance Systems"
+  },
+  {
+    "id": "e-I-083",
+    "source": "l6-034",
+    "target": "l4-011",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Transparency requires Agentic Architecture disclosure"
+  },
+  {
+    "id": "e-I-084",
+    "source": "l6-035",
+    "target": "l4-011",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L4",
+    "description": "Accountability requires Agentic Architecture tracking"
+  },
+  {
+    "id": "e-I-085",
+    "source": "l4-015",
+    "target": "l5-016",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L5",
+    "description": "Copilot Systems assist Human Operators"
+  },
+  {
+    "id": "e-I-086",
+    "source": "l4-015",
+    "target": "l5-017",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L5",
+    "description": "Copilot Systems assist Analytics Users"
+  },
+  {
+    "id": "e-I-087",
+    "source": "l4-017",
+    "target": "l5-033",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L5",
+    "description": "Content Generators shape User Experience"
+  },
+  {
+    "id": "e-I-088",
+    "source": "l5-014",
+    "target": "l4-023",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Human Users drive Human-AI Interactions"
+  },
+  {
+    "id": "e-I-089",
+    "source": "l5-014",
+    "target": "l2-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Human Users use IoT Devices"
+  },
+  {
+    "id": "e-I-090",
+    "source": "l5-014",
+    "target": "l2-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Human Users adopt Smart Home Technologies"
+  },
+  {
+    "id": "e-I-091",
+    "source": "l5-014",
+    "target": "l3-042",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Human Users use Application Layer"
+  },
+  {
+    "id": "e-I-092",
+    "source": "l5-016",
+    "target": "l2-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L2",
+    "description": "Human Operators control Urban Actuators"
+  },
+  {
+    "id": "e-I-093",
+    "source": "l5-016",
+    "target": "l3-029",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Human Operators manage Backend Resources"
+  },
+  {
+    "id": "e-I-094",
+    "source": "l5-016",
+    "target": "l3-026",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Human Operators operate Cloud Infrastructure"
+  },
+  {
+    "id": "e-I-095",
+    "source": "l5-016",
+    "target": "l3-032",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Human Operators manage Microservices"
+  },
+  {
+    "id": "e-I-096",
+    "source": "l5-017",
+    "target": "l3-042",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Analytics Users use Application Layer"
+  },
+  {
+    "id": "e-I-097",
+    "source": "l5-017",
+    "target": "l3-036",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Analytics Users request Model Customization"
+  },
+  {
+    "id": "e-I-098",
+    "source": "l4-023",
+    "target": "l4-015",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Human-AI Interactions shape Copilot Systems"
+  },
+  {
+    "id": "e-I-099",
+    "source": "l6-007",
+    "target": "l1-001",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L1",
+    "description": "Rights and Interests attach to Parcels"
+  },
+  {
+    "id": "e-I-100",
+    "source": "l6-002",
+    "target": "l6-006",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Tort Law creates Litigation Risk"
+  },
+  {
+    "id": "e-I-101",
+    "source": "l6-005",
+    "target": "l6-004",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L6",
+    "description": "Enforcement ensures Compliance"
+  },
+  {
+    "id": "e-I-102",
+    "source": "l6-005",
+    "target": "l2-019",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L6 → L2",
+    "description": "Enforcement uses Traffic Signals"
+  },
+  {
+    "id": "e-I-103",
+    "source": "l4-012",
+    "target": "l4-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Agent Orchestration enables Multi-Agent Coordination"
+  },
+  {
+    "id": "e-I-104",
+    "source": "l4-013",
+    "target": "l4-021",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Multi-Agent Coordination produces Consensus Artifacts"
+  },
+  {
+    "id": "e-I-105",
+    "source": "l4-018",
+    "target": "l4-020",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Decision Making Systems produce Probability Cones"
+  },
+  {
+    "id": "e-I-106",
+    "source": "l1-036",
+    "target": "l6-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L1 → L6",
+    "description": "Historic Districts lobby for Legislation"
+  },
+  {
+    "id": "e-I-107",
+    "source": "l1-023",
+    "target": "l0-010",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L1 → L0",
+    "description": "Waste Management affects Air Quality"
+  },
+  {
+    "id": "e-I-108",
+    "source": "l3-042",
+    "target": "l2-013",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Application Layer controls Smart Home Technologies"
+  },
+  {
+    "id": "e-I-109",
+    "source": "l3-042",
+    "target": "l2-022",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Application Layer controls Building Management Systems"
+  },
+  {
+    "id": "e-I-110",
+    "source": "l3-031",
+    "target": "l2-003",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "API Layer interfaces with IoT Devices"
+  },
+  {
+    "id": "e-I-111",
+    "source": "l3-030",
+    "target": "l2-006",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Middleware routes through Network Infrastructure"
+  },
+  {
+    "id": "e-I-112",
+    "source": "l3-029",
+    "target": "l2-018",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Backend Resources manage Edge Compute Nodes"
+  },
+  {
+    "id": "e-I-113",
+    "source": "l3-040",
+    "target": "l2-019",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Rules Engine provides logic for Traffic Signals"
+  },
+  {
+    "id": "e-I-114",
+    "source": "l3-040",
+    "target": "l2-012",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L2",
+    "description": "Rules Engine provides logic for Urban Actuators"
+  },
+  {
+    "id": "e-I-115",
+    "source": "l2-010",
+    "target": "l6-005",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L2 → L6",
+    "description": "Live Streams provide evidence for Enforcement"
+  },
+  {
+    "id": "e-V-001",
+    "source": "l0-001",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Bedrock validates Infrastructure Agent assumptions"
+  },
+  {
+    "id": "e-V-002",
+    "source": "l0-002",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Soil Composition validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-003",
+    "source": "l0-003",
+    "target": "l4-007",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Fault Lines validate Safety AI Agent"
+  },
+  {
+    "id": "e-V-004",
+    "source": "l0-005",
+    "target": "l3-011",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Topography validates Data Layers"
+  },
+  {
+    "id": "e-V-005",
+    "source": "l0-006",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Slope Analysis validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-006",
+    "source": "l0-007",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Water Table validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-007",
+    "source": "l0-009",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Flood Zones validate Climate Agent"
+  },
+  {
+    "id": "e-V-008",
+    "source": "l0-010",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Air Quality validates Climate Agent"
+  },
+  {
+    "id": "e-V-009",
+    "source": "l0-010",
+    "target": "l4-006",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Air Quality validates Health AI Agent"
+  },
+  {
+    "id": "e-V-010",
+    "source": "l0-011",
+    "target": "l3-011",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L3",
+    "description": "Vegetation validates Data Layers"
+  },
+  {
+    "id": "e-V-011",
+    "source": "l0-014",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Wildfire Risk validates Climate Agent"
+  },
+  {
+    "id": "e-V-012",
+    "source": "l0-014",
+    "target": "l4-007",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Wildfire Risk validates Safety AI Agent"
+  },
+  {
+    "id": "e-V-013",
+    "source": "l0-015",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Strong Wind Risk validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-014",
+    "source": "l0-016",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Earthquake Risk validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-015",
+    "source": "l0-016",
+    "target": "l4-007",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Earthquake Risk validates Safety AI Agent"
+  },
+  {
+    "id": "e-V-016",
+    "source": "l0-019",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Solar Potential validates Climate Agent"
+  },
+  {
+    "id": "e-V-017",
+    "source": "l0-020",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Energy Grid validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-018",
+    "source": "l0-021",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Heat Islands validate Climate Agent"
+  },
+  {
+    "id": "e-V-019",
+    "source": "l0-023",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L0 → L4",
+    "description": "Carbon Sinks validate Climate Agent"
+  },
+  {
+    "id": "e-V-020",
+    "source": "l1-001",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Parcels validate Market Agent (exists)"
+  },
+  {
+    "id": "e-V-021",
+    "source": "l1-001",
+    "target": "l4-002",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Parcels validate Policy Agent"
+  },
+  {
+    "id": "e-V-022",
+    "source": "l1-007",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Building Footprints validate Infrastructure Agent"
+  },
+  {
+    "id": "e-V-023",
+    "source": "l1-008",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Building Height validates Market Agent"
+  },
+  {
+    "id": "e-V-024",
+    "source": "l1-010",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Density Measurement validates Market Agent"
+  },
+  {
+    "id": "e-V-025",
+    "source": "l1-010",
+    "target": "l4-002",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Density Measurement validates Policy Agent"
+  },
+  {
+    "id": "e-V-026",
+    "source": "l1-025",
+    "target": "l4-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Streets validate Traffic AI Agent"
+  },
+  {
+    "id": "e-V-027",
+    "source": "l1-027",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Transit Networks validate Infrastructure Agent"
+  },
+  {
+    "id": "e-V-028",
+    "source": "l1-027",
+    "target": "l4-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Transit Networks validate Traffic AI Agent"
+  },
+  {
+    "id": "e-V-029",
+    "source": "l1-035",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L1 → L4",
+    "description": "Vacant Lots validate Market Agent (opportunity)"
+  },
+  {
+    "id": "e-V-030",
+    "source": "l2-007",
+    "target": "l4-003",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Environmental Sensors validate Climate Agent"
+  },
+  {
+    "id": "e-V-031",
+    "source": "l2-007",
+    "target": "l4-006",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Environmental Sensors validate Health AI Agent"
+  },
+  {
+    "id": "e-V-032",
+    "source": "l2-007",
+    "target": "l6-037",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L6",
+    "description": "Environmental Sensors monitor Environmental Regulations"
+  },
+  {
+    "id": "e-V-033",
+    "source": "l2-008",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Urban Sensing Network validates Infrastructure Agent"
+  },
+  {
+    "id": "e-V-034",
+    "source": "l2-010",
+    "target": "l4-007",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Live Streams validate Safety AI Agent"
+  },
+  {
+    "id": "e-V-035",
+    "source": "l2-013",
+    "target": "l5-033",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L5",
+    "description": "Smart Home Technologies validate User Experience"
+  },
+  {
+    "id": "e-V-036",
+    "source": "l2-016",
+    "target": "l4-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Autonomous Vehicles validate Traffic AI Agent"
+  },
+  {
+    "id": "e-V-037",
+    "source": "l2-016",
+    "target": "l4-016",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Autonomous Vehicles validate Action Generators"
+  },
+  {
+    "id": "e-V-038",
+    "source": "l2-016",
+    "target": "l6-012",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L6",
+    "description": "Autonomous Vehicles validate AI Regulatory Authority"
+  },
+  {
+    "id": "e-V-039",
+    "source": "l2-019",
+    "target": "l4-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Traffic Signals validate Traffic AI Agent"
+  },
+  {
+    "id": "e-V-040",
+    "source": "l2-019",
+    "target": "l6-015",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L6",
+    "description": "Traffic Signals inform Urban Planning"
+  },
+  {
+    "id": "e-V-041",
+    "source": "l2-020",
+    "target": "l4-004",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L4",
+    "description": "Smart Meters validate Infrastructure Agent"
+  },
+  {
+    "id": "e-V-042",
+    "source": "l2-020",
+    "target": "l6-022",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L2 → L6",
+    "description": "Smart Meters inform Public Finance (utility revenue)"
+  },
+  {
+    "id": "e-V-043",
+    "source": "l3-007",
+    "target": "l4-002",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "System of Record validates Policy Agent"
+  },
+  {
+    "id": "e-V-044",
+    "source": "l3-009",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Golden Record validates Market Agent"
+  },
+  {
+    "id": "e-V-045",
+    "source": "l3-009",
+    "target": "l4-002",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Golden Record validates Policy Agent"
+  },
+  {
+    "id": "e-V-046",
+    "source": "l3-011",
+    "target": "l0-005",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L0",
+    "description": "Data Layers validate Topography"
+  },
+  {
+    "id": "e-V-047",
+    "source": "l3-017",
+    "target": "l4-019",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Knowledge Graph validates Sensemaking"
+  },
+  {
+    "id": "e-V-048",
+    "source": "l3-017",
+    "target": "l0-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L0",
+    "description": "Knowledge Graph validates Flood Zones"
+  },
+  {
+    "id": "e-V-049",
+    "source": "l3-018",
+    "target": "l0-010",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L0",
+    "description": "Data Processing validates Air Quality"
+  },
+  {
+    "id": "e-V-050",
+    "source": "l3-034",
+    "target": "l0-014",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L0",
+    "description": "Machine Learning validates Wildfire Risk predictions"
+  },
+  {
+    "id": "e-V-051",
+    "source": "l3-034",
+    "target": "l0-016",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L0",
+    "description": "Machine Learning validates Earthquake Risk predictions"
+  },
+  {
+    "id": "e-V-052",
+    "source": "l3-044",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L6",
+    "description": "Void Markers flag gaps to Governance Systems"
+  },
+  {
+    "id": "e-V-053",
+    "source": "l3-044",
+    "target": "l6-011",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L6",
+    "description": "Void Markers flag gaps to Regulatory Governance"
+  },
+  {
+    "id": "e-V-054",
+    "source": "l3-023",
+    "target": "l5-033",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L3 → L5",
+    "description": "Document Generation validates User Experience"
+  },
+  {
+    "id": "e-V-055",
+    "source": "l4-001",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Market Agent validates Governance Systems (efficacy)"
+  },
+  {
+    "id": "e-V-056",
+    "source": "l4-002",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Policy Agent validates Governance Systems"
+  },
+  {
+    "id": "e-V-057",
+    "source": "l4-003",
+    "target": "l6-037",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Climate Agent validates Environmental Regulations"
+  },
+  {
+    "id": "e-V-058",
+    "source": "l4-004",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Infrastructure Agent validates Governance Systems"
+  },
+  {
+    "id": "e-V-059",
+    "source": "l4-005",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Community Agent validates Governance Systems"
+  },
+  {
+    "id": "e-V-060",
+    "source": "l4-008",
+    "target": "l6-009",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L6",
+    "description": "Municipal AI Agent validates Governance Systems"
+  },
+  {
+    "id": "e-V-061",
+    "source": "l4-020",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Probability Cones validate Market Agent forecasts"
+  },
+  {
+    "id": "e-V-062",
+    "source": "l4-020",
+    "target": "l4-002",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Probability Cones validate Policy Agent forecasts"
+  },
+  {
+    "id": "e-V-063",
+    "source": "l4-021",
+    "target": "l4-012",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Consensus Artifacts validate Agent Orchestration"
+  },
+  {
+    "id": "e-V-064",
+    "source": "l5-002",
+    "target": "l1-011",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L5 → L1",
+    "description": "Total Households validate Single Family Residential"
+  },
+  {
+    "id": "e-V-065",
+    "source": "l5-009",
+    "target": "l4-001",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Real Estate Market validates Market Agent"
+  },
+  {
+    "id": "e-V-066",
+    "source": "l5-030",
+    "target": "l6-015",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L5 → L6",
+    "description": "Public Engagement validates Urban Planning"
+  },
+  {
+    "id": "e-V-067",
+    "source": "l5-033",
+    "target": "l3-042",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "User Experience validates Application Layer"
+  },
+  {
+    "id": "e-V-068",
+    "source": "l5-042",
+    "target": "l4-010",
+    "edgeType": "V",
+    "edgeTypeName": "Validation",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Community Benefits validate Equity Agent"
+  },
+  {
+    "id": "e-R-001",
+    "source": "l4-001",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Market Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-002",
+    "source": "l4-002",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Policy Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-003",
+    "source": "l4-003",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Climate Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-004",
+    "source": "l4-004",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-005",
+    "source": "l4-005",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Community Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-006",
+    "source": "l4-007",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Safety AI Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-007",
+    "source": "l4-009",
+    "target": "l2-015",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Traffic AI Agent provides reasoning to Embodied AI"
+  },
+  {
+    "id": "e-R-008",
+    "source": "l4-004",
+    "target": "l2-016",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Autonomous Vehicles"
+  },
+  {
+    "id": "e-R-009",
+    "source": "l4-007",
+    "target": "l2-016",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Safety AI Agent provides reasoning to Autonomous Vehicles"
+  },
+  {
+    "id": "e-R-010",
+    "source": "l4-009",
+    "target": "l2-016",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Traffic AI Agent provides reasoning to Autonomous Vehicles"
+  },
+  {
+    "id": "e-R-011",
+    "source": "l4-004",
+    "target": "l2-017",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Drones"
+  },
+  {
+    "id": "e-R-012",
+    "source": "l4-007",
+    "target": "l2-017",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Safety AI Agent provides reasoning to Drones"
+  },
+  {
+    "id": "e-R-013",
+    "source": "l4-004",
+    "target": "l2-014",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Robotics"
+  },
+  {
+    "id": "e-R-014",
+    "source": "l4-007",
+    "target": "l2-014",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Safety AI Agent provides reasoning to Robotics"
+  },
+  {
+    "id": "e-R-015",
+    "source": "l4-009",
+    "target": "l2-019",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Traffic AI Agent provides reasoning to Traffic Signals"
+  },
+  {
+    "id": "e-R-016",
+    "source": "l4-004",
+    "target": "l2-022",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Building Management Systems"
+  },
+  {
+    "id": "e-R-017",
+    "source": "l4-003",
+    "target": "l2-022",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Climate Agent provides reasoning to Building Management Systems"
+  },
+  {
+    "id": "e-R-018",
+    "source": "l4-006",
+    "target": "l2-022",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Health AI Agent provides reasoning to Building Management Systems"
+  },
+  {
+    "id": "e-R-019",
+    "source": "l4-004",
+    "target": "l2-012",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Urban Actuators"
+  },
+  {
+    "id": "e-R-020",
+    "source": "l4-008",
+    "target": "l2-012",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Municipal AI Agent provides reasoning to Urban Actuators"
+  },
+  {
+    "id": "e-R-021",
+    "source": "l4-012",
+    "target": "l4-014",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Agent Orchestration provides reasoning to Task Executor"
+  },
+  {
+    "id": "e-R-022",
+    "source": "l4-013",
+    "target": "l4-014",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Multi-Agent Coordination provides reasoning to Task Executor"
+  },
+  {
+    "id": "e-R-023",
+    "source": "l4-018",
+    "target": "l4-014",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Decision Making Systems provide reasoning to Task Executor"
+  },
+  {
+    "id": "e-R-024",
+    "source": "l4-019",
+    "target": "l4-018",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Sensemaking provides reasoning to Decision Making Systems"
+  },
+  {
+    "id": "e-R-025",
+    "source": "l4-011",
+    "target": "l4-012",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L4",
+    "description": "Agentic Architecture provides reasoning to Agent Orchestration"
+  },
+  {
+    "id": "e-R-026",
+    "source": "l3-035",
+    "target": "l4-019",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "LLM Models provide reasoning to Sensemaking"
+  },
+  {
+    "id": "e-R-027",
+    "source": "l3-035",
+    "target": "l3-023",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "LLM Models generate Document Generation"
+  },
+  {
+    "id": "e-R-028",
+    "source": "l3-038",
+    "target": "l4-019",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "GraphRAG provides reasoning to Sensemaking"
+  },
+  {
+    "id": "e-R-029",
+    "source": "l3-037",
+    "target": "l4-018",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Reinforcement Learning provides reasoning to Decision Making Systems"
+  },
+  {
+    "id": "e-R-030",
+    "source": "l4-004",
+    "target": "l2-021",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Infrastructure Agent provides reasoning to Charging Stations"
+  },
+  {
+    "id": "e-R-031",
+    "source": "l4-003",
+    "target": "l2-021",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L2",
+    "description": "Climate Agent provides reasoning to Charging Stations"
+  },
+  {
+    "id": "e-R-032",
+    "source": "l4-015",
+    "target": "l3-039",
+    "edgeType": "R",
+    "edgeTypeName": "Reasoning",
+    "isPrimary": true,
+    "direction": "L4 → L3",
+    "description": "Copilot Systems inform Prompt Engineering"
+  },
+  {
+    "id": "e-D-129",
+    "source": "l5-003",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Generational Cohorts feed Knowledge Graph"
+  },
+  {
+    "id": "e-D-130",
+    "source": "l5-003",
+    "target": "l4-005",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Generational Cohorts inform Community Agent preferences"
+  },
+  {
+    "id": "e-D-131",
+    "source": "l5-004",
+    "target": "l4-006",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L4",
+    "description": "Age Distribution informs Health AI Agent"
+  },
+  {
+    "id": "e-D-132",
+    "source": "l5-004",
+    "target": "l3-017",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L5 → L3",
+    "description": "Age Distribution feeds Knowledge Graph"
+  },
+  {
+    "id": "e-D-133",
+    "source": "l3-041",
+    "target": "l3-040",
+    "edgeType": "D",
+    "edgeTypeName": "Data",
+    "isPrimary": true,
+    "direction": "L3 → L3",
+    "description": "Business Rules feed Rules Engine"
+  },
+  {
+    "id": "e-I-116",
+    "source": "l3-041",
+    "target": "l4-014",
+    "edgeType": "I",
+    "edgeTypeName": "Intent",
+    "isPrimary": true,
+    "direction": "L3 → L4",
+    "description": "Business Rules direct Task Executor"
   }
-}
+]
