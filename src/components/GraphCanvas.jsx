@@ -767,7 +767,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
   const didDragRef = useRef(false)
   const pointerIdRef = useRef(null)
   const dragPlaneRef = useRef(new THREE.Plane())
-  const lastHitRef = useRef(new THREE.Vector3())
+  const lastMouseRef = useRef({ x: 0, y: 0 })
   const raycasterRef = useRef(new THREE.Raycaster())
 
   const handlePointerDown = useCallback((e) => {
@@ -787,7 +787,9 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
     const clusterPos = new THREE.Vector3(center.x, center.y, center.z)
     const normal = new THREE.Vector3().subVectors(camera.position, clusterPos).normalize()
     dragPlaneRef.current.setFromNormalAndCoplanarPoint(normal, clusterPos)
-    lastHitRef.current.copy(clusterPos)
+
+    // Store initial mouse position
+    lastMouseRef.current = { x: e.clientX, y: e.clientY }
 
     // Capture pointer
     if (gl?.domElement?.setPointerCapture) {
@@ -799,22 +801,36 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, setAct
       if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
 
       const rect = gl.domElement.getBoundingClientRect()
-      const ndc = new THREE.Vector2(
+
+      // Calculate world-space delta using both old and new mouse positions
+      const oldNdc = new THREE.Vector2(
+        ((lastMouseRef.current.x - rect.left) / rect.width) * 2 - 1,
+        -(((lastMouseRef.current.y - rect.top) / rect.height) * 2 - 1)
+      )
+      const newNdc = new THREE.Vector2(
         ((ev.clientX - rect.left) / rect.width) * 2 - 1,
         -(((ev.clientY - rect.top) / rect.height) * 2 - 1)
       )
-      raycasterRef.current.setFromCamera(ndc, camera)
-      const hit = new THREE.Vector3()
-      if (raycasterRef.current.ray.intersectPlane(dragPlaneRef.current, hit)) {
+
+      const oldRay = new THREE.Raycaster()
+      oldRay.setFromCamera(oldNdc, camera)
+      const newRay = new THREE.Raycaster()
+      newRay.setFromCamera(newNdc, camera)
+
+      const oldHit = new THREE.Vector3()
+      const newHit = new THREE.Vector3()
+
+      if (oldRay.ray.intersectPlane(dragPlaneRef.current, oldHit) &&
+          newRay.ray.intersectPlane(dragPlaneRef.current, newHit)) {
         const delta = {
-          x: hit.x - lastHitRef.current.x,
-          y: hit.y - lastHitRef.current.y,
-          z: hit.z - lastHitRef.current.z
+          x: newHit.x - oldHit.x,
+          y: newHit.y - oldHit.y,
+          z: newHit.z - oldHit.z
         }
-        if (Math.abs(delta.x) > 0.5 || Math.abs(delta.y) > 0.5 || Math.abs(delta.z) > 0.5) {
+        if (Math.abs(delta.x) > 0.3 || Math.abs(delta.y) > 0.3 || Math.abs(delta.z) > 0.3) {
           didDragRef.current = true
           updateClusterOffset(clusterKey, delta)
-          lastHitRef.current.copy(hit)
+          lastMouseRef.current = { x: ev.clientX, y: ev.clientY }
         }
       }
     }
