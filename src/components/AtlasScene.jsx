@@ -53,13 +53,19 @@ function CursorTooltip() {
     <div
       className="fixed z-[100] pointer-events-none"
       style={{
-        left: mousePosition.x + 10,
-        top: mousePosition.y - 6,
+        left: mousePosition.x + 12,
+        top: mousePosition.y + 12,
       }}
     >
-      <div className="whitespace-nowrap px-1 py-0.5 rounded text-[8px] font-medium
-                      bg-gray-900/90 text-white">
-        {hoveredNode.label}
+      <div className="max-w-xs px-3 py-2 rounded-lg bg-black text-white shadow-lg">
+        <div className="text-sm font-semibold mb-1">
+          {hoveredNode.label}
+        </div>
+        {hoveredNode.description && (
+          <div className="text-xs text-gray-300 leading-relaxed">
+            {hoveredNode.description}
+          </div>
+        )}
       </div>
     </div>
   )

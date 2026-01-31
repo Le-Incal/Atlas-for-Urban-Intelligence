@@ -316,7 +316,7 @@ function calculatePositions(nodes, edges) {
 }
 
 // Single Node component with gradient shading
-function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = false }) {
+function Node({ node, position, size, isVisible, focusAlpha = 1 }) {
   const meshRef = useRef()
   const materialRef = useRef()
   const outlineMaterialRef = useRef()
@@ -536,25 +536,6 @@ function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = fal
         />
       </mesh>
 
-      {/* Labels: reduce clutter by only showing key nodes unless hovered/selected */}
-      {(showLabel || isHovered || isSelected) && (
-        <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
-          <Text
-            position={[0, 0, size + 0.5]}
-            fontSize={0.35}
-            color="#ffffff"
-            anchorX="center"
-            anchorY="middle"
-            fontWeight="bold"
-            outlineWidth={0.03}
-            outlineColor="#1a1a1a"
-            fillOpacity={Math.max(0.12, focusAlpha)}
-            outlineOpacity={Math.max(0.12, focusAlpha)}
-          >
-            {node.label.split(' ').map(word => word.charAt(0)).join('')}
-          </Text>
-        </Billboard>
-      )}
     </group>
   )
 }
@@ -931,26 +912,6 @@ function GraphCanvas() {
     return set
   }, [selectedNode?.id, neighborsById])
 
-  // Show only a few hub labels per cluster (plus selection/hover handled inside Node)
-  const hubNodeIds = useMemo(() => {
-    const byCluster = {}
-    nodes.forEach((n) => {
-      const ck = clusterKeyByNodeId?.[n.id] || n?.clusters?.[0] || `layer-${n.layer}`
-      if (activeClusterKey && ck !== activeClusterKey) return
-      if (!byCluster[ck]) byCluster[ck] = []
-      byCluster[ck].push(n)
-    })
-    const hubSet = new Set()
-    Object.keys(byCluster).forEach((ck) => {
-      const list = byCluster[ck]
-        .map((n) => ({ id: n.id, c: connectionCount?.[n.id] || 0 }))
-        .sort((a, b) => b.c - a.c)
-        .slice(0, 4)
-      list.forEach((x) => hubSet.add(x.id))
-    })
-    return hubSet
-  }, [nodes, connectionCount, clusterKeyByNodeId, activeClusterKey])
-
   return (
     <group>
       {/* Cluster labels + soft hulls (click to isolate, drag to move) */}
@@ -1067,10 +1028,6 @@ function GraphCanvas() {
         const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
         const isVisible = visibleLayers[node.layer] && inActiveCluster
 
-        const showLabel =
-          (!!focusSet && focusSet.has(node.id)) ||
-          (!focusSet && hubNodeIds.has(node.id))
-        
         return (
           <Node
             key={node.id}
@@ -1079,7 +1036,6 @@ function GraphCanvas() {
             size={size}
             isVisible={isVisible}
             focusAlpha={nodeFocusAlpha}
-            showLabel={showLabel}
           />
         )
       })}
