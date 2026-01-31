@@ -117,7 +117,7 @@ function WelcomeContent() {
 function NodeContent({ selectedNode, nodeMap, onClose }) {
   const signalEdge = useGraphStore((state) => state.signalEdge)
   const clearSignaledEdge = useGraphStore((state) => state.clearSignaledEdge)
-  const { edges } = edgesData
+  const edges = Array.isArray(edgesData) ? edgesData : (edgesData?.edges ?? [])
 
   const handleConnectionHover = (edge) => {
     signalEdge(edge)
@@ -332,7 +332,7 @@ function NodeDetailPanel() {
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const infoPanelOpen = useGraphStore((state) => state.infoPanelOpen)
   const setInfoPanelOpen = useGraphStore((state) => state.setInfoPanelOpen)
-  const { nodes } = nodesData
+  const nodes = Array.isArray(nodesData) ? nodesData : (nodesData?.nodes ?? [])
 
   // Create node lookup map
   const nodeMap = useMemo(() => {

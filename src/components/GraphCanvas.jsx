@@ -511,8 +511,9 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
 
 // Main GraphCanvas component
 function GraphCanvas() {
-  const { nodes } = nodesData
-  const { edges } = edgesData
+  // Support both raw array and { nodes } / { edges } shapes
+  const nodes = Array.isArray(nodesData) ? nodesData : (nodesData?.nodes ?? [])
+  const edges = Array.isArray(edgesData) ? edgesData : (edgesData?.edges ?? [])
   
   const visibleLayers = useGraphStore((state) => state.visibleLayers)
   
