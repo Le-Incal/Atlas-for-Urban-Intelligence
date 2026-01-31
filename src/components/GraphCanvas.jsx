@@ -17,6 +17,8 @@ const LAYER_COLORS = {
   6: '#D49174', // Toasted Almond
 }
 
+const WHITE = new THREE.Color('#ffffff')
+
 // --- Neural pathway edge helpers ---
 // Deterministic hash from edge id for stable organic variation
 function hashEdgeId(edgeId, seed = '') {
@@ -51,6 +53,16 @@ function createOrganicCurve(start, end, edgeId) {
     .addScaledVector(perp2, length * asymB)
 
   return new THREE.QuadraticBezierCurve3(startV, control, endV)
+}
+
+// Bundled curve for inter-cluster edges (shared bridges between islands)
+function createBundledCurve(start, end, viaPoints) {
+  const pts = [
+    new THREE.Vector3(start.x, start.y, start.z),
+    ...viaPoints.map((p) => new THREE.Vector3(p.x, p.y, p.z)),
+    new THREE.Vector3(end.x, end.y, end.z),
+  ]
+  return new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.4)
 }
 
 // Variable-radius tube along curve: taper at ends, swell in middle (neural pathway look)
@@ -100,18 +112,11 @@ function createVariableRadiusTube(curve, baseRadius, tubularSegments = 28, radia
   return geometry
 }
 
-// Calculate node positions using an organic spherical approach
+// Calculate node positions with separated clusters (\"islands\") like your reference.
+// Macro-layout: cluster centroids are far apart.
+// Micro-layout: nodes are arranged within each cluster, with light layer stratification.
 function calculatePositions(nodes, edges) {
   const positions = {}
-
-  // Group nodes by layer
-  const nodesByLayer = {}
-  nodes.forEach(node => {
-    if (!nodesByLayer[node.layer]) {
-      nodesByLayer[node.layer] = []
-    }
-    nodesByLayer[node.layer].push(node)
-  })
 
   // Count connections for each node (for sizing)
   const connectionCount = {}
@@ -123,64 +128,102 @@ function calculatePositions(nodes, edges) {
     connectionCount[edge.target] = (connectionCount[edge.target] || 0) + 1
   })
 
-  // Layer-clustered layout: larger globe — distinct Y bands + radius rings
-  const totalLayers = 7
-  const baseRadius = 82
+  const clusterKeyForNode = (node) => {
+    const key = node?.clusters?.[0]
+    return key || `layer-${node.layer}`
+  }
 
-  Object.keys(nodesByLayer).forEach(layer => {
-    const layerNodes = nodesByLayer[layer]
-    const layerIndex = parseInt(layer)
+  // Deterministic \"random\" in [0,1) for stable layout per reload
+  const rand01 = (key) => {
+    const r = hashEdgeId(String(key))
+    return r < 0 ? r + 1 : r
+  }
 
-    // Tighter vertical bands — layers clustered
-    const normalizedLayer = (layerIndex - 3) / 3 // -1 to 1
-    const layerY = normalizedLayer * 72
+  // Group nodes by cluster key
+  const nodesByCluster = {}
+  const clusterKeyByNodeId = {}
+  nodes.forEach((node) => {
+    const clusterKey = clusterKeyForNode(node)
+    if (!nodesByCluster[clusterKey]) nodesByCluster[clusterKey] = []
+    nodesByCluster[clusterKey].push(node)
+    clusterKeyByNodeId[node.id] = clusterKey
+  })
 
-    // Each layer its own radius ring, closer together
-    const layerRadiusOffset = (layerIndex - 3) * 14
-    const layerRadius = baseRadius + layerRadiusOffset + Math.cos(normalizedLayer * Math.PI * 0.5) * 8
+  const clusterKeys = Object.keys(nodesByCluster).sort()
+  const clusterCount = clusterKeys.length || 1
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5))
 
-    layerNodes.forEach((node, i) => {
-      const goldenAngle = Math.PI * (3 - Math.sqrt(5))
-      const angle = i * goldenAngle + layerIndex * 0.5
+  // Place cluster centers on a ring so clusters read as separated \"islands\"
+  const clusterRingRadius = Math.max(220, 90 + clusterCount * 10)
+  const clusterCenters = {}
+  const clusterSizes = {}
+  clusterKeys.forEach((key, idx) => {
+    clusterSizes[key] = nodesByCluster[key]?.length || 0
+    const angle = idx * goldenAngle
+    const jitter = (rand01(`${key}-j`) - 0.5) * 40
+    const yJitter = (rand01(`${key}-y`) - 0.5) * 60
+    const r = clusterRingRadius + jitter
+    clusterCenters[key] = {
+      x: Math.cos(angle) * r,
+      y: yJitter,
+      z: Math.sin(angle) * r
+    }
+  })
 
-      // More variation so nodes don’t sit on top of each other
-      const radiusVariation = (Math.random() - 0.5) * 28
-      const heightVariation = (Math.random() - 0.5) * 14
-      const angleVariation = (Math.random() - 0.5) * 0.45
+  // Initial per-node placement inside its cluster
+  clusterKeys.forEach((key) => {
+    const clusterNodes = nodesByCluster[key]
+    const center = clusterCenters[key]
+    const n = clusterNodes.length
 
-      const r = layerRadius + radiusVariation
-      const finalAngle = angle + angleVariation
+    // Cluster radius scales with cluster size
+    const clusterRadius = 18 + Math.sqrt(n) * 7
+
+    clusterNodes.forEach((node, i) => {
+      const t = (i + 0.5) / Math.max(1, n)
+      const a = i * goldenAngle + (rand01(`${node.id}-a`) - 0.5) * 0.6
+      const rr = clusterRadius * Math.sqrt(t) + (rand01(`${node.id}-r`) - 0.5) * 10
+
+      // Keep layers lightly separated within the cluster (so L0–L6 still read)
+      const layerYOffset = (node.layer - 3) * 6
+      const yVar = (rand01(`${node.id}-y`) - 0.5) * 6
 
       positions[node.id] = {
-        x: Math.cos(finalAngle) * r,
-        y: layerY + heightVariation,
-        z: Math.sin(finalAngle) * r,
-        connections: connectionCount[node.id] || 1
+        x: center.x + Math.cos(a) * rr,
+        y: center.y + layerYOffset + yVar,
+        z: center.z + Math.sin(a) * rr,
+        connections: connectionCount[node.id] || 1,
+        clusterKey: key
       }
     })
   })
 
-  // Force simulation: strong repulsion to keep layers/nodes separated, weak attraction
+  // Force simulation
   const iterations = 120
   for (let iter = 0; iter < iterations; iter++) {
-    const cooling = 1 - (iter / iterations) * 0.5
+    const cooling = 1 - (iter / iterations) * 0.6
 
-    // Strong repulsion — keep nodes and layers well separated
+    // Repulsion: strong within cluster, gentle across clusters (maintains separation)
     nodes.forEach((nodeA, i) => {
       nodes.forEach((nodeB, j) => {
         if (i >= j) return
         const posA = positions[nodeA.id]
         const posB = positions[nodeB.id]
+        if (!posA || !posB) return
 
         const dx = posB.x - posA.x
         const dy = posB.y - posA.y
         const dz = posB.z - posA.z
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
 
-        if (dist < 42) {
-          const force = (42 - dist) * 0.16 * cooling
+        const sameCluster = posA.clusterKey === posB.clusterKey
+        const threshold = sameCluster ? 20 : 70
+        const strength = sameCluster ? 0.14 : 0.035
+
+        if (dist < threshold) {
+          const force = (threshold - dist) * strength * cooling
           const fx = (dx / dist) * force
-          const fy = (dy / dist) * force * 0.75
+          const fy = (dy / dist) * force * (sameCluster ? 0.7 : 0.4)
           const fz = (dz / dist) * force
 
           posA.x -= fx
@@ -193,7 +236,7 @@ function calculatePositions(nodes, edges) {
       })
     })
 
-    // Weak attraction — only when far, so edges don't collapse the spread
+    // Edge attraction: normal within cluster, very weak across clusters
     edges.forEach(edge => {
       const posA = positions[edge.source]
       const posB = positions[edge.target]
@@ -204,10 +247,14 @@ function calculatePositions(nodes, edges) {
       const dz = posB.z - posA.z
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
 
-      if (dist > 58) {
-        const force = (dist - 58) * 0.004 * cooling
+      const sameCluster = posA.clusterKey === posB.clusterKey
+      const minDist = sameCluster ? 26 : 140
+      const strength = sameCluster ? 0.006 : 0.0012
+
+      if (dist > minDist) {
+        const force = (dist - minDist) * strength * cooling
         const fx = (dx / dist) * force
-        const fy = (dy / dist) * force * 0.5
+        const fy = (dy / dist) * force * 0.45
         const fz = (dz / dist) * force
 
         posA.x += fx
@@ -219,25 +266,34 @@ function calculatePositions(nodes, edges) {
       }
     })
 
-    // Soft center pull (tighter globe)
-    nodes.forEach(node => {
+    // Cluster gravity: keep nodes grouped around their cluster center
+    nodes.forEach((node) => {
       const pos = positions[node.id]
-      const dist = Math.sqrt(pos.x * pos.x + pos.z * pos.z)
-      if (dist > 128) {
-        const pullForce = (dist - 128) * 0.01 * cooling
-        pos.x -= (pos.x / dist) * pullForce
-        pos.z -= (pos.z / dist) * pullForce
-      }
+      if (!pos) return
+      const center = clusterCenters[pos.clusterKey]
+      if (!center) return
+
+      const dx = center.x - pos.x
+      const dy = center.y - pos.y
+      const dz = center.z - pos.z
+      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
+
+      // Slightly stronger early, weaker later
+      const pull = 0.0025 * (0.6 + 0.4 * cooling)
+      pos.x += (dx / dist) * dist * pull
+      pos.y += (dy / dist) * dist * pull * 0.8
+      pos.z += (dz / dist) * dist * pull
     })
   }
 
-  return { positions, connectionCount }
+  return { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId }
 }
 
 // Single Node component with gradient shading
-function Node({ node, position, size, isVisible }) {
+function Node({ node, position, size, isVisible, focusAlpha = 1, showLabel = false }) {
   const meshRef = useRef()
   const materialRef = useRef()
+  const outlineMaterialRef = useRef()
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode)
   const setHoveredNode = useGraphStore((state) => state.setHoveredNode)
   const setMousePosition = useGraphStore((state) => state.setMousePosition)
@@ -248,6 +304,7 @@ function Node({ node, position, size, isVisible }) {
   const isHovered = hoveredNode?.id === node.id
 
   const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
+  const displayColor = useMemo(() => baseColor.clone().lerp(WHITE, 1 - focusAlpha), [baseColor, focusAlpha])
 
   // Create emissive color (slightly brighter version of base)
   const emissiveColor = useMemo(() => {
@@ -274,6 +331,11 @@ function Node({ node, position, size, isVisible }) {
       const newEmissive = THREE.MathUtils.lerp(currentEmissive, targetEmissive, 0.1)
       setCurrentEmissive(newEmissive)
       materialRef.current.emissiveIntensity = newEmissive
+      // Focus mode: soften non-neighborhood nodes via opacity
+      materialRef.current.opacity = 0.25 + 0.75 * focusAlpha
+    }
+    if (outlineMaterialRef.current) {
+      outlineMaterialRef.current.opacity = 0.4 * focusAlpha
     }
   })
 
@@ -322,6 +384,7 @@ function Node({ node, position, size, isVisible }) {
       <mesh scale={1.06}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
+          ref={outlineMaterialRef}
           color={outlineColor}
           transparent
           opacity={0.4}
@@ -356,35 +419,41 @@ function Node({ node, position, size, isVisible }) {
         <sphereGeometry args={[size, 48, 48]} />
         <meshStandardMaterial
           ref={materialRef}
-          color={baseColor}
+          color={displayColor}
           roughness={0.75}
           metalness={0}
           emissive={emissiveColor}
           emissiveIntensity={0}
+          transparent
+          opacity={0.25 + 0.75 * focusAlpha}
         />
       </mesh>
 
-      {/* Node initials - high-contrast so readable on all layer colors */}
-      <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
-        <Text
-          position={[0, 0, size + 0.5]}
-          fontSize={0.35}
-          color="#ffffff"
-          anchorX="center"
-          anchorY="middle"
-          fontWeight="bold"
-          outlineWidth={0.03}
-          outlineColor="#1a1a1a"
-        >
-          {node.label.split(' ').map(word => word.charAt(0)).join('')}
-        </Text>
-      </Billboard>
+      {/* Labels: reduce clutter by only showing key nodes unless hovered/selected */}
+      {(showLabel || isHovered || isSelected) && (
+        <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+          <Text
+            position={[0, 0, size + 0.5]}
+            fontSize={0.35}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            fontWeight="bold"
+            outlineWidth={0.03}
+            outlineColor="#1a1a1a"
+            fillOpacity={Math.max(0.12, focusAlpha)}
+            outlineOpacity={Math.max(0.12, focusAlpha)}
+          >
+            {node.label.split(' ').map(word => word.charAt(0)).join('')}
+          </Text>
+        </Billboard>
+      )}
     </group>
   )
 }
 
 // Edge component: neural pathway style (organic curve + variable-radius tube)
-function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
+function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 1, viaPoints = null }) {
   const pulseGroupRef = useRef()
   const pulseProgressRef = useRef(null)
   const [pulseActive, setPulseActive] = useState(false)
@@ -412,12 +481,23 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode }) {
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.08
   }
+  opacity *= focusAlpha
 
   // Organic curve: stable per edge, slight irregularity + asymmetry
   const curve = useMemo(() => {
     if (!sourcePos || !targetPos) return null
+    if (viaPoints && viaPoints.length > 0) {
+      return createBundledCurve(sourcePos, targetPos, viaPoints)
+    }
     return createOrganicCurve(sourcePos, targetPos, edge.id)
-  }, [sourcePos?.x, sourcePos?.y, sourcePos?.z, targetPos?.x, targetPos?.y, targetPos?.z, edge.id])
+  }, [
+    sourcePos?.x, sourcePos?.y, sourcePos?.z,
+    targetPos?.x, targetPos?.y, targetPos?.z,
+    edge.id,
+    viaPoints?.length,
+    viaPoints?.[0]?.x, viaPoints?.[0]?.y, viaPoints?.[0]?.z,
+    viaPoints?.[1]?.x, viaPoints?.[1]?.y, viaPoints?.[1]?.z,
+  ])
 
   // Variable-radius tube geometry (taper at ends, swell in middle)
   const tubeGeometry = useMemo(() => {
@@ -516,9 +596,14 @@ function GraphCanvas() {
   const edges = Array.isArray(edgesData) ? edgesData : (edgesData?.edges ?? [])
   
   const visibleLayers = useGraphStore((state) => state.visibleLayers)
+  const selectedNode = useGraphStore((state) => state.selectedNode)
+  const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
+  const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
+  const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
+  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   
   // Calculate positions once
-  const { positions, connectionCount } = useMemo(
+  const { positions, connectionCount, clusterCenters, clusterSizes, clusterKeyByNodeId } = useMemo(
     () => calculatePositions(nodes, edges),
     [nodes, edges]
   )
@@ -532,10 +617,95 @@ function GraphCanvas() {
     return map
   }, [nodes])
 
-  const { camera } = useThree()
+  // Neighbor lookup for focus mode
+  const neighborsById = useMemo(() => {
+    const map = {}
+    nodes.forEach((n) => { map[n.id] = new Set() })
+    edges.forEach((e) => {
+      map[e.source]?.add(e.target)
+      map[e.target]?.add(e.source)
+    })
+    return map
+  }, [nodes, edges])
+
+  const focusSet = useMemo(() => {
+    if (!selectedNode?.id) return null
+    const set = new Set([selectedNode.id])
+    const nbrs = neighborsById[selectedNode.id]
+    if (nbrs) nbrs.forEach((id) => set.add(id))
+    return set
+  }, [selectedNode?.id, neighborsById])
+
+  // Show only a few hub labels per cluster (plus selection/hover handled inside Node)
+  const hubNodeIds = useMemo(() => {
+    const byCluster = {}
+    nodes.forEach((n) => {
+      const ck = clusterKeyByNodeId?.[n.id] || n?.clusters?.[0] || `layer-${n.layer}`
+      if (activeClusterKey && ck !== activeClusterKey) return
+      if (!byCluster[ck]) byCluster[ck] = []
+      byCluster[ck].push(n)
+    })
+    const hubSet = new Set()
+    Object.keys(byCluster).forEach((ck) => {
+      const list = byCluster[ck]
+        .map((n) => ({ id: n.id, c: connectionCount?.[n.id] || 0 }))
+        .sort((a, b) => b.c - a.c)
+        .slice(0, 4)
+      list.forEach((x) => hubSet.add(x.id))
+    })
+    return hubSet
+  }, [nodes, connectionCount, clusterKeyByNodeId, activeClusterKey])
 
   return (
     <group>
+      {/* Cluster labels + soft hulls (click to isolate cluster) */}
+      {clusterCenters && Object.entries(clusterCenters).map(([key, center]) => {
+        const count = clusterSizes?.[key] ?? 0
+        const radius = 16 + Math.sqrt(count) * 3
+        const alpha = !activeClusterKey ? 1 : (activeClusterKey === key ? 1 : 0.18)
+        return (
+          <group key={key} position={[center.x, center.y, center.z]}>
+            {/* Soft hull hint */}
+            <mesh>
+              <sphereGeometry args={[radius, 18, 18]} />
+              <meshBasicMaterial
+                color="#808080"
+                transparent
+                opacity={0.04 * alpha}
+                depthWrite={false}
+              />
+            </mesh>
+            {/* Click target */}
+            <mesh
+              onClick={(e) => {
+                e.stopPropagation()
+                setActiveClusterKey(key)
+              }}
+              onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+              onPointerOut={() => { document.body.style.cursor = 'default' }}
+            >
+              <sphereGeometry args={[radius + 6, 12, 12]} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+            </mesh>
+            <Billboard>
+              <Text
+                position={[0, radius + 10, 0]}
+                fontSize={0.6}
+                color="#1a1a1a"
+                anchorX="center"
+                anchorY="middle"
+                fillOpacity={0.9 * alpha}
+                outlineWidth={0.02}
+                outlineColor="#ffffff"
+                outlineOpacity={0.9 * alpha}
+              >
+                {key} ({count})
+              </Text>
+            </Billboard>
+          </group>
+        )
+      })}
+
       {/* Render edges first (behind nodes) */}
       {edges.map(edge => {
         const sourceNode = nodeMap[edge.source]
@@ -543,9 +713,62 @@ function GraphCanvas() {
         const sourcePos = positions[edge.source]
         const targetPos = positions[edge.target]
         
-        const isVisible = 
+        const inVisibleLayers =
           visibleLayers[sourceNode?.layer] && 
           visibleLayers[targetNode?.layer]
+
+        const inActiveCluster = !activeClusterKey || (
+          (clusterKeyByNodeId?.[edge.source] === activeClusterKey) &&
+          (clusterKeyByNodeId?.[edge.target] === activeClusterKey)
+        )
+
+        let isVisible = inVisibleLayers && inActiveCluster
+
+        // Progressive disclosure: primary-only by default (unless filtering/focusing)
+        if (
+          edgeVisibilityMode === 'primary' &&
+          !selectedNode &&
+          !activeEdgeType &&
+          !activeClusterKey
+        ) {
+          isVisible = isVisible && !!edge.isPrimary
+        }
+
+        // Edge-type filter: hide non-matching for cleanliness
+        if (activeEdgeType && edge.edgeType !== activeEdgeType) {
+          isVisible = false
+        }
+
+        const edgeFocusAlpha = !focusSet ? 1 : (
+          (edge.source === selectedNode?.id || edge.target === selectedNode?.id)
+            ? 1
+            : (focusSet.has(edge.source) && focusSet.has(edge.target))
+              ? 0.45
+              : 0.08
+        )
+
+        // Inter-cluster edge bundling: route via cluster \"ports\" so links form bridges
+        const sourceCluster = clusterKeyByNodeId?.[edge.source]
+        const targetCluster = clusterKeyByNodeId?.[edge.target]
+        let viaPoints = null
+        if (sourceCluster && targetCluster && sourceCluster !== targetCluster) {
+          const cA = clusterCenters?.[sourceCluster]
+          const cB = clusterCenters?.[targetCluster]
+          if (cA && cB) {
+            const dx = cB.x - cA.x
+            const dy = cB.y - cA.y
+            const dz = cB.z - cA.z
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
+            const ux = dx / dist
+            const uy = dy / dist
+            const uz = dz / dist
+            const offA = 18 + Math.sqrt(clusterSizes?.[sourceCluster] ?? 0) * 2
+            const offB = 18 + Math.sqrt(clusterSizes?.[targetCluster] ?? 0) * 2
+            const portA = { x: cA.x + ux * offA, y: cA.y + uy * offA, z: cA.z + uz * offA }
+            const portB = { x: cB.x - ux * offB, y: cB.y - uy * offB, z: cB.z - uz * offB }
+            viaPoints = [portA, portB]
+          }
+        }
         
         return (
           <Edge
@@ -555,6 +778,8 @@ function GraphCanvas() {
             targetPos={targetPos}
             sourceNode={sourceNode}
             isVisible={isVisible}
+            focusAlpha={edgeFocusAlpha}
+            viaPoints={viaPoints}
           />
         )
       })}
@@ -565,6 +790,14 @@ function GraphCanvas() {
         const connections = connectionCount[node.id] || 1
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
+
+        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.18)
+        const inActiveCluster = !activeClusterKey || (clusterKeyByNodeId?.[node.id] === activeClusterKey)
+        const isVisible = visibleLayers[node.layer] && inActiveCluster
+
+        const showLabel =
+          (!!focusSet && focusSet.has(node.id)) ||
+          (!focusSet && hubNodeIds.has(node.id))
         
         return (
           <Node
@@ -572,7 +805,9 @@ function GraphCanvas() {
             node={node}
             position={pos}
             size={size}
-            isVisible={visibleLayers[node.layer]}
+            isVisible={isVisible}
+            focusAlpha={nodeFocusAlpha}
+            showLabel={showLabel}
           />
         )
       })}

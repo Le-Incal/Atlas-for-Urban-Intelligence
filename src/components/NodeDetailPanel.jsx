@@ -126,6 +126,7 @@ function WelcomeContent() {
 function NodeContent({ selectedNode, nodeMap, onClose }) {
   const signalEdge = useGraphStore((state) => state.signalEdge)
   const clearSignaledEdge = useGraphStore((state) => state.clearSignaledEdge)
+  const setActiveClusterKey = useGraphStore((state) => state.setActiveClusterKey)
   const edges = Array.isArray(edgesData) ? edgesData : (edgesData?.edges ?? [])
 
   const handleConnectionHover = (edge) => {
@@ -208,13 +209,15 @@ function NodeContent({ selectedNode, nodeMap, onClose }) {
             </h3>
             <div className="flex flex-wrap gap-1">
               {selectedNode.clusters.map(cluster => (
-                <span
+                <button
                   key={cluster}
+                  onClick={() => setActiveClusterKey(cluster)}
                   className="inline-block px-2 py-1 bg-gray-50 border border-gray-200
-                             rounded text-[10px] font-mono text-gray-600"
+                             rounded text-[10px] font-mono text-gray-600
+                             hover:bg-gray-100 transition-colors"
                 >
                   {cluster}
-                </span>
+                </button>
               ))}
             </div>
           </div>

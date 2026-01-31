@@ -27,6 +27,10 @@ function LegendPanel() {
   const toggleLayer = useGraphStore((state) => state.toggleLayer)
   const activeEdgeType = useGraphStore((state) => state.activeEdgeType)
   const setActiveEdgeType = useGraphStore((state) => state.setActiveEdgeType)
+  const edgeVisibilityMode = useGraphStore((state) => state.edgeVisibilityMode)
+  const setEdgeVisibilityMode = useGraphStore((state) => state.setEdgeVisibilityMode)
+  const activeClusterKey = useGraphStore((state) => state.activeClusterKey)
+  const clearActiveClusterKey = useGraphStore((state) => state.clearActiveClusterKey)
 
   return (
     <motion.div
@@ -68,6 +72,51 @@ function LegendPanel() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-gray-200 mb-6" />
+
+      {/* Visibility */}
+      <div className="mb-6">
+        <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">
+          Visibility
+        </h3>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setEdgeVisibilityMode('primary')}
+            className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors
+                        ${edgeVisibilityMode === 'primary'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
+          >
+            Primary
+          </button>
+          <button
+            onClick={() => setEdgeVisibilityMode('all')}
+            className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors
+                        ${edgeVisibilityMode === 'all'
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
+          >
+            All edges
+          </button>
+        </div>
+
+        {activeClusterKey && (
+          <div className="mt-3 px-3 py-2 bg-gray-50 rounded-lg flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-[10px] font-mono text-gray-400 uppercase">Cluster</p>
+              <p className="text-xs text-gray-700 truncate">{activeClusterKey}</p>
+            </div>
+            <button
+              onClick={clearActiveClusterKey}
+              className="text-[10px] font-mono text-gray-500 hover:text-gray-700"
+            >
+              Clear
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Divider */}
@@ -134,6 +183,8 @@ function LegendPanel() {
       <button
         onClick={() => {
           setActiveEdgeType(null)
+          setEdgeVisibilityMode('primary')
+          clearActiveClusterKey()
           LAYERS.forEach(l => {
             if (!visibleLayers[l.id]) toggleLayer(l.id)
           })

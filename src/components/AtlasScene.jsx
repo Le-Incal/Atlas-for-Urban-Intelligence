@@ -93,6 +93,7 @@ function AutoRotate({ controlsRef }) {
 // Custom trackpad handler for two-finger rotate + pinch zoom (simultaneous)
 function TrackpadControls({ controlsRef }) {
   const { camera, gl } = useThree()
+  const lastPointerRef = useRef({ x: 0, y: 0 })
 
   const handleWheel = useCallback((event) => {
     if (!controlsRef.current) return
@@ -112,9 +113,35 @@ function TrackpadControls({ controlsRef }) {
     if (event.ctrlKey) {
       // Pinch zoom
       const delta = event.deltaY * zoomSpeed
-      const newRadius = spherical.radius * (1 + delta)
-      // Clamp distance (match OrbitControls maxDistance)
+      const oldRadius = spherical.radius
+      const newRadius = oldRadius * (1 + delta)
+
+      // Clamp distance (match OrbitControls)
       if (newRadius >= 40 && newRadius <= 580) {
+        // Zoom-to-cursor: move target toward the point under the pointer
+        const dom = gl.domElement
+        const rect = dom.getBoundingClientRect()
+        const px = lastPointerRef.current.x
+        const py = lastPointerRef.current.y
+        const ndc = new THREE.Vector2(
+          ((px - rect.left) / rect.width) * 2 - 1,
+          -(((py - rect.top) / rect.height) * 2 - 1)
+        )
+
+        const raycaster = new THREE.Raycaster()
+        raycaster.setFromCamera(ndc, camera)
+
+        const target = controlsRef.current.target
+        const planeNormal = new THREE.Vector3().subVectors(camera.position, target).normalize()
+        const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(planeNormal, target)
+        const hit = new THREE.Vector3()
+
+        if (raycaster.ray.intersectPlane(plane, hit)) {
+          const zoomFactor = newRadius / oldRadius
+          const t = 1 - zoomFactor
+          target.lerp(hit, Math.max(0, Math.min(1, t)))
+        }
+
         spherical.radius = newRadius
       }
     } else {
@@ -135,8 +162,15 @@ function TrackpadControls({ controlsRef }) {
 
   useEffect(() => {
     const domElement = gl.domElement
+    const handlePointerMove = (e) => {
+      lastPointerRef.current = { x: e.clientX, y: e.clientY }
+    }
+    domElement.addEventListener('pointermove', handlePointerMove, { passive: true })
     domElement.addEventListener('wheel', handleWheel, { passive: false })
-    return () => domElement.removeEventListener('wheel', handleWheel)
+    return () => {
+      domElement.removeEventListener('pointermove', handlePointerMove)
+      domElement.removeEventListener('wheel', handleWheel)
+    }
   }, [gl, handleWheel])
 
   return null
@@ -152,6 +186,9 @@ function SceneContent({ controlsRef }) {
         near={0.1}
         far={2000}
       />
+
+      {/* Subtle depth fog to reduce distant clutter */}
+      <fog attach="fog" args={['#ffffff', 220, 950]} />
 
       {/* Lighting - top right to bottom left */}
       <ambientLight intensity={0.9} />
