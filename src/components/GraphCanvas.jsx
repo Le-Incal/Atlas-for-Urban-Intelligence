@@ -693,15 +693,17 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
 
 // Draggable Cluster Hull - grab and drag to move all nodes in the cluster
 function DraggableClusterHull({ clusterKey, center, radius, count, alpha, clusterOffset, setActiveClusterKey }) {
-  const meshRef = useRef()
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
   const controlsRef = useGraphStore((state) => state.controlsRef)
 
-  const [isDragging, setIsDragging] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const dragStart = useRef({ point: null })
-  const didDrag = useRef(false)
+  const draggingRef = useRef(false)
+  const didDragRef = useRef(false)
+  const pointerIdRef = useRef(null)
+  const dragPlaneRef = useRef(new THREE.Plane())
+  const lastHitRef = useRef(new THREE.Vector3())
+  const raycasterRef = useRef(new THREE.Raycaster())
 
   // Apply cluster offset to center position
   const offsetCenter = useMemo(() => ({
@@ -713,97 +715,112 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha, cluste
   const handlePointerDown = useCallback((e) => {
     if (e.button !== 0) return
     e.stopPropagation()
-    setIsDragging(true)
-    didDrag.current = false
+
+    draggingRef.current = true
+    didDragRef.current = false
+    pointerIdRef.current = e.pointerId
+
     gl.domElement.style.cursor = 'grabbing'
 
     // Disable orbit controls while dragging
     if (controlsRef?.current) controlsRef.current.enabled = false
 
-    // Store initial intersection point
-    dragStart.current.point = e.point.clone()
+    // Create drag plane facing camera through cluster center
+    const clusterPos = new THREE.Vector3(offsetCenter.x, offsetCenter.y, offsetCenter.z)
+    const normal = new THREE.Vector3().subVectors(camera.position, clusterPos).normalize()
+    dragPlaneRef.current.setFromNormalAndCoplanarPoint(normal, clusterPos)
+    lastHitRef.current.copy(clusterPos)
 
     // Capture pointer
     if (gl?.domElement?.setPointerCapture) {
       try { gl.domElement.setPointerCapture(e.pointerId) } catch {}
     }
-  }, [gl, controlsRef])
 
-  const handlePointerMove = useCallback((e) => {
-    if (!isDragging || !dragStart.current.point) return
-    e.stopPropagation()
+    const onMove = (ev) => {
+      if (!draggingRef.current) return
+      if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
 
-    // Calculate delta in world space
-    const delta = {
-      x: e.point.x - dragStart.current.point.x,
-      y: e.point.y - dragStart.current.point.y,
-      z: e.point.z - dragStart.current.point.z
+      const rect = gl.domElement.getBoundingClientRect()
+      const ndc = new THREE.Vector2(
+        ((ev.clientX - rect.left) / rect.width) * 2 - 1,
+        -(((ev.clientY - rect.top) / rect.height) * 2 - 1)
+      )
+      raycasterRef.current.setFromCamera(ndc, camera)
+      const hit = new THREE.Vector3()
+      if (raycasterRef.current.ray.intersectPlane(dragPlaneRef.current, hit)) {
+        const delta = {
+          x: hit.x - lastHitRef.current.x,
+          y: hit.y - lastHitRef.current.y,
+          z: hit.z - lastHitRef.current.z
+        }
+        if (Math.abs(delta.x) > 0.5 || Math.abs(delta.y) > 0.5 || Math.abs(delta.z) > 0.5) {
+          didDragRef.current = true
+          updateClusterOffset(clusterKey, delta)
+          lastHitRef.current.copy(hit)
+        }
+      }
     }
 
-    // Only update if there's meaningful movement
-    if (Math.abs(delta.x) > 0.1 || Math.abs(delta.y) > 0.1 || Math.abs(delta.z) > 0.1) {
-      didDrag.current = true
-      updateClusterOffset(clusterKey, delta)
-      dragStart.current.point = e.point.clone()
+    const onUp = (ev) => {
+      if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
+      draggingRef.current = false
+      pointerIdRef.current = null
+
+      gl.domElement.style.cursor = 'default'
+
+      if (controlsRef?.current) controlsRef.current.enabled = true
+      if (gl?.domElement?.releasePointerCapture) {
+        try { gl.domElement.releasePointerCapture(e.pointerId) } catch {}
+      }
+
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onUp)
     }
-  }, [isDragging, clusterKey, updateClusterOffset])
 
-  const handlePointerUp = useCallback((e) => {
-    if (!isDragging) return
-    e.stopPropagation()
-    setIsDragging(false)
-    gl.domElement.style.cursor = isHovered ? 'grab' : 'default'
-    dragStart.current.point = null
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onUp)
+  }, [camera, gl, controlsRef, clusterKey, updateClusterOffset, offsetCenter])
 
-    // Re-enable orbit controls
-    if (controlsRef?.current) controlsRef.current.enabled = true
-
-    if (gl?.domElement?.releasePointerCapture) {
-      try { gl.domElement.releasePointerCapture(e.pointerId) } catch {}
-    }
-  }, [isDragging, isHovered, gl, controlsRef])
-
-  const handlePointerOver = useCallback((e) => {
-    e.stopPropagation()
+  const handlePointerOver = useCallback(() => {
     setIsHovered(true)
-    if (!isDragging) {
+    if (!draggingRef.current) {
       gl.domElement.style.cursor = 'grab'
     }
-  }, [isDragging, gl])
+  }, [gl])
 
-  const handlePointerOut = useCallback((e) => {
+  const handlePointerOut = useCallback(() => {
     setIsHovered(false)
-    if (!isDragging) {
+    if (!draggingRef.current) {
       gl.domElement.style.cursor = 'default'
     }
-  }, [isDragging, gl])
+  }, [gl])
 
   const handleClick = useCallback((e) => {
     e.stopPropagation()
     // Only toggle cluster filter if we didn't drag
-    if (!didDrag.current) {
+    if (!didDragRef.current) {
       setActiveClusterKey(clusterKey)
     }
-    didDrag.current = false
+    didDragRef.current = false
   }, [clusterKey, setActiveClusterKey])
 
   return (
     <group position={[offsetCenter.x, offsetCenter.y, offsetCenter.z]}>
       {/* Soft hull hint */}
-      <mesh ref={meshRef}>
+      <mesh>
         <sphereGeometry args={[radius, 18, 18]} />
         <meshBasicMaterial
           color="#808080"
           transparent
-          opacity={(isDragging ? 0.12 : isHovered ? 0.08 : 0.04) * alpha}
+          opacity={(isHovered ? 0.08 : 0.04) * alpha}
           depthWrite={false}
         />
       </mesh>
       {/* Draggable/clickable target */}
       <mesh
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleClick}
@@ -999,17 +1016,23 @@ function GraphCanvas() {
           const cA = clusterCenters?.[sourceCluster]
           const cB = clusterCenters?.[targetCluster]
           if (cA && cB) {
-            const dx = cB.x - cA.x
-            const dy = cB.y - cA.y
-            const dz = cB.z - cA.z
+            // Apply cluster offsets to centers
+            const offsetA = clusterOffsets?.[sourceCluster] || { x: 0, y: 0, z: 0 }
+            const offsetB = clusterOffsets?.[targetCluster] || { x: 0, y: 0, z: 0 }
+            const cAOffset = { x: cA.x + offsetA.x, y: cA.y + offsetA.y, z: cA.z + offsetA.z }
+            const cBOffset = { x: cB.x + offsetB.x, y: cB.y + offsetB.y, z: cB.z + offsetB.z }
+
+            const dx = cBOffset.x - cAOffset.x
+            const dy = cBOffset.y - cAOffset.y
+            const dz = cBOffset.z - cAOffset.z
             const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
             const ux = dx / dist
             const uy = dy / dist
             const uz = dz / dist
             const offA = 18 + Math.sqrt(clusterSizes?.[sourceCluster] ?? 0) * 2
             const offB = 18 + Math.sqrt(clusterSizes?.[targetCluster] ?? 0) * 2
-            const portA = { x: cA.x + ux * offA, y: cA.y + uy * offA, z: cA.z + uz * offA }
-            const portB = { x: cB.x - ux * offB, y: cB.y - uy * offB, z: cB.z - uz * offB }
+            const portA = { x: cAOffset.x + ux * offA, y: cAOffset.y + uy * offA, z: cAOffset.z + uz * offA }
+            const portB = { x: cBOffset.x - ux * offB, y: cBOffset.y - uy * offB, z: cBOffset.z - uz * offB }
             viaPoints = [portA, portB]
           }
         }
