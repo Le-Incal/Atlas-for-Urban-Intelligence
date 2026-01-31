@@ -288,7 +288,7 @@ function Node({ node, position, size, isVisible }) {
       <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
         <Text
           position={[0, 0, size + 0.5]}
-          fontSize={size * 0.5}
+          fontSize={1.2}
           color="#00e600"
           anchorX="center"
           anchorY="middle"
