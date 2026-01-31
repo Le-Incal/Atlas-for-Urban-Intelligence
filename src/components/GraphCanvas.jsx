@@ -123,31 +123,31 @@ function calculatePositions(nodes, edges) {
     connectionCount[edge.target] = (connectionCount[edge.target] || 0) + 1
   })
 
-  // Create a more organic spherical distribution
-  // Layers spiral around a central axis with varying radii
+  // Create a more organic spherical distribution — spread out for 235 nodes
+  // Layers spiral around a central axis with larger radii
   const totalLayers = 7
-  const baseRadius = 35
+  const baseRadius = 58
 
   Object.keys(nodesByLayer).forEach(layer => {
     const layerNodes = nodesByLayer[layer]
     const layerIndex = parseInt(layer)
 
-    // Vertical position with gentle curve (not flat layers)
+    // Vertical position: more spread between layers
     const normalizedLayer = (layerIndex - 3) / 3 // -1 to 1
-    const layerY = normalizedLayer * 45
+    const layerY = normalizedLayer * 72
 
-    // Radius varies by layer - middle layers slightly larger
-    const layerRadius = baseRadius + Math.cos(normalizedLayer * Math.PI * 0.5) * 15
+    // Radius varies by layer — middle layers slightly larger, wider spread
+    const layerRadius = baseRadius + Math.cos(normalizedLayer * Math.PI * 0.5) * 22
 
     layerNodes.forEach((node, i) => {
       // Distribute nodes in a spiral pattern
       const goldenAngle = Math.PI * (3 - Math.sqrt(5))
       const angle = i * goldenAngle + layerIndex * 0.5
 
-      // Add organic variation
-      const radiusVariation = (Math.random() - 0.5) * 20
-      const heightVariation = (Math.random() - 0.5) * 15
-      const angleVariation = (Math.random() - 0.5) * 0.3
+      // More variation so nodes don’t sit on top of each other
+      const radiusVariation = (Math.random() - 0.5) * 32
+      const heightVariation = (Math.random() - 0.5) * 24
+      const angleVariation = (Math.random() - 0.5) * 0.4
 
       const r = layerRadius + radiusVariation
       const finalAngle = angle + angleVariation
@@ -161,12 +161,12 @@ function calculatePositions(nodes, edges) {
     })
   })
 
-  // Organic force simulation
-  const iterations = 80
+  // Organic force simulation — stronger repulsion, larger spacing
+  const iterations = 100
   for (let iter = 0; iter < iterations; iter++) {
     const cooling = 1 - (iter / iterations) * 0.5 // Gradually reduce forces
 
-    // Soft repulsion between nodes
+    // Repulsion: larger radius so nodes stay farther apart
     nodes.forEach((nodeA, i) => {
       nodes.forEach((nodeB, j) => {
         if (i >= j) return
@@ -178,11 +178,11 @@ function calculatePositions(nodes, edges) {
         const dz = posB.z - posA.z
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
 
-        // Softer repulsion threshold
-        if (dist < 18) {
-          const force = (18 - dist) * 0.08 * cooling
+        // Repel when closer than ~30 units (was 18)
+        if (dist < 30) {
+          const force = (30 - dist) * 0.12 * cooling
           const fx = (dx / dist) * force
-          const fy = (dy / dist) * force * 0.5 // Allow more vertical movement
+          const fy = (dy / dist) * force * 0.6
           const fz = (dz / dist) * force
 
           posA.x -= fx
@@ -195,7 +195,7 @@ function calculatePositions(nodes, edges) {
       })
     })
 
-    // Gentle attraction along edges
+    // Attraction along edges: only pull when quite far (keeps graph spread)
     edges.forEach(edge => {
       const posA = positions[edge.source]
       const posB = positions[edge.target]
@@ -206,11 +206,10 @@ function calculatePositions(nodes, edges) {
       const dz = posB.z - posA.z
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
 
-      // Softer attraction
-      if (dist > 25) {
-        const force = (dist - 25) * 0.008 * cooling
+      if (dist > 42) {
+        const force = (dist - 42) * 0.006 * cooling
         const fx = (dx / dist) * force
-        const fy = (dy / dist) * force * 0.4
+        const fy = (dy / dist) * force * 0.45
         const fz = (dz / dist) * force
 
         posA.x += fx
@@ -222,12 +221,12 @@ function calculatePositions(nodes, edges) {
       }
     })
 
-    // Gentle pull toward center to keep cluster cohesive
+    // Pull toward center only when very far (allow bigger overall spread)
     nodes.forEach(node => {
       const pos = positions[node.id]
       const dist = Math.sqrt(pos.x * pos.x + pos.z * pos.z)
-      if (dist > 60) {
-        const pullForce = (dist - 60) * 0.01 * cooling
+      if (dist > 105) {
+        const pullForce = (dist - 105) * 0.012 * cooling
         pos.x -= (pos.x / dist) * pullForce
         pos.z -= (pos.z / dist) * pullForce
       }
