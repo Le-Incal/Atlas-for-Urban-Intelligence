@@ -118,8 +118,6 @@ function TrackpadControls({ controlsRef }) {
 
   const handleWheel = useCallback((event) => {
     if (!controlsRef.current) return
-    // Skip when orbit controls disabled (cluster/node drag in progress) - prevents zoom/rotate fighting with drag
-    if (!controlsRef.current.enabled) return
     event.preventDefault()
 
     const rotateSpeed = 0.005
