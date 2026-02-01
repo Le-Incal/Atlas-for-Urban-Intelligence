@@ -424,10 +424,12 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     if (materialRef.current) {
       emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
       materialRef.current.emissiveIntensity = emissiveRef.current
-      materialRef.current.opacity = 0.88 + 0.12 * focusAlpha
+      materialRef.current.transparent = focusAlpha < 1
+      materialRef.current.opacity = focusAlpha < 1 ? 0.4 + 0.6 * focusAlpha : 1
     }
     if (outlineMaterialRef.current) {
-      outlineMaterialRef.current.opacity = 0.85 * focusAlpha
+      outlineMaterialRef.current.transparent = focusAlpha < 1
+      outlineMaterialRef.current.opacity = focusAlpha < 1 ? focusAlpha : 1
     }
   })
 
@@ -537,14 +539,15 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
 
   return (
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
-      {/* Dark outline sphere (slightly larger, behind main sphere) */}
-      <mesh scale={1.06}>
+      {/* Dark outline sphere - opaque when focused for sharp edges */}
+      <mesh scale={1.04}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
           transparent
-          opacity={0.85}
+          opacity={1}
+          depthWrite={true}
         />
       </mesh>
 
@@ -584,12 +587,13 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}
-          roughness={0.75}
+          roughness={0.5}
           metalness={0}
           emissive={emissiveColor}
           emissiveIntensity={0}
-          transparent
-          opacity={0.88 + 0.12 * focusAlpha}
+          transparent={focusAlpha < 1}
+          opacity={focusAlpha < 1 ? 0.5 + 0.5 * focusAlpha : 1}
+          depthWrite={true}
         />
       </mesh>
 
@@ -665,13 +669,12 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   const isConnectedToSelected = selectedNode &&
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
-  // Determine opacity and base radius (tube will taper/swell from this)
+  // Determine opacity (fading only, no thickness change)
   let opacity = 0.52
-  let baseRadius = 0.07
+  const baseRadius = 0.07
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
-    baseRadius = 0.18
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.28
   }

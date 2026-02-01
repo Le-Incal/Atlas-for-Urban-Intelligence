@@ -59,24 +59,24 @@ function CursorTooltip() {
         top: mousePosition.y + 12,
       }}
     >
-      <div className="max-w-xs px-3 py-2 rounded-lg bg-black text-white shadow-lg">
+      <div className="max-w-[14rem] px-2 py-1.5 rounded-md bg-black text-white shadow-lg">
         {hoveredNode ? (
           <>
-            <div className="text-sm font-semibold mb-1">
+            <div className="text-xs font-semibold mb-0.5">
               {hoveredNode.label}
             </div>
             {hoveredNode.description && (
-              <div className="text-xs text-gray-300 leading-relaxed">
+              <div className="text-[10px] text-gray-300 leading-snug">
                 {hoveredNode.description}
               </div>
             )}
           </>
         ) : hoveredCluster ? (
           <>
-            <div className="text-sm font-semibold mb-1">
+            <div className="text-xs font-semibold mb-0.5">
               {hoveredCluster.key}
             </div>
-            <div className="text-xs text-gray-300">
+            <div className="text-[10px] text-gray-300">
               {hoveredCluster.count} nodes
             </div>
           </>
