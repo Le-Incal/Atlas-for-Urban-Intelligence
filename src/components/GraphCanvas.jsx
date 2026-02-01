@@ -429,7 +429,8 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
       materialRef.current.opacity = Math.min(0.9, 0.72 + 0.25 * focusAlpha)
     }
     if (outlineMaterialRef.current) {
-      outlineMaterialRef.current.opacity = 0.9 * focusAlpha + 0.1
+      outlineMaterialRef.current.transparent = true
+      outlineMaterialRef.current.opacity = Math.min(0.85, 0.65 + 0.25 * focusAlpha)
     }
   })
 
@@ -539,15 +540,15 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
 
   return (
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
-      {/* Dark outline sphere - subtle 3D definition */}
+      {/* Dark outline sphere - subtle 3D definition, transparent so nodes don't merge */}
       <mesh scale={1.04}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
           transparent
-          opacity={0.9 * focusAlpha + 0.1}
-          depthWrite={true}
+          opacity={Math.min(0.85, 0.65 + 0.25 * focusAlpha)}
+          depthWrite={false}
         />
       </mesh>
 
