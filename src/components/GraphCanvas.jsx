@@ -426,7 +426,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
       materialRef.current.emissiveIntensity = emissiveRef.current
       // Subtle translucency in resting state; stronger fade when dimmed
       // focusAlpha: 1 (resting/connected) -> ~0.84, 0.16 (unconnected) -> ~0.32
-      const baseOpacity = 0.22 + 0.62 * focusAlpha
+      const baseOpacity = 0.18 + 0.66 * focusAlpha
       const hoverBoost = (isHovered || isSelected) ? 0.06 : 0
       materialRef.current.transparent = true
       materialRef.current.depthWrite = false
@@ -436,7 +436,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
       // Keep outline as a *hint* of shape, not an opaque shell
       outlineMaterialRef.current.transparent = true
       outlineMaterialRef.current.depthWrite = false
-      outlineMaterialRef.current.opacity = 0.06 + 0.12 * focusAlpha
+      outlineMaterialRef.current.opacity = 0.03 + 0.09 * focusAlpha
     }
   })
 
@@ -680,16 +680,26 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
     (edge.source === selectedNode.id || edge.target === selectedNode.id)
 
   // Determine opacity (fading only, no thickness change)
-  let opacity = 0.52
+  // Resting state: slightly lighter edges
+  let opacity = 0.42
   const baseRadius = 0.07
 
   if (isTypeActive || isConnectedToSelected) {
     opacity = 1
   } else if (activeEdgeType || selectedNode) {
-    opacity = 0.28
+    // When focusing/filtering, fade non-relevant edges further
+    opacity = 0.22
   }
-  // Apply focus fade consistently: fade back but never vanish completely
-  opacity = Math.max(0.06, opacity * focusAlpha)
+  // Apply focus fade; allow deeper fade on node selection
+  const minOpacity = selectedNode ? 0.03 : 0.05
+  opacity = Math.max(minOpacity, opacity * focusAlpha)
+
+  // Color: lighter at rest; slightly darker when selected+connected
+  const edgeColor = !selectedNode
+    ? '#9a9a9a'
+    : (isTypeActive || isConnectedToSelected)
+      ? '#6f6f6f'
+      : '#b0b0b0'
 
   // Organic curve: stable per edge, slight irregularity + asymmetry
   const curve = useMemo(() => {
@@ -769,7 +779,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
       {/* Base neural pathway tube */}
       <mesh geometry={tubeGeometry}>
         <meshBasicMaterial
-          color="#808080"
+          color={edgeColor}
           transparent
           opacity={opacity}
           depthWrite={false}
@@ -1209,7 +1219,7 @@ function GraphCanvas() {
             ? 1
             : (focusSet.has(edge.source) && focusSet.has(edge.target))
               ? 0.5
-              : 0.16
+              : 0.12
         )
 
         // Inter-cluster edge bundling: route via cluster \"ports\" so links form bridges
@@ -1263,7 +1273,7 @@ function GraphCanvas() {
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
-        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.16)
+        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.12)
         const inActiveCluster = !activeClusterKey || (clusterKey === activeClusterKey)
         const inFocusSet = focusSet?.has(node.id)
         const expandedForFocus = !!selectedNode && inFocusSet
