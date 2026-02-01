@@ -424,12 +424,10 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     if (materialRef.current) {
       emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
       materialRef.current.emissiveIntensity = emissiveRef.current
-      materialRef.current.transparent = focusAlpha < 1
-      materialRef.current.opacity = focusAlpha < 1 ? 0.4 + 0.6 * focusAlpha : 1
+      materialRef.current.opacity = 0.92 + 0.08 * focusAlpha
     }
     if (outlineMaterialRef.current) {
-      outlineMaterialRef.current.transparent = focusAlpha < 1
-      outlineMaterialRef.current.opacity = focusAlpha < 1 ? focusAlpha : 1
+      outlineMaterialRef.current.opacity = 0.9 * focusAlpha + 0.1
     }
   })
 
@@ -539,14 +537,14 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
 
   return (
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
-      {/* Dark outline sphere - opaque when focused for sharp edges */}
+      {/* Dark outline sphere - subtle 3D definition */}
       <mesh scale={1.04}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
           transparent
-          opacity={1}
+          opacity={0.9 * focusAlpha + 0.1}
           depthWrite={true}
         />
       </mesh>
@@ -587,12 +585,13 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}
-          roughness={0.5}
+          roughness={0.6}
           metalness={0}
           emissive={emissiveColor}
           emissiveIntensity={0}
-          transparent={focusAlpha < 1}
-          opacity={focusAlpha < 1 ? 0.5 + 0.5 * focusAlpha : 1}
+          flatShading={false}
+          transparent
+          opacity={0.92 + 0.08 * focusAlpha}
           depthWrite={true}
         />
       </mesh>
@@ -1173,8 +1172,10 @@ function GraphCanvas() {
           (clusterKeyByNodeId?.[edge.source] === activeClusterKey) &&
           (clusterKeyByNodeId?.[edge.target] === activeClusterKey)
         )
+        const edgeInFocusSet = focusSet && focusSet.has(edge.source) && focusSet.has(edge.target)
+        const expandedForFocus = !!selectedNode && edgeInFocusSet
 
-        let isVisible = inVisibleLayers && inActiveCluster
+        let isVisible = inVisibleLayers && (inActiveCluster || expandedForFocus)
 
         // Progressive disclosure: primary-only by default (unless filtering/focusing)
         if (
@@ -1196,7 +1197,7 @@ function GraphCanvas() {
             ? 1
             : (focusSet.has(edge.source) && focusSet.has(edge.target))
               ? 0.5
-              : 0.15
+              : 0.12
         )
 
         // Inter-cluster edge bundling: route via cluster \"ports\" so links form bridges
@@ -1250,9 +1251,11 @@ function GraphCanvas() {
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
-        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.4)
+        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.2)
         const inActiveCluster = !activeClusterKey || (clusterKey === activeClusterKey)
-        const isVisible = visibleLayers[node.layer] && inActiveCluster
+        const inFocusSet = focusSet?.has(node.id)
+        const expandedForFocus = !!selectedNode && inFocusSet
+        const isVisible = visibleLayers[node.layer] && (inActiveCluster || expandedForFocus)
 
         return (
           <Node

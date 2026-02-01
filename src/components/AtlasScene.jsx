@@ -212,14 +212,14 @@ function SceneContent({ controlsRef }) {
         far={2000}
       />
 
-      {/* Depth fog - extended range for larger model visibility */}
-      <fog attach="fog" args={['#ffffff', 400, 1600]} />
+      {/* Depth fog - softer falloff to reduce distant fuzz */}
+      <fog attach="fog" args={['#ffffff', 500, 1800]} />
 
-      {/* Lighting - top right to bottom left */}
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[100, 50, 80]} intensity={1.2} color="#ffffff" />
-      <directionalLight position={[-60, -30, -40]} intensity={0.6} color="#ffffff" />
-      <directionalLight position={[-40, 20, 60]} intensity={0.4} color="#ffffff" />
+      {/* Lighting - stronger directional for 3D sphere depth */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[120, 80, 100]} intensity={1.4} color="#ffffff" castShadow={false} />
+      <directionalLight position={[-80, 40, -60]} intensity={0.8} color="#ffffff" />
+      <directionalLight position={[-40, 20, 60]} intensity={0.5} color="#ffffff" />
 
       {/* Controls - click+drag to rotate, right-click to pan */}
       <OrbitControls

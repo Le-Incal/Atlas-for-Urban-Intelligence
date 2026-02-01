@@ -10,7 +10,7 @@ export default defineConfig({
   },
   preview: {
     host: true,
-    allowedHosts: ['atlas-for-urban-intelligence-production.up.railway.app']
+    allowedHosts: ['atlas-for-urban-intelligence-production.up.railway.app', 'urbanintelligence.app', 'www.urbanintelligence.app']
   },
   build: {
     outDir: 'dist',
