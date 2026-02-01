@@ -37,15 +37,15 @@ function LandingPage() {
         </motion.h1>
 
         {/* Description */}
-        <motion.p 
-          className="text-lg md:text-xl text-gray-500 font-light leading-relaxed mb-12 max-w-xl mx-auto"
+        <motion.p
+          className="text-base md:text-lg text-gray-500 font-light leading-relaxed mb-12 max-w-xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          An interactive exploration of the epistemic architecture that binds 
-          physical matter to digital intelligence, regulatory constraint to 
-          social memory, and human intent to synthetic{"\u00A0"}agency.
+          An interactive exploration of the epistemic architecture that<br />
+          binds physical matter to digital intelligence, regulatory<br />
+          constraint to social memory, and human intent to synthetic{"\u00A0"}agency.
         </motion.p>
 
         {/* Enter Button */}
@@ -119,7 +119,7 @@ function LandingPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
         >
-          55 nodes · 72 edges · 7 layers
+          235 nodes · 557 edges · 7 layers
         </motion.p>
       </motion.div>
     </div>
