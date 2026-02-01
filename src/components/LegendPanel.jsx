@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, startTransition } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useGraphStore from '../stores/graphStore'
 
@@ -55,7 +55,7 @@ function LegendPanel() {
           {LAYERS.map((layer) => (
             <button
               key={layer.id}
-              onClick={() => toggleLayer(layer.id)}
+              onClick={() => startTransition(() => toggleLayer(layer.id))}
               className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg
                          transition-all duration-200 text-left
                          ${visibleLayers[layer.id]
@@ -215,14 +215,14 @@ function LegendPanel() {
 
         {/* Reset filters link */}
         <button
-          onClick={() => {
+          onClick={() => startTransition(() => {
             setActiveEdgeType(null)
             clearActiveClusterKey()
             clearNodeOverrides()
             LAYERS.forEach(l => {
               if (!visibleLayers[l.id]) toggleLayer(l.id)
             })
-          }}
+          })}
           className="w-full mt-2 py-1 text-[10px] text-gray-400 hover:text-gray-600
                      transition-colors duration-200"
         >

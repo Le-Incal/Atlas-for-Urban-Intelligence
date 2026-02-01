@@ -776,6 +776,8 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const dragPlaneRef = useRef(new THREE.Plane())
   const lastMouseRef = useRef({ x: 0, y: 0 })
   const raycasterRef = useRef(new THREE.Raycaster())
+  const pendingDeltaRef = useRef(null)
+  const rafIdRef = useRef(null)
 
   const handlePointerDown = useCallback((e) => {
     if (e.button !== 0) return
@@ -836,7 +838,15 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
         }
         if (Math.abs(delta.x) > 0.3 || Math.abs(delta.y) > 0.3 || Math.abs(delta.z) > 0.3) {
           didDragRef.current = true
-          updateClusterOffset(clusterKey, delta)
+          const prev = pendingDeltaRef.current
+          pendingDeltaRef.current = prev ? { x: prev.x + delta.x, y: prev.y + delta.y, z: prev.z + delta.z } : delta
+          if (rafIdRef.current == null) {
+            rafIdRef.current = requestAnimationFrame(() => {
+              rafIdRef.current = null
+              const d = pendingDeltaRef.current
+              if (d) { pendingDeltaRef.current = null; updateClusterOffset(clusterKey, d) }
+            })
+          }
           lastMouseRef.current = { x: ev.clientX, y: ev.clientY }
         }
       }
@@ -846,6 +856,9 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
       if (pointerIdRef.current !== null && ev.pointerId !== pointerIdRef.current) return
       draggingRef.current = false
       pointerIdRef.current = null
+      if (rafIdRef.current != null) { cancelAnimationFrame(rafIdRef.current); rafIdRef.current = null }
+      const d = pendingDeltaRef.current
+      if (d) { pendingDeltaRef.current = null; updateClusterOffset(clusterKey, d) }
 
       gl.domElement.style.cursor = 'default'
 
@@ -885,7 +898,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
     }
   }, [gl, setHoveredCluster])
 
-  const tubeRadius = Math.min(radius * 0.08, 6)
+  const tubeRadius = Math.min(radius * 0.05, 3.5)
   const majorRadius = Math.max(radius - tubeRadius - 2, 5)
 
   return (
@@ -905,9 +918,9 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
       >
         <torusGeometry args={[majorRadius, tubeRadius, 16, 48]} />
         <meshBasicMaterial
-          color={isHovered ? '#a0c0e0' : '#808080'}
+          color={isHovered ? '#d8e8f0' : '#c8c8c8'}
           transparent
-          opacity={isHovered ? 0.4 : 0.06}
+          opacity={isHovered ? 0.35 : 0.05}
           depthWrite={false}
           depthTest={false}
           side={THREE.DoubleSide}
