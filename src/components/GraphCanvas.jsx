@@ -539,7 +539,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
       <mesh scale={1.06}>
-        <sphereGeometry args={[size, 20, 20]} />
+        <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
@@ -551,7 +551,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
       {/* Glow sphere - only when hovered/selected; low opacity to avoid fuzzy bloom */}
       {(isHovered || isSelected) && (
         <mesh scale={1.2}>
-          <sphereGeometry args={[size, 16, 16]} />
+          <sphereGeometry args={[size, 24, 24]} />
           <meshBasicMaterial
             color={emissiveColor}
             transparent
@@ -580,7 +580,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         onPointerLeave={handlePointerLeave}
         onPointerCancel={handlePointerLeave}
       >
-        <sphereGeometry args={[size, 24, 24]} />
+        <sphereGeometry args={[size, 36, 36]} />
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}

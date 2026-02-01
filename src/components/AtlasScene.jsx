@@ -320,9 +320,11 @@ function AtlasScene() {
             gl={{
               antialias: true,
               alpha: true,
-              powerPreference: 'high-performance'
+              powerPreference: 'high-performance',
+              stencil: false,
+              depth: true
             }}
-            dpr={[1, 1.5]}
+            dpr={[1, 2]}
             style={{ background: '#FFFFFF', width: '100%', height: '100%', display: 'block' }}
             onPointerMissed={() => {
               setSelectedNode(null)
