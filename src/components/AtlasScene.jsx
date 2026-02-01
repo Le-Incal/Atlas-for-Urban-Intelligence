@@ -226,7 +226,7 @@ function SceneContent({ controlsRef }) {
         ref={controlsRef}
         makeDefault
         enablePan={true}
-        enableZoom={false}
+        enableZoom={true}
         enableRotate={true}
         minDistance={40}
         maxDistance={1200}
