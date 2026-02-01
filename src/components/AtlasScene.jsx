@@ -210,8 +210,8 @@ function SceneContent({ controlsRef }) {
         far={2000}
       />
 
-      {/* Subtle depth fog to reduce distant clutter */}
-      <fog attach="fog" args={['#ffffff', 220, 950]} />
+      {/* Depth fog - extended range for larger model visibility */}
+      <fog attach="fog" args={['#ffffff', 400, 1600]} />
 
       {/* Lighting - top right to bottom left */}
       <ambientLight intensity={0.9} />
@@ -309,7 +309,7 @@ function AtlasScene() {
               alpha: true,
               powerPreference: 'high-performance'
             }}
-            dpr={[1, 2]}
+            dpr={[1, 1.5]}
             style={{ background: '#FFFFFF', width: '100%', height: '100%', display: 'block' }}
             onPointerMissed={() => {
               setSelectedNode(null)

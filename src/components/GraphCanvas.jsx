@@ -377,54 +377,53 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     currentPosRef.current = finalPosition
   }, [finalPosition])
 
-  const baseColor = useMemo(() => new THREE.Color(LAYER_COLORS[node.layer]), [node.layer])
   // Primary nodes (scale >= 1.0) are darker, secondary (scale < 1.0) are much lighter
   const isPrimary = (node.scale ?? 1.0) >= 1.0
+  const layerColor = LAYER_COLORS[node.layer]
+
+  // Calculate display color - use lerp for guaranteed visible difference
   const displayColor = useMemo(() => {
-    const c = baseColor.clone()
+    const base = new THREE.Color(layerColor)
+    const BLACK = new THREE.Color('#000000')
+
     if (isPrimary) {
-      // Darken and saturate primary nodes significantly
-      c.offsetHSL(0, 0.15, -0.25)
+      // Primary: darken by lerping 25% toward black - makes them richer/deeper
+      base.lerp(BLACK, 0.25)
     } else {
-      // Lighten and desaturate secondary nodes significantly
-      c.offsetHSL(0, -0.3, 0.35)
+      // Secondary: lighten by lerping 45% toward white - clearly washed out
+      base.lerp(WHITE, 0.45)
     }
     // Apply focus alpha
-    return c.lerp(WHITE, (1 - focusAlpha) * 0.5)
-  }, [baseColor, focusAlpha, isPrimary])
+    base.lerp(WHITE, (1 - focusAlpha) * 0.3)
+    return base
+  }, [layerColor, isPrimary, focusAlpha])
 
-  // Create emissive color (slightly brighter version of base)
+  // Create emissive color (slightly brighter version of layer color)
   const emissiveColor = useMemo(() => {
-    const c = baseColor.clone()
+    const c = new THREE.Color(layerColor)
     c.offsetHSL(0, 0.1, 0.2)
     return c
-  }, [baseColor])
+  }, [layerColor])
 
-  // Scale and glow based on state
+  // Scale and glow - use refs to avoid setState every frame (was causing sparkly/fuzzy + slowness)
   const targetScale = isSelected ? 1.3 : isHovered ? 1.15 : 1
   const targetEmissive = isHovered || isSelected ? 0.2 : 0
-  const [currentScale, setCurrentScale] = useState(1)
-  const [currentEmissive, setCurrentEmissive] = useState(0)
+  const scaleRef = useRef(1)
+  const emissiveRef = useRef(0)
 
   useFrame(() => {
-    // Update position imperatively every frame
     if (groupRef.current) {
       groupRef.current.position.x = finalPosition.x
       groupRef.current.position.y = finalPosition.y
       groupRef.current.position.z = finalPosition.z
     }
     if (meshRef.current) {
-      // Smooth scale transition
-      const newScale = THREE.MathUtils.lerp(currentScale, targetScale, 0.1)
-      setCurrentScale(newScale)
-      meshRef.current.scale.setScalar(newScale)
+      scaleRef.current = THREE.MathUtils.lerp(scaleRef.current, targetScale, 0.25)
+      meshRef.current.scale.setScalar(scaleRef.current)
     }
     if (materialRef.current) {
-      // Smooth emissive (glow) transition
-      const newEmissive = THREE.MathUtils.lerp(currentEmissive, targetEmissive, 0.1)
-      setCurrentEmissive(newEmissive)
-      materialRef.current.emissiveIntensity = newEmissive
-      // Focus mode: soften non-neighborhood nodes via opacity (higher base for legibility)
+      emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
+      materialRef.current.emissiveIntensity = emissiveRef.current
       materialRef.current.opacity = 0.88 + 0.12 * focusAlpha
     }
     if (outlineMaterialRef.current) {
@@ -527,12 +526,12 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     window.addEventListener('pointercancel', onUp)
   }
 
-  // Create a darker version of the base color for the outline
+  // Create a darker version of the layer color for the outline
   const outlineColor = useMemo(() => {
-    const c = baseColor.clone()
+    const c = new THREE.Color(layerColor)
     c.offsetHSL(0, 0, -0.15) // Darken by 15%
     return c
-  }, [baseColor])
+  }, [layerColor])
 
   if (!isVisible) return null
 
@@ -540,7 +539,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
       {/* Dark outline sphere (slightly larger, behind main sphere) */}
       <mesh scale={1.06}>
-        <sphereGeometry args={[size, 32, 32]} />
+        <sphereGeometry args={[size, 20, 20]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
@@ -549,15 +548,16 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         />
       </mesh>
 
-      {/* Glow sphere (larger, semi-transparent) */}
+      {/* Glow sphere - only when hovered/selected; low opacity to avoid fuzzy bloom */}
       {(isHovered || isSelected) && (
-        <mesh scale={1.25}>
-          <sphereGeometry args={[size, 32, 32]} />
+        <mesh scale={1.2}>
+          <sphereGeometry args={[size, 16, 16]} />
           <meshBasicMaterial
             color={emissiveColor}
             transparent
-            opacity={0.08}
+            opacity={0.06}
             depthWrite={false}
+            depthTest={true}
           />
         </mesh>
       )}
@@ -580,7 +580,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         onPointerLeave={handlePointerLeave}
         onPointerCancel={handlePointerLeave}
       >
-        <sphereGeometry args={[size, 48, 48]} />
+        <sphereGeometry args={[size, 24, 24]} />
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}
