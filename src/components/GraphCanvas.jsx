@@ -424,13 +424,19 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     if (materialRef.current) {
       emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
       materialRef.current.emissiveIntensity = emissiveRef.current
-      // Always some transparency so overlapping nodes don't merge (cap at 0.9)
+      // Subtle translucency in resting state; stronger fade when dimmed
+      // focusAlpha: 1 (resting/connected) -> ~0.84, 0.16 (unconnected) -> ~0.32
+      const baseOpacity = 0.22 + 0.62 * focusAlpha
+      const hoverBoost = (isHovered || isSelected) ? 0.06 : 0
       materialRef.current.transparent = true
-      materialRef.current.opacity = Math.min(0.9, 0.72 + 0.25 * focusAlpha)
+      materialRef.current.depthWrite = false
+      materialRef.current.opacity = Math.min(0.92, baseOpacity + hoverBoost)
     }
     if (outlineMaterialRef.current) {
+      // Keep outline as a *hint* of shape, not an opaque shell
       outlineMaterialRef.current.transparent = true
-      outlineMaterialRef.current.opacity = Math.min(0.85, 0.65 + 0.25 * focusAlpha)
+      outlineMaterialRef.current.depthWrite = false
+      outlineMaterialRef.current.opacity = 0.06 + 0.12 * focusAlpha
     }
   })
 
@@ -540,14 +546,14 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
 
   return (
     <group ref={groupRef} position={[finalPosition.x, finalPosition.y, finalPosition.z]}>
-      {/* Dark outline sphere - subtle 3D definition, transparent so nodes don't merge */}
-      <mesh scale={1.04}>
+      {/* Dark outline sphere - subtle 3D definition */}
+      <mesh scale={1.03}>
         <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial
           ref={outlineMaterialRef}
           color={outlineColor}
           transparent
-          opacity={Math.min(0.85, 0.65 + 0.25 * focusAlpha)}
+          opacity={0.06 + 0.12 * focusAlpha}
           depthWrite={false}
         />
       </mesh>
@@ -588,14 +594,16 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}
-          roughness={0.35}
+          // Matte (less shine), rely on lighting for form
+          roughness={0.65}
           metalness={0}
           emissive={emissiveColor}
           emissiveIntensity={0}
           flatShading={false}
           transparent
-          opacity={Math.min(0.9, 0.72 + 0.25 * focusAlpha)}
+          opacity={Math.min(0.92, 0.22 + 0.62 * focusAlpha + (isHovered || isSelected ? 0.06 : 0))}
           depthWrite={false}
+          depthTest={true}
         />
       </mesh>
 
@@ -680,7 +688,8 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   } else if (activeEdgeType || selectedNode) {
     opacity = 0.28
   }
-  opacity *= focusAlpha
+  // Apply focus fade consistently: fade back but never vanish completely
+  opacity = Math.max(0.06, opacity * focusAlpha)
 
   // Organic curve: stable per edge, slight irregularity + asymmetry
   const curve = useMemo(() => {
@@ -1200,7 +1209,7 @@ function GraphCanvas() {
             ? 1
             : (focusSet.has(edge.source) && focusSet.has(edge.target))
               ? 0.5
-              : 0.12
+              : 0.16
         )
 
         // Inter-cluster edge bundling: route via cluster \"ports\" so links form bridges
@@ -1254,7 +1263,7 @@ function GraphCanvas() {
         const baseSize = 1.5 + Math.min(connections * 0.3, 3)
         const size = baseSize * (node.scale ?? 1.0)
 
-        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.2)
+        const nodeFocusAlpha = !focusSet ? 1 : (focusSet.has(node.id) ? 1 : 0.16)
         const inActiveCluster = !activeClusterKey || (clusterKey === activeClusterKey)
         const inFocusSet = focusSet?.has(node.id)
         const expandedForFocus = !!selectedNode && inFocusSet
