@@ -756,7 +756,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   )
 }
 
-// Draggable Cluster Hull - grab and drag to move all nodes in the cluster (no click-to-filter)
+// Draggable Cluster Hull - halo ring at edge is grab area; gray sphere is backdrop only
 function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
@@ -764,7 +764,12 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const setHoveredCluster = useGraphStore((state) => state.setHoveredCluster)
   const setMousePosition = useGraphStore((state) => state.setMousePosition)
 
+  const backdropRef = useRef()
   const [isHovered, setIsHovered] = useState(false)
+
+  useEffect(() => {
+    if (backdropRef.current) backdropRef.current.raycast = () => {}
+  }, [])
   const draggingRef = useRef(false)
   const didDragRef = useRef(false)
   const pointerIdRef = useRef(null)
@@ -880,27 +885,33 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
     }
   }, [gl, setHoveredCluster])
 
+  const tubeRadius = Math.min(radius * 0.08, 6)
+  const majorRadius = Math.max(radius - tubeRadius - 2, 5)
+
   return (
     <group position={[center.x, center.y, center.z]}>
-      {/* Soft hull hint */}
-      <mesh>
+      {/* Gray backdrop - never blocks raycasting; cluster grows/shrinks with node positions */}
+      <mesh ref={backdropRef}>
         <sphereGeometry args={[radius, 18, 18]} />
-        <meshBasicMaterial
-          color="#808080"
-          transparent
-          opacity={(isHovered ? 0.08 : 0.04) * alpha}
-          depthWrite={false}
-        />
+        <meshBasicMaterial color="#808080" transparent opacity={0.03 * alpha} depthWrite={false} depthTest={false} />
       </mesh>
-      {/* Draggable target - clusters are for grouping and moving only (no click-to-filter) */}
+      {/* Halo ring at cluster edge - grab area; illuminates on hover, cursor → grab */}
       <mesh
+        rotation={[Math.PI / 2, 0, 0]}
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
       >
-        <sphereGeometry args={[radius + 6, 12, 12]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        <torusGeometry args={[majorRadius, tubeRadius, 16, 48]} />
+        <meshBasicMaterial
+          color={isHovered ? '#a0c0e0' : '#808080'}
+          transparent
+          opacity={isHovered ? 0.4 : 0.06}
+          depthWrite={false}
+          depthTest={false}
+          side={THREE.DoubleSide}
+        />
       </mesh>
     </group>
   )

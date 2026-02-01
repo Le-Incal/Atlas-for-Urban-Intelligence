@@ -804,7 +804,7 @@ function Edge({ edge, sourcePos, targetPos, isVisible, sourceNode, focusAlpha = 
   )
 }
 
-// Draggable Cluster Hull - grab and drag to move all nodes in the cluster (no click-to-filter)
+// Draggable Cluster Hull - halo ring at edge is grab area; gray sphere is backdrop only
 function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const { camera, gl } = useThree()
   const updateClusterOffset = useGraphStore((state) => state.updateClusterOffset)
@@ -812,6 +812,7 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const setHoveredCluster = useGraphStore((state) => state.setHoveredCluster)
   const setMousePosition = useGraphStore((state) => state.setMousePosition)
 
+  const backdropRef = useRef()
   const [isHovered, setIsHovered] = useState(false)
   const draggingRef = useRef(false)
   const didDragRef = useRef(false)
@@ -819,6 +820,13 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
   const dragPlaneRef = useRef(new THREE.Plane())
   const lastMouseRef = useRef({ x: 0, y: 0 })
   const raycasterRef = useRef(new THREE.Raycaster())
+
+  // Backdrop sphere must not block raycasting - nodes need to receive pointer events
+  useEffect(() => {
+    if (backdropRef.current) {
+      backdropRef.current.raycast = () => {}
+    }
+  }, [])
 
   const handlePointerDown = useCallback((e) => {
     if (e.button !== 0) return
@@ -928,29 +936,41 @@ function DraggableClusterHull({ clusterKey, center, radius, count, alpha }) {
     }
   }, [gl, setHoveredCluster])
 
+  // Halo ring: torus just inside cluster edge; tube thickness for grabbable width
+  const tubeRadius = Math.min(radius * 0.08, 6)
+  const majorRadius = Math.max(radius - tubeRadius - 2, 5)
+
   return (
     <group position={[center.x, center.y, center.z]} renderOrder={-1}>
-      {/* Soft hull hint - renders behind nodes */}
-      <mesh renderOrder={-1}>
+      {/* Gray backdrop - never blocks raycasting; cluster grows/shrinks with node positions */}
+      <mesh ref={backdropRef} renderOrder={-1}>
         <sphereGeometry args={[radius, 18, 18]} />
         <meshBasicMaterial
           color="#808080"
           transparent
-          opacity={(isHovered ? 0.06 : 0.03) * alpha}
+          opacity={0.03 * alpha}
           depthWrite={false}
           depthTest={false}
         />
       </mesh>
-      {/* Draggable target - clusters are for grouping and moving only (no click-to-filter) */}
+      {/* Halo ring at cluster edge - grab area; illuminates on hover, cursor → grab */}
       <mesh
         renderOrder={-1}
+        rotation={[Math.PI / 2, 0, 0]}
         onPointerDown={handlePointerDown}
         onPointerOver={handlePointerOver}
         onPointerMove={handlePointerMove}
         onPointerOut={handlePointerOut}
       >
-        <sphereGeometry args={[radius, 12, 12]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} depthTest={false} />
+        <torusGeometry args={[majorRadius, tubeRadius, 16, 48]} />
+        <meshBasicMaterial
+          color={isHovered ? '#a0c0e0' : '#808080'}
+          transparent
+          opacity={isHovered ? 0.4 : 0.06}
+          depthWrite={false}
+          depthTest={false}
+          side={THREE.DoubleSide}
+        />
       </mesh>
     </group>
   )
@@ -1036,7 +1056,6 @@ function GraphCanvas() {
     const set = new Set([selectedNode.id])
     const nbrs = neighborsById[selectedNode.id]
     if (nbrs) nbrs.forEach((id) => set.add(id))
-    console.log('FocusSet created:', { selectedId: selectedNode.id, neighborCount: nbrs?.size || 0, totalFocusSize: set.size })
     return set
   }, [selectedNode?.id, neighborsById])
 
