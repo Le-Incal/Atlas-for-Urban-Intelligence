@@ -269,16 +269,30 @@ function AtlasScene() {
   }, [setControlsRef])
 
   // Load persisted layout: prefer user's localStorage, else server default
+  const clearClusterOffsets = useGraphStore((state) => state.clearClusterOffsets)
   useEffect(() => {
     const STORAGE_KEY = 'atlas-layout'
+    const parseAndApply = (data) => {
+      let positions = null
+      if (data && typeof data === 'object') {
+        if (data.positions && typeof data.positions === 'object') {
+          positions = data.positions
+        } else if (!Array.isArray(data) && !data.version) {
+          positions = data
+        }
+      }
+      if (positions && typeof positions === 'object') {
+        clearClusterOffsets()
+        setNodeOverrides(positions)
+        return true
+      }
+      return false
+    }
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) {
-        const positions = JSON.parse(raw)
-        if (positions && typeof positions === 'object') {
-          setNodeOverrides(positions)
-          return
-        }
+        const parsed = JSON.parse(raw)
+        if (parseAndApply(parsed)) return
       }
     } catch {
       // ignore invalid or missing localStorage
@@ -289,16 +303,13 @@ function AtlasScene() {
         const res = await fetch('/api/layout')
         if (!res.ok) return
         const data = await res.json()
-        const positions = data?.positions
-        if (!cancelled && positions && typeof positions === 'object') {
-          setNodeOverrides(positions)
-        }
+        if (!cancelled) parseAndApply(data)
       } catch {
         // ignore (no backend in dev or first run)
       }
     })()
     return () => { cancelled = true }
-  }, [setNodeOverrides])
+  }, [setNodeOverrides, clearClusterOffsets])
 
   return (
     <div className="absolute inset-0 w-full h-full min-h-screen relative bg-white">

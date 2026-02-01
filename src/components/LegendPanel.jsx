@@ -36,6 +36,7 @@ function LegendPanel() {
   const toggleAutoRotate = useGraphStore((state) => state.toggleAutoRotate)
 
   const [saveError, setSaveError] = useState(null)
+  const [saveSuccess, setSaveSuccess] = useState(false)
   const STORAGE_KEY = 'atlas-layout'
 
   return (
@@ -191,12 +192,20 @@ function LegendPanel() {
           <button
             onClick={() => {
               setSaveError(null)
+              setSaveSuccess(false)
               if (!currentLayoutPositions) {
                 setSaveError('Layout not ready yet.')
                 return
               }
               try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(currentLayoutPositions))
+                const payload = {
+                  version: 2,
+                  savedAt: new Date().toISOString(),
+                  positions: currentLayoutPositions
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+                setSaveSuccess(true)
+                setTimeout(() => setSaveSuccess(false), 2000)
               } catch (e) {
                 setSaveError(e?.message || 'Save failed.')
               }
@@ -210,6 +219,11 @@ function LegendPanel() {
         {saveError && (
           <p className="mt-1 text-[9px] text-red-600 bg-red-50 border border-red-100 rounded px-2 py-1">
             {saveError}
+          </p>
+        )}
+        {saveSuccess && (
+          <p className="mt-1 text-[9px] text-green-600 bg-green-50 border border-green-100 rounded px-2 py-1">
+            Saved to this browser
           </p>
         )}
 
