@@ -45,7 +45,7 @@ function LandingPage() {
         >
           An interactive exploration of the epistemic architecture that binds 
           physical matter to digital intelligence, regulatory constraint to 
-          social memory, and human intent to synthetic agency.
+          social memory, and human intent to synthetic{' \u00A0'}agency.
         </motion.p>
 
         {/* Enter Button */}
