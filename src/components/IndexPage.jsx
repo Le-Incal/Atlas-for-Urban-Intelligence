@@ -192,9 +192,23 @@ function NodeRow({ node, edges, isExpanded, onToggle }) {
   const inTypes = [...new Set(incomingEdges.map(e => e.edgeType))].sort()
   const outTypes = [...new Set(outgoingEdges.map(e => e.edgeType))].sort()
 
+  // Primary nodes (scale >= 1.0) get stronger styling
+  const isPrimary = (node.scale ?? 1.0) >= 1.0
+
+  // Darken color for primary nodes
+  const nodeColor = LAYER_COLORS[node.layer]
+  const dotStyle = isPrimary
+    ? { backgroundColor: nodeColor, boxShadow: `0 0 0 2px ${nodeColor}40` }
+    : { backgroundColor: nodeColor, opacity: 0.6 }
+
   return (
     <div
-      className="bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100 transition-colors"
+      className={`rounded-lg p-3 cursor-pointer transition-colors ${
+        isPrimary
+          ? 'bg-gray-100 hover:bg-gray-150 border-l-2'
+          : 'bg-gray-50 hover:bg-gray-100 ml-2'
+      }`}
+      style={isPrimary ? { borderLeftColor: nodeColor } : {}}
       onClick={onToggle}
     >
       <div className="flex items-start gap-3">
@@ -208,17 +222,22 @@ function NodeRow({ node, edges, isExpanded, onToggle }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
         <div
-          className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
-          style={{ backgroundColor: LAYER_COLORS[node.layer] }}
+          className={`rounded-full mt-1.5 flex-shrink-0 ${isPrimary ? 'w-2.5 h-2.5' : 'w-2 h-2'}`}
+          style={dotStyle}
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2">
-            <span className="text-sm font-medium text-gray-900">
+            <span className={`text-sm text-gray-900 ${isPrimary ? 'font-semibold' : 'font-medium'}`}>
               {node.label}
             </span>
             <span className="text-[10px] font-mono text-gray-400">
               {node.nodeType}
             </span>
+            {isPrimary && (
+              <span className="text-[9px] font-medium text-gray-500 bg-gray-200 px-1.5 py-0.5 rounded">
+                PRIMARY
+              </span>
+            )}
             <div className="flex gap-4 text-[10px] ml-auto">
               <div>
                 <span className="text-gray-400">In: </span>
