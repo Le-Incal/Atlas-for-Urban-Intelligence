@@ -24,7 +24,7 @@ function LandingPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          From Parcel to Planet · v2.1
+          From Parcel to Planet
         </motion.p>
         
         <motion.h1 
