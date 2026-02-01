@@ -424,7 +424,9 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     if (materialRef.current) {
       emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
       materialRef.current.emissiveIntensity = emissiveRef.current
-      materialRef.current.opacity = 0.88 + 0.12 * focusAlpha
+      // Always some transparency so overlapping nodes don't merge (cap at 0.9)
+      materialRef.current.transparent = true
+      materialRef.current.opacity = Math.min(0.9, 0.72 + 0.25 * focusAlpha)
     }
     if (outlineMaterialRef.current) {
       outlineMaterialRef.current.opacity = 0.9 * focusAlpha + 0.1
@@ -591,8 +593,8 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
           emissiveIntensity={0}
           flatShading={false}
           transparent
-          opacity={0.88 + 0.12 * focusAlpha}
-          depthWrite={true}
+          opacity={Math.min(0.9, 0.72 + 0.25 * focusAlpha)}
+          depthWrite={false}
         />
       </mesh>
 
