@@ -5,6 +5,288 @@ import ViewToggle from './ViewToggle'
 import nodesData from '../data/nodes.json'
 import edgesData from '../data/edges.json'
 
+function normalizeLabel(s) {
+  if (!s) return ''
+  return String(s)
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[()]/g, ' ')
+    .replace(/[-/,:.]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+// Index taxonomy: Layer → Primary → Secondary (display-only grouping)
+const INDEX_TAXONOMY = {
+  0: {
+    title: 'Bio-Physical (The Earth)',
+    subtitle: 'The metabolic foundation and planetary constraints.',
+    groups: [
+      {
+        primary: 'Geology',
+        secondary: [
+          'Earth', 'Ground', 'Bedrock', 'Clay', 'Sand', 'Gravel', 'Marl', 'Land Soils - Geology',
+          'Geological Processes', 'Fault Lines', 'Mines',
+        ],
+      },
+      {
+        primary: 'Topography',
+        secondary: ['Elevation Data', 'Elevations', 'Slope Heat Map', 'Topography'],
+      },
+      {
+        primary: 'Hydrography',
+        secondary: ['Water', 'Water Table', 'Wetlands (NWI)', 'Flood Zone', 'FEMA Flood Hazard Zones'],
+      },
+      {
+        primary: 'Atmosphere & Nature',
+        secondary: [
+          'Air', 'Vegetation', 'Natural Habitats', 'Nature', 'Bio Environmental', 'Biophilic',
+          'Ecological Factors', 'Cosmic Ecology', 'Anthropological',
+        ],
+      },
+      {
+        primary: 'Hazards',
+        secondary: ['FEMA Wildfire Risk', 'FEMA Strong Wind Risk', 'FEMA Earthquake Risk'],
+      },
+      {
+        primary: 'Resources',
+        secondary: ['Raw Materials', 'Resources Endowments', 'Agricultural/Agriculture'],
+      },
+    ],
+  },
+  1: {
+    title: 'Observable Reality (The Hardware)',
+    subtitle: 'The physical assets, built environment, and “Identity Spine”.',
+    groups: [
+      {
+        primary: 'Land & Spatial',
+        secondary: [
+          'Parcels', 'Parcel Framework', 'Parcel ID', 'Estates', 'Site Addresses', 'Site Areas',
+          'Site Conditions', 'Site Restrictions', 'Lot Coverage', 'Boundaries', 'Land Base',
+          'Basemap', 'Orthoimagery', 'Tile/Raster',
+        ],
+      },
+      {
+        primary: 'Built Form',
+        secondary: ['Building Footprints', 'Building Area', 'Building Height', 'Structures', 'Density'],
+      },
+      {
+        primary: 'Asset Types',
+        secondary: [
+          'Housing', 'Single Family Residential', 'Commercial Real Estate', 'Industrial', 'Retail',
+          'Office', 'Mixed Use', 'Hospitality', 'Civic', 'Secure Sites', 'Open Space',
+        ],
+      },
+      {
+        primary: 'Infrastructure (Physical)',
+        secondary: [
+          'Hard Infra', 'Domestic Infrastructure', 'Transmission Lines', 'Waste', 'Parking', 'Streets',
+          'Circulation', 'Right of Way', 'Transportation', 'Transit-Oriented Development',
+          'Smelters', 'Refiners',
+        ],
+      },
+      {
+        primary: 'Supply Chain',
+        secondary: ['Component Manufacturers', 'Assemblers', 'Distributors', 'Shipping'],
+      },
+    ],
+  },
+  2: {
+    title: 'Cyber-Physical (The Nervous System)',
+    subtitle: 'Sensors, actuators, hardware, and embodied AI.',
+    groups: [
+      {
+        primary: 'Hardware',
+        secondary: [
+          'Technical Infrastructure', 'Internet Infrastructure', 'Internet of Things (IoT)', 'Devices',
+          'Chips', 'Hardware', 'Telecommunications', 'Network Infra',
+        ],
+      },
+      {
+        primary: 'Sensing',
+        secondary: ['Sensors', 'Urban Sensing Network', 'Eye-Tracking', 'Live Streams', 'Real-Time Responsiveness'],
+      },
+      {
+        primary: 'Actuation',
+        secondary: ['Urban Actuators', 'Smart Home Technologies', 'Robotization', 'Embodied AI', 'Physical Actors'],
+      },
+    ],
+  },
+  3: {
+    title: 'Logic/Knowledge (The Meaning)',
+    subtitle: 'Computation, data structures, software, and translation of constraints.',
+    groups: [
+      {
+        primary: 'Constraints (Computable)',
+        secondary: ['Setbacks', 'Floor Area Ratio (FAR)', 'Zoning Regulations (as code)', 'Detailed Controls'],
+      },
+      {
+        primary: 'Data Structure',
+        secondary: [
+          'System of Record', 'Master Data', 'Golden Record', 'Meta Data', 'Data Layers',
+          'Real World Data Set', 'Transactional Data', 'Interaction Logs', 'Application Events',
+          'Vector Stores', 'Structured Database', 'Semantic Database', 'Knowledge Graph',
+        ],
+      },
+      {
+        primary: 'Processing',
+        secondary: [
+          'Data Processing', 'Data Mining Layer', 'Data Preparation and Labeling', 'Data Retrieval',
+          'Document Processing', 'Document Generation', 'Speech to Text', 'Natural Language Processing (NLP)',
+        ],
+      },
+      {
+        primary: 'Infrastructure (Soft)',
+        secondary: [
+          'Cloud', 'Cloud Infrastructure', 'Data Lake', 'Data Storage Infra', 'Generator Server',
+          'Back End Resources', 'Middleware', 'API Layer', 'Microservice',
+          'Technical Middle Platform PaaS Layers', 'Compute (Hadoop Cluster Apps)',
+        ],
+      },
+      {
+        primary: 'AI Models (Tools)',
+        secondary: [
+          'Algorithms and Machine Learning', 'LLM', 'Pretraining', 'Model Customization', 'AI Training',
+          'AI Model', 'AI Engine', 'Reinforcement Learning', 'GraphRAG', 'Prompt Engineering', 'Chain of Thought',
+        ],
+      },
+      {
+        primary: 'Logic & Apps',
+        secondary: [
+          'Rules and Logic Processing', 'Business Rules', 'Logical Network Layer', 'Application Layer',
+          'Software', 'Email', 'Communications Vendor Platform', 'External Firm Intranet Platform',
+          'External Partners', 'User Accounts', 'Interface', 'User Interface', 'Info Display',
+          'Data Visualization', 'Dashboard',
+        ],
+      },
+    ],
+  },
+  4: {
+    title: 'Agentic Intelligence (The Council)',
+    subtitle: 'Active reasoning agents and decision-making systems.',
+    groups: [
+      {
+        primary: 'Agents',
+        secondary: ['Infrastructure AI Agent', 'Health AI Agent', 'Safety AI Agent', 'Municipal AI Agent', 'Traffic AI Agent'],
+      },
+      {
+        primary: 'Architecture',
+        secondary: [
+          'Agentic AI Architecture', 'Urban Agentic Systems', 'Agent Orchestration', 'Multi Agent Coordination',
+          'Task Executor', 'Copilot',
+        ],
+      },
+      {
+        primary: 'Generative Actions',
+        secondary: [
+          'Action-Based Generators', 'Content-Based Generators', 'Intelligent Recommendations',
+          'Decision Making and Adaptation', 'Sensemaking',
+        ],
+      },
+      {
+        primary: 'Synthetic Ecology',
+        secondary: [
+          'Cyber/Synthetic Persona Layer', 'Partnership AI Models', 'Human-AI Interactions',
+          'SuperAMI in Advance of Super Intelligence', 'More-than-human capabilities',
+        ],
+      },
+    ],
+  },
+  5: {
+    title: 'Socio-Economic (The People)',
+    subtitle: 'Memory, demographics, values, and human perception.',
+    groups: [
+      {
+        primary: 'Demographics',
+        secondary: [
+          'Population', 'Total Population', 'Total Households',
+          'Age Groups (Greatest Generation, Baby Boomers, Gen-X, Gen-Z, Gen Alpha, Gen Beta, Above 65 Years Old)',
+        ],
+      },
+      {
+        primary: 'Economics',
+        secondary: [
+          'Economy', 'Income Distribution', 'Household Income', 'Median Household Income', 'Gross Rent',
+          'Median Rent', 'Home Value', 'Median Unit Value', 'Real Estate Market', 'Market Intelligence',
+          'Market Potential', 'Development Economics', 'Employment Status',
+        ],
+      },
+      {
+        primary: 'Human Actors',
+        secondary: ['Human', 'User', 'Stakeholders', 'Actors', 'Human Operator', 'Analytics Users', 'Civil Societies'],
+      },
+      {
+        primary: 'Community',
+        secondary: [
+          'Neighborhood', 'Village', 'Town', 'City', 'County', 'State', 'National', 'Continent', 'World',
+          'Administrative Area',
+        ],
+      },
+      {
+        primary: 'Culture & Values',
+        secondary: [
+          'Culture/Economy/Mobility', 'Social Values', 'Cultural Dimensions of AI', 'Cultural Landscape',
+          'Public Attitudes', 'Public Engagement', 'Advocacy and Ethical Oversight', 'Truth',
+          'Metaphysical', 'Spiritual', 'Metaphysical Spiritual',
+        ],
+      },
+      {
+        primary: 'Experience',
+        secondary: [
+          'User Experiences', 'Experience', 'Needs', 'Requirements', 'Learning Management Sub-System',
+          'Learning Grouping Sub-System', 'Sub-System of Content Assignment',
+        ],
+      },
+    ],
+  },
+  6: {
+    title: 'Governance (The Rules)',
+    subtitle: 'Policy, rights, authority, and compliance.',
+    groups: [
+      {
+        primary: 'Legal',
+        secondary: [
+          'Establish Law', 'Tort Law', 'Legislation and Implementation', 'Compliance', 'Enforcement',
+          'Litigation (Risks)', 'Rights and Interests', 'Incidental Rights', 'Permissions',
+        ],
+      },
+      {
+        primary: 'Authority',
+        secondary: [
+          'Governance', 'Neo-Governance', 'Regulatory Governance', 'AI Regulatory Authority',
+          'International Organizations', 'International Collaboration', 'Supranational',
+        ],
+      },
+      {
+        primary: 'Planning',
+        secondary: [
+          'Urban Planning', 'Spatial Planning', 'Land-Use Planning', 'Zoning Districts', 'Zoning Overlays',
+          'Land Use', 'Density Bonuses',
+        ],
+      },
+      {
+        primary: 'Public Sector',
+        secondary: ['Public Finance and Taxation', 'Tax', 'Public Access', 'Public Control', 'Public Record', 'Assessor Data'],
+      },
+      {
+        primary: 'Specific Designations',
+        secondary: [
+          'Qualified Census Tracts', 'Qualified Opportunity Zones (HUD)', 'Difficult Development Zones (HUD)',
+          'Neighborhood Change/Opportunity (CA)', 'NCES School Districts', 'Jurisdiction(s)',
+        ],
+      },
+      {
+        primary: 'Ethics & Validation',
+        secondary: [
+          'Ethical Framework', 'Guardrails', 'Transparency and Accountability', 'Social Regulations',
+          'Environmental Regulations', 'Goal and Value Layer', 'Outcome and Validation', 'Continuous Learning',
+          'Patterns and Relationships', 'Context', 'Boundaries', 'Clarifications', 'Elements', 'Missing Factors',
+        ],
+      },
+    ],
+  },
+}
+
 const LAYER_COLORS = {
   0: '#8B8682',
   1: '#9DACB3',
@@ -48,6 +330,15 @@ const EDGE_TYPE_NAMES = {
 function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
   const [expandedNodes, setExpandedNodes] = useState(new Set())
   const layerNodes = nodes.filter(n => n.layer === layer)
+  const taxonomy = INDEX_TAXONOMY[layer]
+  const nodeByKey = useMemo(() => {
+    const map = new Map()
+    layerNodes.forEach((n) => {
+      const k = normalizeLabel(n.label)
+      if (k && !map.has(k)) map.set(k, n)
+    })
+    return map
+  }, [layerNodes])
   const nodeIds = new Set(layerNodes.map(n => n.id))
 
   const toggleNode = (nodeId) => {
@@ -79,6 +370,34 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
   const incomingByType = groupByType(incomingEdges)
   const outgoingByType = groupByType(outgoingEdges)
 
+  const grouped = useMemo(() => {
+    if (!taxonomy?.groups?.length) return null
+
+    const usedNodeIds = new Set()
+    const groups = taxonomy.groups.map(({ primary, secondary }) => {
+      const primaryKey = normalizeLabel(primary)
+      const primaryNode = nodeByKey.get(primaryKey) || null
+      if (primaryNode) usedNodeIds.add(primaryNode.id)
+
+      const secList = (secondary || [])
+        .filter(Boolean)
+        // remove duplicates and avoid repeating the primary label
+        .filter((s) => normalizeLabel(s) !== primaryKey)
+
+      const secondaryItems = secList.map((label) => {
+        const n = nodeByKey.get(normalizeLabel(label)) || null
+        if (n) usedNodeIds.add(n.id)
+        return { label, node: n }
+      })
+
+      return { primary, primaryNode, secondaryItems }
+    })
+
+    const otherNodes = layerNodes.filter((n) => !usedNodeIds.has(n.id))
+
+    return { groups, otherNodes }
+  }, [taxonomy, nodeByKey, layerNodes])
+
   return (
     <div className="border-b border-gray-100 last:border-b-0">
       {/* Layer Header - Clickable */}
@@ -106,7 +425,7 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2">
             <span className="text-sm font-semibold text-gray-900">
-              L{layer}: {LAYER_NAMES[layer]}
+              L{layer}: {taxonomy?.title ?? LAYER_NAMES[layer]}
             </span>
             <span className="text-xs text-gray-400">
               {layerNodes.length} nodes
@@ -136,7 +455,7 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
               {/* Layer Description */}
               <div className="mb-4 pl-8">
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  {LAYER_DESCRIPTIONS[layer]}
+                  {taxonomy?.subtitle ?? LAYER_DESCRIPTIONS[layer]}
                 </p>
               </div>
 
@@ -164,17 +483,90 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
                 </div>
               </div>
 
-              {/* Nodes List */}
-              <div className="pl-8 space-y-2">
-                {layerNodes.map(node => (
-                  <NodeRow
-                    key={node.id}
-                    node={node}
-                    edges={edges}
-                    isExpanded={expandedNodes.has(node.id)}
-                    onToggle={() => toggleNode(node.id)}
-                  />
-                ))}
+              {/* Nodes List (grouped by Primary → Secondary) */}
+              <div className="pl-8 space-y-3">
+                {grouped?.groups?.length ? (
+                  <>
+                    {grouped.groups.map((g) => (
+                      <div key={`${layer}-${g.primary}`} className="space-y-2">
+                        <div className="text-[11px] font-semibold text-gray-700 tracking-wide">
+                          {g.primary}
+                        </div>
+
+                        {g.primaryNode ? (
+                          <NodeRow
+                            key={g.primaryNode.id}
+                            node={g.primaryNode}
+                            edges={edges}
+                            role="primary"
+                            isExpanded={expandedNodes.has(g.primaryNode.id)}
+                            onToggle={() => toggleNode(g.primaryNode.id)}
+                          />
+                        ) : (
+                          <div className="ml-2 text-xs text-gray-400 italic">
+                            (Primary category — no node currently in model)
+                          </div>
+                        )}
+
+                        {g.secondaryItems.length > 0 && (
+                          <div className="ml-3 space-y-2">
+                            {g.secondaryItems.map((item) => (
+                              item.node ? (
+                                <NodeRow
+                                  key={item.node.id}
+                                  node={item.node}
+                                  edges={edges}
+                                  role="secondary"
+                                  isExpanded={expandedNodes.has(item.node.id)}
+                                  onToggle={() => toggleNode(item.node.id)}
+                                />
+                              ) : (
+                                <div
+                                  key={`${layer}-${g.primary}-${item.label}`}
+                                  className="ml-2 text-xs text-gray-400"
+                                >
+                                  {item.label}
+                                </div>
+                              )
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+
+                    {grouped.otherNodes.length > 0 && (
+                      <div className="pt-2">
+                        <div className="text-[11px] font-semibold text-gray-500 tracking-wide">
+                          Other nodes ({grouped.otherNodes.length})
+                        </div>
+                        <div className="mt-2 space-y-2">
+                          {grouped.otherNodes.map((node) => (
+                            <NodeRow
+                              key={node.id}
+                              node={node}
+                              edges={edges}
+                              role="other"
+                              isExpanded={expandedNodes.has(node.id)}
+                              onToggle={() => toggleNode(node.id)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="space-y-2">
+                    {layerNodes.map(node => (
+                      <NodeRow
+                        key={node.id}
+                        node={node}
+                        edges={edges}
+                        isExpanded={expandedNodes.has(node.id)}
+                        onToggle={() => toggleNode(node.id)}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -184,7 +576,7 @@ function LayerSection({ layer, nodes, edges, isExpanded, onToggle }) {
   )
 }
 
-function NodeRow({ node, edges, isExpanded, onToggle }) {
+function NodeRow({ node, edges, isExpanded, onToggle, role }) {
   const incomingEdges = edges.filter(e => e.target === node.id)
   const outgoingEdges = edges.filter(e => e.source === node.id)
 
@@ -192,21 +584,24 @@ function NodeRow({ node, edges, isExpanded, onToggle }) {
   const inTypes = [...new Set(incomingEdges.map(e => e.edgeType))].sort()
   const outTypes = [...new Set(outgoingEdges.map(e => e.edgeType))].sort()
 
-  // Primary nodes (scale >= 1.0) get stronger styling
-  const isPrimary = (node.scale ?? 1.0) >= 1.0
+  const computedRole = role || ((node.scale ?? 1.0) >= 1.0 ? 'primary' : 'secondary')
+  const isPrimary = computedRole === 'primary'
+  const isSecondary = computedRole === 'secondary'
 
   // Darken color for primary nodes
   const nodeColor = LAYER_COLORS[node.layer]
   const dotStyle = isPrimary
     ? { backgroundColor: nodeColor, boxShadow: `0 0 0 2px ${nodeColor}40` }
-    : { backgroundColor: nodeColor, opacity: 0.6 }
+    : { backgroundColor: nodeColor, opacity: isSecondary ? 0.6 : 0.45 }
 
   return (
     <div
       className={`rounded-lg p-3 cursor-pointer transition-colors ${
         isPrimary
           ? 'bg-gray-100 hover:bg-gray-150 border-l-2'
-          : 'bg-gray-50 hover:bg-gray-100 ml-2'
+          : isSecondary
+            ? 'bg-gray-50 hover:bg-gray-100 ml-2'
+            : 'bg-white hover:bg-gray-50 ml-2 border border-gray-100'
       }`}
       style={isPrimary ? { borderLeftColor: nodeColor } : {}}
       onClick={onToggle}
