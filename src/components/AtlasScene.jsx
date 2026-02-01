@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect, useCallback } from 'react'
+import React, { Suspense, useRef, useEffect, useCallback, useState } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import * as THREE from 'three'
@@ -7,6 +7,18 @@ import LegendPanel from './LegendPanel'
 import NodeDetailPanel from './NodeDetailPanel'
 import ViewToggle from './ViewToggle'
 import useGraphStore from '../stores/graphStore'
+
+// Mobile breakpoint hook
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return isMobile
+}
 
 function LoadingFallback() {
   return (
@@ -22,6 +34,7 @@ function LoadingFallback() {
 function Title() {
   const setCurrentView = useGraphStore((state) => state.setCurrentView)
   const resetFilters = useGraphStore((state) => state.resetFilters)
+  const isMobile = useIsMobile()
 
   const handleBack = () => {
     resetFilters()
@@ -31,15 +44,17 @@ function Title() {
   return (
     <button
       onClick={handleBack}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 text-center cursor-pointer
-                 hover:opacity-70 transition-opacity duration-200"
+      className={`fixed z-50 text-center cursor-pointer hover:opacity-70 transition-opacity duration-200
+                  ${isMobile ? 'top-4 left-4 text-left' : 'top-6 left-1/2 -translate-x-1/2'}`}
     >
-      <h1 className="text-sm font-medium text-gray-900 tracking-wide">
+      <h1 className={`font-medium text-gray-900 tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
         Atlas for Urban Intelligence
       </h1>
-      <p className="text-xs text-gray-400 font-mono mt-1">
-        Epistemic Knowledge Graph
-      </p>
+      {!isMobile && (
+        <p className="text-xs text-gray-400 font-mono mt-1">
+          Epistemic Knowledge Graph
+        </p>
+      )}
     </button>
   )
 }
@@ -48,7 +63,10 @@ function CursorTooltip() {
   const hoveredNode = useGraphStore((state) => state.hoveredNode)
   const hoveredCluster = useGraphStore((state) => state.hoveredCluster)
   const mousePosition = useGraphStore((state) => state.mousePosition)
+  const isMobile = useIsMobile()
 
+  // Don't show hover tooltips on mobile (no cursor)
+  if (isMobile) return null
   if (!hoveredNode && !hoveredCluster) return null
 
   return (
