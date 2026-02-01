@@ -142,20 +142,19 @@ function TrackpadControls({ controlsRef }) {
 
     const rotateSpeed = 0.005
     const zoomSpeed = 0.01
+    const mouseWheelZoomSpeed = 0.001
 
     // Get current spherical coordinates
     const offset = new THREE.Vector3().subVectors(camera.position, controlsRef.current.target)
     const spherical = new THREE.Spherical().setFromVector3(offset)
 
-    // Always apply horizontal rotation from deltaX
-    spherical.theta -= event.deltaX * rotateSpeed
+    // Detect if this is a regular mouse wheel (no horizontal component) vs trackpad
+    const isMouseWheel = Math.abs(event.deltaX) < 1 && !event.ctrlKey
 
-    // If pinching (ctrlKey), deltaY is zoom; otherwise it's vertical rotation
-    if (event.ctrlKey) {
-      // Pinch zoom
-      const delta = event.deltaY * zoomSpeed
+    // Helper function for zoom-to-cursor
+    const zoomToCursor = (delta, speed) => {
       const oldRadius = spherical.radius
-      const newRadius = oldRadius * (1 + delta)
+      const newRadius = oldRadius * (1 + delta * speed)
 
       // Clamp distance (match OrbitControls)
       if (newRadius >= 40 && newRadius <= 1200) {
@@ -185,8 +184,17 @@ function TrackpadControls({ controlsRef }) {
 
         spherical.radius = newRadius
       }
+    }
+
+    if (isMouseWheel) {
+      // Regular mouse wheel: zoom toward cursor
+      zoomToCursor(event.deltaY, mouseWheelZoomSpeed)
+    } else if (event.ctrlKey) {
+      // Trackpad pinch zoom
+      zoomToCursor(event.deltaY, zoomSpeed)
     } else {
-      // Vertical rotation
+      // Trackpad two-finger scroll: rotate
+      spherical.theta -= event.deltaX * rotateSpeed
       spherical.phi -= event.deltaY * rotateSpeed
     }
 
@@ -199,7 +207,7 @@ function TrackpadControls({ controlsRef }) {
     camera.lookAt(controlsRef.current.target)
 
     controlsRef.current.update()
-  }, [camera, controlsRef])
+  }, [camera, controlsRef, gl])
 
   useEffect(() => {
     const domElement = gl.domElement
