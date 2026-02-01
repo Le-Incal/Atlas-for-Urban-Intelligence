@@ -424,7 +424,7 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
     if (materialRef.current) {
       emissiveRef.current = THREE.MathUtils.lerp(emissiveRef.current, targetEmissive, 0.25)
       materialRef.current.emissiveIntensity = emissiveRef.current
-      materialRef.current.opacity = 0.92 + 0.08 * focusAlpha
+      materialRef.current.opacity = 0.88 + 0.12 * focusAlpha
     }
     if (outlineMaterialRef.current) {
       outlineMaterialRef.current.opacity = 0.9 * focusAlpha + 0.1
@@ -585,13 +585,13 @@ function Node({ node, basePosition, clusterKey, size, isVisible, focusAlpha = 1 
         <meshStandardMaterial
           ref={materialRef}
           color={displayColor}
-          roughness={0.6}
+          roughness={0.35}
           metalness={0}
           emissive={emissiveColor}
           emissiveIntensity={0}
           flatShading={false}
           transparent
-          opacity={0.92 + 0.08 * focusAlpha}
+          opacity={0.88 + 0.12 * focusAlpha}
           depthWrite={true}
         />
       </mesh>
